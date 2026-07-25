@@ -125,13 +125,36 @@ function ModelDetail() {
   if (battery === "nova" && !batteryTiers.nova) setTimeout(() => setBattery("std"), 0);
   if (battery === "std" && !batteryTiers.std && batteryTiers.nova) setTimeout(() => setBattery("nova"), 0);
 
-  // Pick the cheapest matching unit for the chosen configuration.
+  // All colors for this model, and which are available for the current
+  // storage + grade + battery combo (unavailable ones are shown crossed out).
+  const allColors = useMemo(
+    () => Array.from(new Set(m.units.map((u) => u.color).filter((c): c is string => !!c))),
+    [m.units],
+  );
+  const availableColors = useMemo(() => {
+    const set = new Set(
+      m.units
+        .filter((u) => u.storage_gb === storage && u.grade === grade)
+        .filter((u) => (battery === "nova" ? u.battery_health >= 100 : u.battery_health < 100))
+        .map((u) => u.color)
+        .filter((c): c is string => !!c),
+    );
+    return set;
+  }, [m.units, storage, grade, battery]);
+  const [color, setColor] = useState<string | null>(allColors[0] ?? null);
+  // If the current color is unavailable in the new combo, switch to the first available.
+  if (color && !availableColors.has(color) && availableColors.size > 0) {
+    setTimeout(() => setColor(Array.from(availableColors)[0]), 0);
+  }
+
+  // Pick the cheapest matching unit for the chosen configuration (including color).
   const chosen = useMemo(() => {
     const rows = m.units
       .filter((u) => u.storage_gb === storage && u.grade === grade)
-      .filter((u) => (battery === "nova" ? u.battery_health >= 100 : u.battery_health < 100));
+      .filter((u) => (battery === "nova" ? u.battery_health >= 100 : u.battery_health < 100))
+      .filter((u) => (color ? u.color === color : true));
     return rows.sort((a, b) => a.list_price - b.list_price)[0];
-  }, [m.units, storage, grade, battery]);
+  }, [m.units, storage, grade, battery, color]);
 
   const orig = msrpFor(m.model_name, storage);
   const price = chosen?.list_price ?? Math.min(...m.units.filter((u) => u.storage_gb === storage).map((u) => u.list_price));
@@ -139,6 +162,7 @@ function ModelDetail() {
 
   const [gallery, setGallery] = useState(0);
   const galleryImages = chosen?.photos && chosen.photos.length > 0 ? chosen.photos : [];
+  const tintHex = color ? colorHex(color) : "#e5e7eb";
 
   const onBuy = () => {
     if (!chosen) return;
