@@ -63,21 +63,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Obnovi.me — Obnovljeni iPhone sa garancijom" },
+      { title: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
       {
         name: "description",
         content:
-          "Otkup i prodaja obnovljenih iPhone uređaja u Crnoj Gori. 12 mjeseci garancije, 14 dana povrata, plaćanje pouzećem.",
+          "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%.",
       },
       { name: "author", content: "Obnovi.me" },
-      { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom" },
+      { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
       {
         property: "og:description",
         content:
-          "Otkup i prodaja obnovljenih iPhone uređaja u Crnoj Gori. Testirani uređaji, garancija, povrat.",
+          "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
+      { name: "twitter:description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1139c88c-809a-40f6-bd67-b59bff04ba41/id-preview-24837618--f5d18c75-67b1-4f39-8d80-0ae1ca0a4101.lovable.app-1784975985926.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1139c88c-809a-40f6-bd67-b59bff04ba41/id-preview-24837618--f5d18c75-67b1-4f39-8d80-0ae1ca0a4101.lovable.app-1784975985926.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

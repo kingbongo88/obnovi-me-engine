@@ -12,8 +12,8 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
       { name: "description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
-      { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone" },
-      { property: "og:description", content: "Kupi ili prodaj obnovljeni iPhone. Garancija, provjereno stanje, brza dostava." },
+      { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
+      { property: "og:description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
