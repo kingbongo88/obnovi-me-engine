@@ -126,19 +126,19 @@ function HeroPhoneCluster() {
         className="absolute left-0 top-6 w-1/2 rounded-2xl bg-white/95 p-3 shadow-2xl float-slow"
         style={{ ["--r" as string]: "-6deg" }}
       >
-        <img src={devicePhotoFor("iPhone 13")} alt="iPhone" className="h-full w-full rounded-xl object-contain" />
+        <img src={devicePhotoFor("iPhone 13")} alt="Obnovljeni iPhone 13" className="h-full w-full rounded-xl object-contain" />
       </div>
       <div
         className="absolute left-1/2 top-0 w-1/2 -translate-x-1/2 rounded-2xl bg-white/95 p-3 shadow-2xl float-slow-2"
         style={{ ["--r" as string]: "3deg" }}
       >
-        <img src={devicePhotoFor("iPhone 15")} alt="iPhone" className="h-full w-full rounded-xl object-contain" />
+        <img src={devicePhotoFor("iPhone 15")} alt="Obnovljeni iPhone 15" className="h-full w-full rounded-xl object-contain" />
       </div>
       <div
         className="absolute right-0 top-10 w-1/2 rounded-2xl bg-white/95 p-3 shadow-2xl float-slow-3"
         style={{ ["--r" as string]: "8deg" }}
       >
-        <img src={devicePhotoFor("iPhone 16 Pro")} alt="iPhone" className="h-full w-full rounded-xl object-contain" />
+        <img src={devicePhotoFor("iPhone 16 Pro")} alt="Obnovljeni iPhone 16 Pro" className="h-full w-full rounded-xl object-contain" />
       </div>
     </div>
   );
