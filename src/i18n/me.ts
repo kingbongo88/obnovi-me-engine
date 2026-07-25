@@ -1,5 +1,4 @@
-// Montenegrin (Latin) copy dictionary. Structured as flat key/value so a future
-// language switcher can be added without restructuring components.
+// Montenegrin (Latin) copy dictionary.
 
 export const me = {
   brand: "Obnovi.me",
@@ -19,20 +18,20 @@ export const me = {
   },
 
   home: {
-    heroTitle: "Obnovljeni iPhone,\nsa garancijom od 12 mjeseci.",
+    heroTitle: "Obnovljeni iPhone,\nsa 6 mjeseci garancije.",
     heroSub:
-      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 14 dana povrata i godišnjom garancijom.",
+      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 14 dana povrata i 6 mjeseci garancije.",
     ctaSell: "Prodaj svoj iPhone",
     ctaShop: "Kupi obnovljeni iPhone",
     trust: {
-      warranty: "12 mjeseci garancije",
+      warranty: "6 mjeseci garancije",
       warrantySub: "Servisiramo ili mijenjamo, bez raspravljanja.",
       returns: "14 dana povrata",
       returnsSub: "Vratite uređaj bez razloga u prvih 14 dana.",
-      local: "Lokalno preuzimanje",
-      localSub: "Podgorica, Budva, Kotor, Nikšić — ili poštom.",
-      cod: "Plaćanje pouzećem",
-      codSub: "Platite kuriru kada primite uređaj.",
+      shipMail: "Pošaljite poštom",
+      shipMailSub: "Mi pokrivamo troškove slanja u cijeloj Crnoj Gori.",
+      meet: "Sastanak sa predstavnikom",
+      meetSub: "Dogovorite lični sastanak putem kontakt forme.",
     },
   },
 
@@ -76,7 +75,7 @@ export const me = {
 
     step4Title: "Zdravlje baterije",
     step4Sub:
-      "Provjeri u Podešavanja → Baterija → Zdravlje baterije. Upiši broj sa te stranice.",
+      "Provjeri u Podešavanja → Baterija → Zdravlje baterije. Upiši broj i klikni Dalje.",
     batteryLabel: "Zdravlje baterije (%)",
 
     step5Title: "Stanje uređaja",
@@ -99,16 +98,15 @@ export const me = {
     offerAccept: "Prihvatam ponudu",
     offerRestart: "Krenimo iznova",
 
-    step7Title: "Podaci za preuzimanje",
+    step7Title: "Podaci za predaju",
     nameLabel: "Ime i prezime",
     phoneLabel: "Telefon",
     emailLabel: "Email (opciono)",
-    dropoffLabel: "Način predaje",
-    dropoff_pg: "Lično — Podgorica",
-    dropoff_bd: "Lično — Budva",
-    dropoff_kt: "Lično — Kotor",
-    dropoff_nk: "Lično — Nikšić",
-    dropoff_mail: "Poštom (uskoro)",
+    dropoffLabel: "Kako želiš predati uređaj?",
+    dropoff_mail: "Pošaljite poštom",
+    dropoff_mail_sub: "Besplatno — mi pokrivamo troškove slanja. Šaljemo ti upute za pakovanje i etiketu.",
+    dropoff_meet: "Sastanak sa predstavnikom",
+    dropoff_meet_sub: "Naš predstavnik dolazi na dogovoreno mjesto i vrijeme. Detalje potvrđujemo telefonom.",
 
     successTitle: "Hvala! Zaprimili smo tvoj zahtjev.",
     successSub:
@@ -140,7 +138,7 @@ export const me = {
 
   shop: {
     title: "Obnovljeni iPhone uređaji",
-    sub: "Svaki uređaj je testiran, sa baterijom ≥ 90%, 12 mjeseci garancije i 14 dana povrata.",
+    sub: "Svaki uređaj je testiran, sa baterijom ≥ 85%, 6 mjeseci garancije i 14 dana povrata.",
     filterModel: "Model",
     filterStorage: "Memorija",
     filterGrade: "Stanje",
@@ -184,7 +182,7 @@ export const me = {
       title: "Prodaja iPhone-a",
       s1: "Popuni obrazac — traje 3 minuta.",
       s2: "Dobiješ konkretnu ponudu na osnovu stanja uređaja.",
-      s3: "Doneseš uređaj (ili pošalješ) i mi ga testiramo.",
+      s3: "Pošalješ uređaj poštom (mi pokrivamo trošak) ili dogovoriš sastanak sa predstavnikom.",
       s4: "Isplata odmah nakon potvrde stanja.",
     },
     buy: {
@@ -192,12 +190,12 @@ export const me = {
       s1: "Izabereš model i stanje.",
       s2: "Poručiš — plaćaš kuriru pri dostavi.",
       s3: "Ako nešto nije u redu, imaš 14 dana da vratiš uređaj.",
-      s4: "12 mjeseci garancije, servis kod nas.",
+      s4: "6 mjeseci garancije, servis kod nas.",
     },
     gradeTitle: "Kako klasifikujemo stanje",
     warrantyTitle: "Šta pokriva garancija",
     warrantyText:
-      "Garancija od 12 mjeseci pokriva sve hardverske kvarove koji nijesu posljedica pada, vode ili neovlašćene intervencije. Baterija je garantovano ≥ 90% kapaciteta prilikom prodaje.",
+      "Garancija od 6 mjeseci pokriva sve hardverske kvarove koji nijesu posljedica pada, vode ili neovlašćene intervencije. Baterija je garantovano ≥ 85% kapaciteta prilikom prodaje.",
   },
 
   faq: {
@@ -205,7 +203,7 @@ export const me = {
     items: [
       {
         q: "Kakva je garancija na obnovljene uređaje?",
-        a: "Svaki uređaj dolazi sa garancijom od 12 mjeseci koja pokriva hardverske kvarove. Baterija je garantovano ≥ 90% kapaciteta u trenutku prodaje.",
+        a: "Svaki uređaj dolazi sa garancijom od 6 mjeseci koja pokriva hardverske kvarove. Baterija je garantovano ≥ 85% kapaciteta u trenutku prodaje.",
       },
       {
         q: "Šta ako se uređaj pokvari u roku garancije?",
@@ -221,11 +219,11 @@ export const me = {
       },
       {
         q: "Zašto ne otkupljujete telefone sa baterijom ispod 85%?",
-        a: "Da bismo garantovali ≥ 90% baterije pri prodaji, moramo je zamijeniti. To se ekonomski isplati samo iznad 85% ulaznog kapaciteta.",
+        a: "Da bismo garantovali ≥ 85% baterije pri prodaji, ulazni kapacitet mora biti barem toliki. Ispod tog praga obnova nam se ne isplati.",
       },
       {
-        q: "Gdje se nalazite?",
-        a: "Preuzimamo lično u Podgorici, Budvi, Kotoru i Nikšiću. Slanje poštom stižemo uskoro.",
+        q: "Kako predajem svoj uređaj?",
+        a: "Dvije opcije: pošalješ poštom (mi pokrivamo trošak slanja) ili dogovoriš sastanak sa našim predstavnikom putem kontakt forme. Trenutno nemamo fizičku prodavnicu.",
       },
       {
         q: "Kako se plaća pri kupovini?",
@@ -238,7 +236,7 @@ export const me = {
     title: "O nama",
     body: [
       "Obnovi.me je crnogorski servis za otkup i prodaju obnovljenih iPhone uređaja.",
-      "Cilj nam je da tržište obnovljenih telefona kod nas bude transparentno, pošteno i sa istom garancijom kao kod novih uređaja. Svaki telefon prolazi kroz istu proceduru testiranja i obnove.",
+      "Cilj nam je da tržište obnovljenih telefona kod nas bude transparentno, pošteno i sa jasnim uslovima garancije. Svaki telefon prolazi kroz istu proceduru testiranja i obnove.",
       "Nemamo skrivene troškove. Ako uređaj ne odgovara opisu, vratite ga u 14 dana. Ako se pokvari u garantnom roku, popravljamo ili mijenjamo.",
     ],
   },
@@ -248,7 +246,7 @@ export const me = {
     email: "info@obnovi.me",
     phone: "+382 68 000 000",
     hours: "Radno vrijeme: pon–pet 09–17h, sub 10–14h",
-    cities: "Podgorica · Budva · Kotor · Nikšić",
+    cities: "Predstavnik dostupan u: Podgorica · Budva · Kotor · Nikšić",
   },
 
   admin: {
