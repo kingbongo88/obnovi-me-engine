@@ -7,7 +7,7 @@ export const Route = createFileRoute("/kontakt")({
   head: () => ({
     meta: [
       { title: "Kontakt — Obnovi.me" },
-      { name: "description", content: "Kontaktirajte nas. Podgorica, Budva, Kotor, Nikšić." },
+      { name: "description", content: "Kontaktirajte nas. Kontakt forma i telefon." },
       { property: "og:title", content: "Kontakt — Obnovi.me" },
       { property: "og:description", content: "Kontakt podaci i lokacije." },
     ],

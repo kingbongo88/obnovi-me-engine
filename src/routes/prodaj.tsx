@@ -16,7 +16,7 @@ export const Route = createFileRoute("/prodaj")({
       { title: "Prodaj svoj iPhone — Obnovi.me" },
       { name: "description", content: "Dobij konkretnu ponudu za svoj iPhone za 3 minuta. Otkup u Crnoj Gori." },
       { property: "og:title", content: "Prodaj svoj iPhone — Obnovi.me" },
-      { property: "og:description", content: "Konkretna ponuda za 3 minuta. Preuzimanje u Podgorici, Budvi, Kotoru, Nikšiću." },
+      { property: "og:description", content: "Konkretna ponuda za 3 minuta. Šalji poštom (besplatno) ili sastanak sa predstavnikom." },
     ],
   }),
   loader: ({ context }) =>

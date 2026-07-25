@@ -21,7 +21,7 @@ export const Route = createFileRoute("/kupi/$id")({
     }
     const model = (item.devices as { model_name: string } | null)?.model_name ?? "iPhone";
     const title = `${model} ${item.storage_gb >= 1024 ? "1 TB" : `${item.storage_gb} GB`} (${item.grade}) — ${Number(item.list_price)} € — Obnovi.me`;
-    const desc = `Obnovljeni ${model}, ${item.storage_gb >= 1024 ? "1TB" : item.storage_gb + "GB"}, stanje ${item.grade}, baterija ${item.battery_health}%. 12 mjeseci garancije.`;
+    const desc = `Obnovljeni ${model}, ${item.storage_gb >= 1024 ? "1TB" : item.storage_gb + "GB"}, stanje ${item.grade}, baterija ${item.battery_health}%. 6 mjeseci garancije.`;
     return {
       meta: [
         { title },
