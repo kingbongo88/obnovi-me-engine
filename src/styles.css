@@ -127,8 +127,9 @@
   background-color: var(--cta);
   color: var(--cta-foreground);
   box-shadow: 0 6px 20px -6px color-mix(in oklab, var(--cta) 60%, transparent);
+  &:hover { filter: brightness(1.06); transform: translateY(-1px); }
 }
-@utility btn-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+
 
 @utility btn-accent {
   @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-colors;
