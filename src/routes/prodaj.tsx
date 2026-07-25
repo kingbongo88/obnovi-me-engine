@@ -39,9 +39,9 @@ function SellPage() {
   return (
     <div className="min-h-screen bg-[color:var(--surface-2)]">
       <SiteHeader />
-      <main className="mx-auto max-w-6xl px-4 py-8 md:py-12">
+      <main className="mx-auto max-w-[1400px] px-4 py-8 md:py-12">
         <Stepper step={s.step} />
-        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px]">
           <div className="rounded-3xl border border-border bg-background p-6 md:p-10">
             {s.step === 1 && <Step1 bundle={bundle} onNext={(device_id) => setS({ ...s, device_id, step: 2 })} />}
             {s.step === 2 && (
