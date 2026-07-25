@@ -7,6 +7,7 @@ import { me } from "@/i18n/me";
 import { getPricingBundle, submitTradeIn } from "@/lib/pricing.functions";
 import { computeOffer, type OfferInput, type OfferResult } from "@/lib/pricing";
 import { ArrowRight, ArrowLeft, Search, Check, X, AlertTriangle } from "lucide-react";
+import { DeviceSilhouette } from "@/components/device-silhouette";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/prodaj")({
@@ -15,7 +16,7 @@ export const Route = createFileRoute("/prodaj")({
       { title: "Prodaj svoj iPhone — Obnovi.me" },
       { name: "description", content: "Dobij konkretnu ponudu za svoj iPhone za 3 minuta. Otkup u Crnoj Gori." },
       { property: "og:title", content: "Prodaj svoj iPhone — Obnovi.me" },
-      { property: "og:description", content: "Konkretna ponuda za 3 minuta. Preuzimanje u Podgorici, Budvi, Kotoru, Nikšiću." },
+      { property: "og:description", content: "Konkretna ponuda za 3 minuta. Šalji poštom (besplatno) ili sastanak sa predstavnikom." },
     ],
   }),
   loader: ({ context }) =>
@@ -170,18 +171,21 @@ function ModelGrid({
   return (
     <div className="mt-8">
       <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{title}</h2>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
         {list.map((d) => (
           <button
             key={d.id}
             onClick={() => onPick(d.id)}
-            className="group flex items-center justify-between rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:border-[color:var(--accent-brand)]"
+            className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:border-[color:var(--accent-brand)]"
           >
-            <div>
-              <div className="font-medium">{d.model_name}</div>
+            <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-[color:var(--surface-2)] text-[color:var(--accent-brand)]">
+              <DeviceSilhouette modelName={d.model_name} className="h-14 w-auto" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate font-medium">{d.model_name}</div>
               <div className="text-xs text-muted-foreground">{d.release_year}</div>
             </div>
-            <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
           </button>
         ))}
       </div>
@@ -289,11 +293,24 @@ function Step4({
   onNext: (n: number) => void;
 }) {
   const [v, setV] = useState<string>("");
-  const n = parseInt(v, 10);
-  const valid = !isNaN(n) && n >= 0 && n <= 100;
-  if (valid && n < minBattery) {
-    return <RejectCard title="Baterija je preslaba" body={me.sell.reject.battery} />;
+  const [rejected, setRejected] = useState(false);
+  const trimmed = v.trim();
+  const n = parseInt(trimmed, 10);
+  const valid = /^\d{1,3}$/.test(trimmed) && !isNaN(n) && n >= 0 && n <= 100;
+
+  const onConfirm = () => {
+    if (!valid) return;
+    if (n < minBattery) {
+      setRejected(true);
+      return;
+    }
+    onNext(n);
+  };
+
+  if (rejected) {
+    return <RejectCard title="Baterija je preslaba" body={me.sell.reject.battery} onAction={() => { setRejected(false); setV(""); }} actionLabel="Unesi ponovo" />;
   }
+
   return (
     <div>
       <BackBtn onBack={onBack} />
@@ -301,18 +318,20 @@ function Step4({
       <p className="mt-2 text-muted-foreground">{me.sell.step4Sub}</p>
       <div className="mt-6 flex items-center gap-3">
         <input
-          type="number"
-          min={0}
-          max={100}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={3}
           value={v}
-          onChange={(e) => setV(e.target.value)}
+          onChange={(e) => setV(e.target.value.replace(/[^0-9]/g, ""))}
+          onKeyDown={(e) => { if (e.key === "Enter") onConfirm(); }}
           className="w-32 rounded-2xl border border-border bg-card px-4 py-3 text-3xl font-semibold outline-none focus:border-[color:var(--accent-brand)]"
           placeholder="92"
         />
         <span className="text-2xl text-muted-foreground">%</span>
       </div>
       <div className="mt-8">
-        <button disabled={!valid} onClick={() => onNext(n)} className="btn-primary disabled:opacity-40">
+        <button disabled={!valid} onClick={onConfirm} className="btn-primary disabled:opacity-40">
           {me.common.next}
         </button>
       </div>
@@ -492,21 +511,20 @@ function Step7({ input, onBack }: { input: OfferInput; onBack: () => void }) {
           <label className="mb-1 block text-sm font-medium">{me.sell.dropoffLabel}</label>
           <div className="grid gap-2 sm:grid-cols-2">
             {[
-              { v: "pickup:podgorica", l: me.sell.dropoff_pg, city: "Podgorica" },
-              { v: "pickup:budva", l: me.sell.dropoff_bd, city: "Budva" },
-              { v: "pickup:kotor", l: me.sell.dropoff_kt, city: "Kotor" },
-              { v: "pickup:niksic", l: me.sell.dropoff_nk, city: "Nikšić" },
+              { v: "mail", l: me.sell.dropoff_mail, sub: me.sell.dropoff_mail_sub },
+              { v: "meet", l: me.sell.dropoff_meet, sub: me.sell.dropoff_meet_sub },
             ].map((o) => (
               <button
                 key={o.v}
                 type="button"
-                onClick={() => setForm({ ...form, dropoff_method: o.v, dropoff_city: o.city })}
+                onClick={() => setForm({ ...form, dropoff_method: o.v, dropoff_city: "" })}
                 className={
-                  "rounded-xl border p-3 text-left text-sm " +
+                  "rounded-xl border p-4 text-left text-sm " +
                   (form.dropoff_method === o.v ? "border-[color:var(--accent-brand)] bg-[color:var(--accent)]" : "border-border bg-card")
                 }
               >
-                {o.l}
+                <div className="font-medium">{o.l}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{o.sub}</div>
               </button>
             ))}
           </div>

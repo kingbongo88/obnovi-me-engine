@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate, notFound } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { getInventoryItem } from "@/lib/pricing.functions";
 import { useCart } from "@/lib/cart";
 import { me } from "@/i18n/me";
-import { Shield, RotateCcw, Battery, Smartphone } from "lucide-react";
+import { Shield, RotateCcw, Battery } from "lucide-react";
+import { DeviceSilhouette } from "@/components/device-silhouette";
+import { GradeMeter } from "@/components/grade-meter";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/kupi/$id")({
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/kupi/$id")({
     }
     const model = (item.devices as { model_name: string } | null)?.model_name ?? "iPhone";
     const title = `${model} ${item.storage_gb >= 1024 ? "1 TB" : `${item.storage_gb} GB`} (${item.grade}) — ${Number(item.list_price)} € — Obnovi.me`;
-    const desc = `Obnovljeni ${model}, ${item.storage_gb >= 1024 ? "1TB" : item.storage_gb + "GB"}, stanje ${item.grade}, baterija ${item.battery_health}%. 12 mjeseci garancije.`;
+    const desc = `Obnovljeni ${model}, ${item.storage_gb >= 1024 ? "1TB" : item.storage_gb + "GB"}, stanje ${item.grade}, baterija ${item.battery_health}%. 6 mjeseci garancije.`;
     return {
       meta: [
         { title },
@@ -75,11 +76,11 @@ function Detail() {
       <SiteHeader />
       <main className="container-narrow py-12">
         <div className="grid gap-10 md:grid-cols-2">
-          <div className="flex aspect-square items-center justify-center rounded-3xl bg-[color:var(--surface-2)]">
+          <div className="flex aspect-square items-center justify-center rounded-3xl bg-[color:var(--surface-2)] text-[color:var(--accent-brand)]">
             {item.photos?.[0] ? (
               <img src={item.photos[0]} alt={model} className="h-full w-full rounded-3xl object-cover" />
             ) : (
-              <Smartphone className="h-32 w-32 text-muted-foreground/30" />
+              <DeviceSilhouette modelName={model} className="h-64 w-auto" />
             )}
           </div>
           <div>
@@ -91,11 +92,16 @@ function Detail() {
             </div>
             <div className="mt-6 font-display text-5xl">{Number(item.list_price)} €</div>
 
+            <div className="mt-6">
+              <div className="text-xs uppercase tracking-wider text-muted-foreground">Stanje uređaja</div>
+              <div className="mt-2"><GradeMeter grade={item.grade as "A+" | "A" | "B"} size="lg" showLabel /></div>
+            </div>
+
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <Info icon={<Battery className="h-4 w-4" />} label="Baterija" value={`${item.battery_health}%`} />
-              <Info icon={<Shield className="h-4 w-4" />} label="Garancija" value="12 mjeseci" />
+              <Info icon={<Battery className="h-4 w-4" />} label="Baterija" value={`${item.battery_health}% (≥85% zagarantovano)`} />
+              <Info icon={<Shield className="h-4 w-4" />} label="Garancija" value="6 mjeseci" />
               <Info icon={<RotateCcw className="h-4 w-4" />} label="Povrat" value="14 dana" />
-              <Info label="Stanje" value={item.grade} />
+              <Info label="Ocjena" value={item.grade} />
             </div>
 
             {item.description_me && (

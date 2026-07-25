@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { me } from "@/i18n/me";
-import { Shield, RotateCcw, MapPin, Banknote, ArrowRight, Check } from "lucide-react";
+import { Shield, RotateCcw, Mail, Handshake, ArrowRight, Check } from "lucide-react";
+import { GradeMeter } from "@/components/grade-meter";
+import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -10,7 +12,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Prodajte svoj iPhone ili kupite obnovljeni uređaj sa 12 mjeseci garancije. Plaćanje pouzećem, isporuka u Crnoj Gori.",
+          "Prodajte svoj iPhone ili kupite obnovljeni uređaj sa 6 mjeseci garancije. Plaćanje pouzećem, isporuka u Crnoj Gori.",
       },
       { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom" },
       { property: "og:description", content: "Otkup i prodaja obnovljenih iPhone uređaja u Crnoj Gori." },
@@ -36,26 +38,45 @@ function Home() {
 
 function Hero() {
   return (
-    <section className="container-narrow pb-16 pt-20 md:pt-28">
-      <div className="max-w-3xl">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[color:var(--surface-2)] px-3 py-1 text-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--success)]" />
-          Otkup i prodaja u Crnoj Gori
+    <section className="container-narrow pb-16 pt-12 md:pt-20">
+      <div className="grid items-center gap-10 md:grid-cols-[1.1fr_1fr]">
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[color:var(--surface-2)] px-3 py-1 text-xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent-brand)]" />
+            Otkup i prodaja u Crnoj Gori
+          </div>
+          <h1 className="mt-6 font-display text-5xl leading-[1.05] md:text-6xl">
+            Obnovljeni iPhone.
+            <br />
+            <span className="text-[color:var(--accent-brand)]">Bez rizika.</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-lg text-muted-foreground">{me.home.heroSub}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/prodaj" className="btn-primary group">
+              {me.home.ctaSell}
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <Link to="/kupi" className="btn-outline">
+              {me.home.ctaShop}
+            </Link>
+          </div>
         </div>
-        <h1 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">
-          Obnovljeni iPhone.
-          <br />
-          <span className="italic text-[color:var(--accent-brand)]">Bez rizika.</span>
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{me.home.heroSub}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link to="/prodaj" className="btn-primary group">
-            {me.home.ctaSell}
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-          <Link to="/kupi" className="btn-outline">
-            {me.home.ctaShop}
-          </Link>
+        <div className="relative">
+          <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-[color:var(--surface-2)] md:aspect-[5/6]">
+            <img
+              src={heroImg}
+              alt="Ruke drže obnovljeni iPhone"
+              width={1600}
+              height={1200}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="absolute -bottom-4 left-6 right-6 rounded-2xl border border-border bg-card p-4 shadow-sm md:left-auto md:right-4 md:w-64">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground">Provjereno stanje</div>
+            <div className="mt-2">
+              <GradeMeter grade="A+" size="sm" showLabel />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -64,10 +85,10 @@ function Hero() {
 
 function TrustRow() {
   const items = [
-    { icon: Shield, ...me.home.trust, key: "warranty", label: me.home.trust.warranty, sub: me.home.trust.warrantySub },
+    { icon: Shield, key: "warranty", label: me.home.trust.warranty, sub: me.home.trust.warrantySub },
     { icon: RotateCcw, key: "returns", label: me.home.trust.returns, sub: me.home.trust.returnsSub },
-    { icon: MapPin, key: "local", label: me.home.trust.local, sub: me.home.trust.localSub },
-    { icon: Banknote, key: "cod", label: me.home.trust.cod, sub: me.home.trust.codSub },
+    { icon: Mail, key: "ship", label: me.home.trust.shipMail, sub: me.home.trust.shipMailSub },
+    { icon: Handshake, key: "meet", label: me.home.trust.meet, sub: me.home.trust.meetSub },
   ];
   return (
     <section className="border-y border-border bg-[color:var(--surface-2)]">
@@ -97,7 +118,7 @@ function ValueSplit() {
         <h2 className="mt-3 font-display text-4xl">Prodaj svoj iPhone,<br /> dobiješ pravu ponudu.</h2>
         <p className="mt-4 max-w-md text-muted-foreground">
           Odgovori na par pitanja, dobij konkretnu cijenu za 3 minuta.
-          Preuzimamo lično u Podgorici, Budvi, Kotoru i Nikšiću.
+          Pošalji poštom (mi plaćamo slanje) ili dogovori sastanak sa predstavnikom.
         </p>
         <div className="mt-6 inline-flex items-center text-sm font-medium text-[color:var(--accent-brand)]">
           Započni <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -110,7 +131,7 @@ function ValueSplit() {
         <div className="text-xs uppercase tracking-widest opacity-70">Kupi</div>
         <h2 className="mt-3 font-display text-4xl">Kupi obnovljeni iPhone<br /> sa garancijom.</h2>
         <p className="mt-4 max-w-md opacity-80">
-          Svaki uređaj testiran, baterija ≥ 90%, 12 mjeseci garancije i 14 dana povrata.
+          Svaki uređaj testiran, baterija ≥ 85%, 6 mjeseci garancije i 14 dana povrata.
           Plaćaš kuriru pri dostavi.
         </p>
         <div className="mt-6 inline-flex items-center text-sm font-medium opacity-90">
@@ -122,10 +143,10 @@ function ValueSplit() {
 }
 
 function GradeExplain() {
-  const grades = [
-    { grade: "Odlično", desc: "Bez vidljivih tragova. Kao nov." },
-    { grade: "Vrlo dobro", desc: "Lagane ogrebotine, nevidljive sa normalne razdaljine." },
-    { grade: "Dobro", desc: "Vidljivi tragovi korišćenja. Sve funkcije rade." },
+  const grades: Array<{ grade: "A+" | "A" | "B"; label: string; desc: string }> = [
+    { grade: "A+", label: "Odlično", desc: "Bez vidljivih tragova. Kao nov." },
+    { grade: "A", label: "Vrlo dobro", desc: "Lagane ogrebotine, nevidljive sa normalne razdaljine." },
+    { grade: "B", label: "Dobro", desc: "Vidljivi tragovi korišćenja. Sve funkcije rade." },
   ];
   return (
     <section className="container-narrow py-16">
@@ -137,10 +158,11 @@ function GradeExplain() {
         {grades.map((g) => (
           <div key={g.grade} className="rounded-2xl border border-border bg-card p-6">
             <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-[color:var(--success)]" />
-              <div className="text-lg font-semibold">{g.grade}</div>
+              <Check className="h-4 w-4 text-[color:var(--accent-brand)]" />
+              <div className="text-lg font-semibold">{g.label}</div>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">{g.desc}</p>
+            <div className="mt-4"><GradeMeter grade={g.grade} size="md" showLabel={false} /></div>
+            <p className="mt-3 text-sm text-muted-foreground">{g.desc}</p>
           </div>
         ))}
       </div>
