@@ -25,7 +25,7 @@ export const amIAdmin = createServerFn({ method: "GET" })
 export const adminListSubmissions = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { data, error } = await context.supabase
       .from("trade_in_submissions")
       .select("*")
@@ -41,7 +41,7 @@ export const adminUpdateSubmissionStatus = createServerFn({ method: "POST" })
     z.object({ id: z.string().uuid(), status: z.enum(["pending","accepted","rejected","completed","cancelled"]) }).parse(d),
   )
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { error } = await context.supabase.from("trade_in_submissions").update({ status: data.status }).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -50,7 +50,7 @@ export const adminUpdateSubmissionStatus = createServerFn({ method: "POST" })
 export const adminListInventory = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { data, error } = await context.supabase
       .from("inventory")
       .select("*, devices(model_name)")
@@ -76,7 +76,7 @@ export const adminSaveInventory = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: z.infer<typeof inventorySchema>) => inventorySchema.parse(d))
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     if (data.id) {
       const { error } = await context.supabase.from("inventory").update(data).eq("id", data.id);
       if (error) throw new Error(error.message);
@@ -93,7 +93,7 @@ export const adminDeleteInventory = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { error } = await context.supabase.from("inventory").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -102,7 +102,7 @@ export const adminDeleteInventory = createServerFn({ method: "POST" })
 export const adminListOrders = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { data, error } = await context.supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(200);
     if (error) throw new Error(error.message);
     return data;
@@ -114,7 +114,7 @@ export const adminUpdateOrderStatus = createServerFn({ method: "POST" })
     z.object({ id: z.string().uuid(), status: z.enum(["new","confirmed","shipped","delivered","cancelled"]) }).parse(d),
   )
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { error } = await context.supabase.from("orders").update({ status: data.status }).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -125,7 +125,7 @@ export const adminUpdateOrderStatus = createServerFn({ method: "POST" })
 export const adminGetAllPricing = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const [devices, storage, grade, refurb, cfg] = await Promise.all([
       context.supabase.from("devices").select("*").order("sort_order"),
       context.supabase.from("storage_multipliers").select("*").order("storage_gb"),
@@ -148,7 +148,7 @@ export const adminUpdateDevice = createServerFn({ method: "POST" })
     z.object({ id: z.string().uuid(), base_resale_value: z.number(), buy_tier: z.number().int(), active: z.boolean() }).parse(d),
   )
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { id, ...rest } = data;
     const { error } = await context.supabase.from("devices").update(rest).eq("id", id);
     if (error) throw new Error(error.message);
@@ -161,7 +161,7 @@ export const adminUpdateStorageMultiplier = createServerFn({ method: "POST" })
     z.object({ storage_gb: z.number().int(), multiplier: z.number() }).parse(d),
   )
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { error } = await context.supabase.from("storage_multipliers").update({ multiplier: data.multiplier }).eq("storage_gb", data.storage_gb);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -173,7 +173,7 @@ export const adminUpdateGradeMultiplier = createServerFn({ method: "POST" })
     z.object({ grade: z.enum(["A+","A","B"]), multiplier: z.number() }).parse(d),
   )
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { error } = await context.supabase.from("grade_multipliers").update({ multiplier: data.multiplier }).eq("grade", data.grade);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -185,7 +185,7 @@ export const adminUpdateRefurbItem = createServerFn({ method: "POST" })
     z.object({ key: z.string(), amount: z.number(), active: z.boolean() }).parse(d),
   )
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { error } = await context.supabase.from("refurb_cost_items").update({ amount: data.amount, active: data.active }).eq("key", data.key);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -204,7 +204,7 @@ export const adminUpdatePricingConfig = createServerFn({ method: "POST" })
     }).parse(d),
   )
   .handler(async ({ context, data }) => {
-    await assertAdmin({ supabase: context.supabase as unknown as SbClient, userId: context.userId });
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
     const { error } = await context.supabase.from("pricing_config").update(data).eq("id", 1);
     if (error) throw new Error(error.message);
     return { ok: true };
