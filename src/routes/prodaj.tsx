@@ -548,24 +548,98 @@ function Step6({
     return <RejectCard title="Nažalost" body={map[offer.reason]} onAction={onRestart} actionLabel={me.sell.offerRestart} />;
   }
 
+  const device = bundle.devices.find((d) => d.id === input.device_id);
   return (
     <div>
       <BackBtn onBack={onBack} />
-      <div className="rounded-3xl border border-border bg-card p-8 md:p-12">
-        <div className="text-sm uppercase tracking-widest text-muted-foreground">{me.sell.offerLabel}</div>
-        <div className="mt-3 font-display text-6xl md:text-7xl">{offer.payout} €</div>
-        <p className="mt-3 max-w-lg text-sm text-muted-foreground">
-          Konačan iznos zavisi od stvarnog stanja prilikom fizičkog pregleda. Isplata odmah nakon potvrde.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <button onClick={onNext} className="btn-primary">
-            {me.sell.offerAccept} <ArrowRight className="ml-2 h-4 w-4" />
-          </button>
-          <button onClick={onRestart} className="btn-outline">
-            {me.sell.offerRestart}
+      <div className="grid gap-6 md:grid-cols-[1.15fr_1fr]">
+        <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+          <div className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+            {me.sell.offerLabel}
+          </div>
+          <div className="mt-2 font-display text-6xl font-semibold text-[color:var(--accent-brand)] md:text-7xl">
+            {offer.payout} €
+          </div>
+          <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[color:var(--accent-brand)]/10 px-3 py-1 text-xs font-medium text-[color:var(--accent-brand)]">
+            <Check className="h-3 w-3" /> Ponuda važi 14 dana
+          </div>
+          <DepreciationChart payout={offer.payout} />
+          <p className="mt-6 text-xs text-muted-foreground">
+            Konačan iznos zavisi od stvarnog stanja prilikom fizičkog pregleda. Isplata odmah nakon potvrde.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button onClick={onNext} className="btn-primary">
+              {me.sell.offerAccept} <ArrowRight className="ml-2 h-4 w-4" />
+            </button>
+            <button onClick={onRestart} className="btn-outline">
+              {me.sell.offerRestart}
+            </button>
+          </div>
+        </div>
+        <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+          <h3 className="font-display text-2xl">Prodaj svoj {device?.model_name ?? "iPhone"}</h3>
+          <ul className="mt-5 space-y-3 text-sm">
+            <li className="flex items-center gap-3"><Truck className="h-4 w-4 text-[color:var(--accent-brand)]" /> Slanje poštom ili sastanak sa predstavnikom</li>
+            <li className="flex items-center gap-3"><Shield className="h-4 w-4 text-[color:var(--accent-brand)]" /> Sigurno brisanje podataka</li>
+            <li className="flex items-center gap-3"><RotateCcw className="h-4 w-4 text-[color:var(--accent-brand)]" /> Nezadovoljan? Vraćamo uređaj besplatno</li>
+          </ul>
+          <button onClick={onNext} className="btn-primary mt-6 w-full justify-center">
+            Prodaj za {offer.payout} €
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function DepreciationChart({ payout }: { payout: number }) {
+  // Typical refurb-market depreciation curve for iPhones.
+  const points = [
+    { label: "danas",     months: 0,  value: payout },
+    { label: "3 mjeseca", months: 3,  value: Math.round(payout * 0.94) },
+    { label: "6 mjeseci", months: 6,  value: Math.round(payout * 0.86) },
+    { label: "12 mjeseci",months: 12, value: Math.round(payout * 0.72) },
+  ];
+  const loss = points[0].value - points[points.length - 1].value;
+  const W = 520, H = 160, PL = 24, PR = 24, PT = 20, PB = 32;
+  const iw = W - PL - PR, ih = H - PT - PB;
+  const maxV = points[0].value, minV = points[points.length - 1].value;
+  const span = Math.max(1, maxV - minV);
+  const xs = points.map((_, i) => PL + (i / (points.length - 1)) * iw);
+  const ys = points.map((p) => PT + ((maxV - p.value) / span) * ih);
+  const line = points.map((_, i) => `${i === 0 ? "M" : "L"}${xs[i]},${ys[i]}`).join(" ");
+  const area = `${line} L${xs[xs.length - 1]},${PT + ih} L${xs[0]},${PT + ih} Z`;
+  return (
+    <div className="mt-6 rounded-2xl border border-border bg-[color:var(--surface-2)] p-4">
+      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        <AlertTriangle className="h-3.5 w-3.5 text-[color:var(--warning)]" />
+        Prognoza vrijednosti
+      </div>
+      <div className="mt-1 text-sm text-foreground">
+        Čekanje sa prodajom može te koštati do{" "}
+        <span className="font-semibold text-[color:var(--warning)]">{loss} €</span> za godinu dana.
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="mt-3 w-full" role="img" aria-label="Prognoza vrijednosti">
+        <defs>
+          <linearGradient id="depFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="var(--accent-brand)" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="var(--accent-brand)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={area} fill="url(#depFill)" />
+        <path d={line} fill="none" stroke="var(--accent-brand)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        {points.map((p, i) => (
+          <g key={p.label}>
+            <circle cx={xs[i]} cy={ys[i]} r={i === 0 ? 5 : 3.5} fill={i === 0 ? "var(--accent-brand)" : "white"} stroke="var(--accent-brand)" strokeWidth="2" />
+            <text x={xs[i]} y={ys[i] - 10} textAnchor="middle" className="fill-foreground" style={{ fontSize: 11, fontWeight: 600 }}>
+              {p.value} €
+            </text>
+            <text x={xs[i]} y={H - 8} textAnchor="middle" className="fill-muted-foreground" style={{ fontSize: 10 }}>
+              {p.label}
+            </text>
+          </g>
+        ))}
+      </svg>
     </div>
   );
 }
