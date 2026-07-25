@@ -159,11 +159,12 @@
 /* Card hover polish */
 @utility card-hover {
   transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -18px rgba(15,23,42,0.18);
+  }
 }
-@utility card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -18px rgba(15,23,42,0.18);
-}
+
 
 /* Reveal-on-scroll */
 @utility reveal { opacity: 0; transform: translateY(12px); transition: opacity 600ms ease, transform 600ms ease; }
