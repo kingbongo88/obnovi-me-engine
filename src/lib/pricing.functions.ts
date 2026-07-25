@@ -145,7 +145,8 @@ export const submitTradeIn = createServerFn({ method: "POST" })
       dropoff_method: data.dropoff_method,
       dropoff_city: data.dropoff_city ?? null,
     };
-    const { error } = await sb.from("trade_in_submissions").insert(row);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("trade_in_submissions").insert(row);
     if (error) throw new Error(error.message);
     return { reference_code: ref, offer };
   });
@@ -189,7 +190,8 @@ export interface OrderInput {
 export const placeOrder = createServerFn({ method: "POST" })
   .inputValidator((data: OrderInput) => data)
   .handler(async ({ data }) => {
-    const sb = serverClient();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const sb = supabaseAdmin;
     // Only 1 unit per order for now (each inventory row is unique)
     const first = data.items[0];
     if (!first) throw new Error("Prazna korpa");
@@ -237,8 +239,9 @@ export const placeOrder = createServerFn({ method: "POST" })
 export const getOrderByRef = createServerFn({ method: "GET" })
   .inputValidator((data: { ref: string }) => data)
   .handler(async ({ data }) => {
-    const sb = serverClient();
-    const { data: row, error } = await sb
+    if (!data.ref || data.ref.length < 6) return null;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
       .from("orders")
       .select("reference_code, item_snapshot, unit_price, total_price, status, city, address, payment_method, created_at")
       .eq("reference_code", data.ref)
