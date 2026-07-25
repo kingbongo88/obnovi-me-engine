@@ -9,38 +9,64 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProdajRouteImport } from './routes/prodaj'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProdajUspjehRefRouteImport } from './routes/prodaj.uspjeh.$ref'
 
+const ProdajRoute = ProdajRouteImport.update({
+  id: '/prodaj',
+  path: '/prodaj',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProdajUspjehRefRoute = ProdajUspjehRefRouteImport.update({
+  id: '/uspjeh/$ref',
+  path: '/uspjeh/$ref',
+  getParentRoute: () => ProdajRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/prodaj': typeof ProdajRouteWithChildren
+  '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/prodaj': typeof ProdajRouteWithChildren
+  '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/prodaj': typeof ProdajRouteWithChildren
+  '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/prodaj' | '/prodaj/uspjeh/$ref'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/prodaj' | '/prodaj/uspjeh/$ref'
+  id: '__root__' | '/' | '/prodaj' | '/prodaj/uspjeh/$ref'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProdajRoute: typeof ProdajRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/prodaj': {
+      id: '/prodaj'
+      path: '/prodaj'
+      fullPath: '/prodaj'
+      preLoaderRoute: typeof ProdajRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +74,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prodaj/uspjeh/$ref': {
+      id: '/prodaj/uspjeh/$ref'
+      path: '/uspjeh/$ref'
+      fullPath: '/prodaj/uspjeh/$ref'
+      preLoaderRoute: typeof ProdajUspjehRefRouteImport
+      parentRoute: typeof ProdajRoute
+    }
   }
 }
 
+interface ProdajRouteChildren {
+  ProdajUspjehRefRoute: typeof ProdajUspjehRefRoute
+}
+
+const ProdajRouteChildren: ProdajRouteChildren = {
+  ProdajUspjehRefRoute: ProdajUspjehRefRoute,
+}
+
+const ProdajRouteWithChildren =
+  ProdajRoute._addFileChildren(ProdajRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProdajRoute: ProdajRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
