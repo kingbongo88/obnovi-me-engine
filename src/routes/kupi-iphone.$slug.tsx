@@ -73,6 +73,24 @@ function fmtStorage(gb: number) {
   return gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`;
 }
 
+const COLOR_HEX: Record<string, string> = {
+  crna: "#111827", black: "#111827",
+  bijela: "#f5f5f5", white: "#f5f5f5",
+  siva: "#9ca3af", grey: "#9ca3af", gray: "#9ca3af",
+  plava: "#2563eb", blue: "#2563eb",
+  crvena: "#dc2626", red: "#dc2626",
+  zelena: "#16a34a", green: "#16a34a",
+  žuta: "#eab308", zuta: "#eab308", yellow: "#eab308",
+  ljubičasta: "#7c3aed", ljubicasta: "#7c3aed", purple: "#7c3aed",
+  roze: "#ec4899", pink: "#ec4899",
+  zlatna: "#d4af37", gold: "#d4af37",
+  titan: "#8b8680", titanium: "#8b8680",
+  srebrna: "#c0c0c0", silver: "#c0c0c0",
+};
+function colorHex(name: string): string {
+  return COLOR_HEX[name.toLowerCase()] ?? "#94a3b8";
+}
+
 type ModelData = NonNullable<Awaited<ReturnType<typeof getModelBySlug>>>;
 
 function ModelDetail() {
@@ -107,13 +125,36 @@ function ModelDetail() {
   if (battery === "nova" && !batteryTiers.nova) setTimeout(() => setBattery("std"), 0);
   if (battery === "std" && !batteryTiers.std && batteryTiers.nova) setTimeout(() => setBattery("nova"), 0);
 
-  // Pick the cheapest matching unit for the chosen configuration.
+  // All colors for this model, and which are available for the current
+  // storage + grade + battery combo (unavailable ones are shown crossed out).
+  const allColors = useMemo(
+    () => Array.from(new Set(m.units.map((u) => u.color).filter((c): c is string => !!c))),
+    [m.units],
+  );
+  const availableColors = useMemo(() => {
+    const set = new Set(
+      m.units
+        .filter((u) => u.storage_gb === storage && u.grade === grade)
+        .filter((u) => (battery === "nova" ? u.battery_health >= 100 : u.battery_health < 100))
+        .map((u) => u.color)
+        .filter((c): c is string => !!c),
+    );
+    return set;
+  }, [m.units, storage, grade, battery]);
+  const [color, setColor] = useState<string | null>(allColors[0] ?? null);
+  // If the current color is unavailable in the new combo, switch to the first available.
+  if (color && !availableColors.has(color) && availableColors.size > 0) {
+    setTimeout(() => setColor(Array.from(availableColors)[0]), 0);
+  }
+
+  // Pick the cheapest matching unit for the chosen configuration (including color).
   const chosen = useMemo(() => {
     const rows = m.units
       .filter((u) => u.storage_gb === storage && u.grade === grade)
-      .filter((u) => (battery === "nova" ? u.battery_health >= 100 : u.battery_health < 100));
+      .filter((u) => (battery === "nova" ? u.battery_health >= 100 : u.battery_health < 100))
+      .filter((u) => (color ? u.color === color : true));
     return rows.sort((a, b) => a.list_price - b.list_price)[0];
-  }, [m.units, storage, grade, battery]);
+  }, [m.units, storage, grade, battery, color]);
 
   const orig = msrpFor(m.model_name, storage);
   const price = chosen?.list_price ?? Math.min(...m.units.filter((u) => u.storage_gb === storage).map((u) => u.list_price));
@@ -121,6 +162,7 @@ function ModelDetail() {
 
   const [gallery, setGallery] = useState(0);
   const galleryImages = chosen?.photos && chosen.photos.length > 0 ? chosen.photos : [];
+  const tintHex = color ? colorHex(color) : "#e5e7eb";
 
   const onBuy = () => {
     if (!chosen) return;
@@ -152,7 +194,10 @@ function ModelDetail() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
           {/* Left: gallery */}
           <div>
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-[color:var(--surface-2)]">
+            <div
+              className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl transition-colors duration-500"
+              style={{ background: `color-mix(in oklab, ${tintHex} 22%, var(--surface-2))` }}
+            >
               {galleryImages.length > 0 ? (
                 <img src={galleryImages[gallery]} alt={m.model_name} className="h-full w-full object-cover" />
               ) : (
@@ -161,6 +206,12 @@ function ModelDetail() {
               <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-md">
                 <Shield className="h-3.5 w-3.5 text-[color:var(--accent-brand)]" /> 6 mjeseci garancije
               </div>
+              {color && (
+                <div className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold capitalize shadow-md">
+                  <span className="h-3 w-3 rounded-full border border-black/10" style={{ background: tintHex }} />
+                  {color}
+                </div>
+              )}
             </div>
             {galleryImages.length > 1 && (
               <div className="mt-3 flex gap-2">
@@ -262,6 +313,46 @@ function ModelDetail() {
                 {GRADE_LONG[grade]}
               </div>
             </Section>
+
+            {/* Color */}
+            {allColors.length > 0 && (
+              <Section label="Boja">
+                <div className="flex flex-wrap gap-3">
+                  {allColors.map((c) => {
+                    const on = c === color;
+                    const available = availableColors.has(c);
+                    return (
+                      <button
+                        key={c}
+                        onClick={() => available && setColor(c)}
+                        disabled={!available}
+                        title={available ? c : `${c} — nedostupno`}
+                        className={
+                          "relative flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium capitalize transition-all " +
+                          (on
+                            ? "border-[color:var(--accent-brand)] bg-[color:var(--accent-brand)]/5"
+                            : available
+                              ? "border-border bg-card hover:border-[color:var(--accent-brand)]/40"
+                              : "cursor-not-allowed border-border bg-card text-muted-foreground line-through opacity-60")
+                        }
+                      >
+                        <span
+                          className="h-4 w-4 rounded-full border border-black/10 shadow-sm"
+                          style={{ background: colorHex(c) }}
+                        />
+                        {c}
+                        {!available && (
+                          <span
+                            aria-hidden
+                            className="pointer-events-none absolute inset-x-2 top-1/2 h-px -translate-y-1/2 bg-muted-foreground/60"
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </Section>
+            )}
 
             {/* Battery */}
             <Section label="Baterija">
