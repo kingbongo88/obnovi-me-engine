@@ -87,7 +87,7 @@ function ShopPage() {
                   <div className="p-4">
                     <div className="flex items-baseline justify-between gap-2">
                       <div className="font-medium">{model}</div>
-                      <span className="rounded-full border border-border px-2 py-0.5 text-[11px]">{grade}</span>
+                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${grade === "A+" ? "badge-grade-aplus" : grade === "A" ? "badge-grade-a" : "badge-grade-b"}`}>{grade}</span>
                     </div>
                     <div className="mt-1 text-xs text-muted-foreground">
                       {it.storage_gb >= 1024 ? "1 TB" : `${it.storage_gb} GB`} · Baterija {it.battery_health}%

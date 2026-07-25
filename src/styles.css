@@ -36,65 +36,74 @@
 :root {
   --radius: 0.75rem;
 
-  /* Obnovi.me palette — warm off-white paper, deep teal ink, coral CTA */
-  --background: #FAF8F4;
-  --foreground: #1A1A1A;
+  /* Obnovi.me — modern marketplace: deep navy ink, teal accent, clean neutrals */
+  --background: #FFFFFF;
+  --foreground: #0F172A;              /* deep navy */
   --card: #FFFFFF;
   --card-foreground: var(--foreground);
   --popover: #FFFFFF;
   --popover-foreground: var(--foreground);
 
-  --primary: #1B4B43;              /* deep teal-green — primary ink */
-  --primary-foreground: #FAF8F4;
+  --primary: #0F172A;                 /* navy ink */
+  --primary-foreground: #FFFFFF;
 
-  --secondary: #F2EEE6;
+  --secondary: #F1F5F9;
   --secondary-foreground: var(--foreground);
-  --muted: #F2EEE6;
-  --muted-foreground: #8A8577;
+  --muted: #F8FAFC;
+  --muted-foreground: #64748B;
 
-  --accent: #E8EFEC;               /* soft teal tint */
-  --accent-foreground: #1B4B43;
+  --accent: #F1F5F9;
+  --accent-foreground: #0F172A;
 
-  --destructive: oklch(0.55 0.22 27);
+  --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
 
-  --border: #E8E3D9;
-  --input: #E8E3D9;
-  --ring: #1B4B43;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #14B8A6;
 
-  --surface-2: #F2EEE6;
-  --accent-brand: #1B4B43;         /* teal accent, used for meters/highlights */
-  --accent-brand-foreground: #FAF8F4;
-  --cta: #E8623D;                  /* coral — primary CTA only, sparingly */
+  --surface-2: #F8FAFC;               /* alternating section bg */
+  --surface-dark: #0F172A;            /* dark hero/trust bg */
+  --surface-dark-2: #1E293B;
+
+  --accent-brand: #14B8A6;            /* teal accent */
+  --accent-brand-foreground: #FFFFFF;
+  --cta: #14B8A6;                     /* primary CTA = teal */
   --cta-foreground: #FFFFFF;
-  --success: #1B4B43;
-  --warning: oklch(0.7 0.17 75);
+
+  --grade-a-plus: #10B981;            /* emerald */
+  --grade-a: #3B82F6;                 /* blue */
+  --grade-b: #F59E0B;                 /* amber */
+  --success: #10B981;
+  --warning: #F59E0B;
 }
 
 .dark {
-  --background: #14201D;
-  --foreground: #FAF8F4;
-  --card: #1B2B27;
+  --background: #0B1220;
+  --foreground: #F8FAFC;
+  --card: #111827;
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
-  --primary: #FAF8F4;
-  --primary-foreground: #14201D;
-  --secondary: #22322E;
+  --primary: #F8FAFC;
+  --primary-foreground: #0B1220;
+  --secondary: #1E293B;
   --secondary-foreground: var(--foreground);
-  --muted: #22322E;
-  --muted-foreground: #B8B1A0;
-  --accent: #22322E;
-  --accent-foreground: #FAF8F4;
-  --destructive: oklch(0.6 0.22 27);
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --accent: #1E293B;
+  --accent-foreground: #F8FAFC;
+  --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 12%);
-  --ring: #7BB4A6;
-  --surface-2: #1B2B27;
-  --accent-brand: #7BB4A6;
-  --accent-brand-foreground: #14201D;
-  --cta: #E8623D;
+  --ring: #14B8A6;
+  --surface-2: #111827;
+  --surface-dark: #0B1220;
+  --surface-dark-2: #1E293B;
+  --accent-brand: #2DD4BF;
+  --accent-brand-foreground: #0B1220;
+  --cta: #14B8A6;
   --cta-foreground: #FFFFFF;
 }
 
@@ -107,35 +116,65 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.025em; }
 }
 
 @utility container-narrow { @apply mx-auto max-w-6xl px-4; }
+@utility container-wide  { @apply mx-auto max-w-7xl px-4; }
+
 @utility btn-primary {
-  @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-colors;
+  @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-all;
   background-color: var(--cta);
   color: var(--cta-foreground);
+  box-shadow: 0 6px 20px -6px color-mix(in oklab, var(--cta) 60%, transparent);
+  &:hover { filter: brightness(1.06); transform: translateY(-1px); }
 }
-@utility btn-primary-hover { filter: brightness(1.05); }
+
+
 @utility btn-accent {
-  @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-colors;
+  @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-colors;
   background-color: var(--accent-brand);
   color: var(--accent-brand-foreground);
 }
 @utility btn-outline {
-  @apply inline-flex items-center justify-center rounded-full border px-5 py-3 text-sm font-medium transition-colors;
+  @apply inline-flex items-center justify-center rounded-full border px-5 py-3 text-sm font-semibold transition-colors;
   border-color: var(--border);
   background: transparent;
   color: var(--foreground);
 }
+@utility btn-outline-light {
+  @apply inline-flex items-center justify-center rounded-full border px-5 py-3 text-sm font-semibold transition-colors;
+  border-color: rgba(255,255,255,0.3);
+  background: transparent;
+  color: #FFFFFF;
+  &:hover { background: rgba(255,255,255,0.08); }
+}
 
-/* Subtle reveal-on-scroll for section entries */
-@utility reveal {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 600ms ease, transform 600ms ease;
+
+/* Grade badges */
+@utility badge-grade-aplus { background-color: var(--grade-a-plus); color: #fff; }
+@utility badge-grade-a     { background-color: var(--grade-a);      color: #fff; }
+@utility badge-grade-b     { background-color: var(--grade-b);      color: #fff; }
+
+/* Card hover polish */
+@utility card-hover {
+  transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -18px rgba(15,23,42,0.18);
+  }
 }
-@utility reveal-in {
-  opacity: 1;
-  transform: translateY(0);
+
+
+/* Reveal-on-scroll */
+@utility reveal { opacity: 0; transform: translateY(12px); transition: opacity 600ms ease, transform 600ms ease; }
+@utility reveal-in { opacity: 1; transform: translateY(0); }
+
+/* Soft float animation for hero phone cluster */
+@keyframes float-y {
+  0%,100% { transform: translateY(0) rotate(var(--r,0deg)); }
+  50%     { transform: translateY(-10px) rotate(var(--r,0deg)); }
 }
+@utility float-slow  { animation: float-y 6s ease-in-out infinite; }
+@utility float-slow-2 { animation: float-y 7.5s ease-in-out infinite; animation-delay: -1.5s; }
+@utility float-slow-3 { animation: float-y 9s ease-in-out infinite; animation-delay: -3s; }
