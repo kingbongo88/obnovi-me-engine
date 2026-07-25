@@ -145,7 +145,8 @@ export const submitTradeIn = createServerFn({ method: "POST" })
       dropoff_method: data.dropoff_method,
       dropoff_city: data.dropoff_city ?? null,
     };
-    const { error } = await sb.from("trade_in_submissions").insert(row);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("trade_in_submissions").insert(row);
     if (error) throw new Error(error.message);
     return { reference_code: ref, offer };
   });
