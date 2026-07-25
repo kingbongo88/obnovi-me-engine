@@ -1,0 +1,15 @@
+# Obnovi.me
+
+> Obnovljeni iPhone uređaji sa 6 mjeseci garancije u Crnoj Gori. Otkup starog iPhone-a i prodaja testiranih obnovljenih uređaja.
+
+Obnovi.me kupuje polovne iPhone uređaje i prodaje obnovljene modele sa garancijom. Svaki uređaj je testiran, čist i spreman za isporuku poštom u Crnoj Gori. Baterija ≥85%, 14 dana povrata, plaćanje pouzećem.
+
+## Pages
+
+- [Početna](/): Pregled ponude i kako radi.
+- [Kupi iPhone](/kupi): Katalog obnovljenih iPhone modela sa filterima.
+- [Prodaj iPhone](/prodaj): Procjena otkupne cijene u 7 koraka.
+- [Kako radi](/kako-radi): Proces otkupa, klasifikacija stanja, garancija.
+- [Česta pitanja](/pitanja): Odgovori o garanciji, povratu i otkupu.
+- [O nama](/o-nama): Ko smo mi i zašto radimo obnovu iPhone uređaja.
+- [Kontakt](/kontakt): Email, telefon i lokacije.

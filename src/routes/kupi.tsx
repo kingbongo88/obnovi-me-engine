@@ -146,6 +146,7 @@ function ShopPage() {
               <div className="text-xs text-muted-foreground">Do {priceMax} €</div>
               <input
                 type="range"
+                aria-label="Maksimalna cijena"
                 min={100}
                 max={3000}
                 step={50}
