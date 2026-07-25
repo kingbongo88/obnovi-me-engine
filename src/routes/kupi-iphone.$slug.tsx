@@ -73,6 +73,24 @@ function fmtStorage(gb: number) {
   return gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`;
 }
 
+const COLOR_HEX: Record<string, string> = {
+  crna: "#111827", black: "#111827",
+  bijela: "#f5f5f5", white: "#f5f5f5",
+  siva: "#9ca3af", grey: "#9ca3af", gray: "#9ca3af",
+  plava: "#2563eb", blue: "#2563eb",
+  crvena: "#dc2626", red: "#dc2626",
+  zelena: "#16a34a", green: "#16a34a",
+  žuta: "#eab308", zuta: "#eab308", yellow: "#eab308",
+  ljubičasta: "#7c3aed", ljubicasta: "#7c3aed", purple: "#7c3aed",
+  roze: "#ec4899", pink: "#ec4899",
+  zlatna: "#d4af37", gold: "#d4af37",
+  titan: "#8b8680", titanium: "#8b8680",
+  srebrna: "#c0c0c0", silver: "#c0c0c0",
+};
+function colorHex(name: string): string {
+  return COLOR_HEX[name.toLowerCase()] ?? "#94a3b8";
+}
+
 type ModelData = NonNullable<Awaited<ReturnType<typeof getModelBySlug>>>;
 
 function ModelDetail() {
