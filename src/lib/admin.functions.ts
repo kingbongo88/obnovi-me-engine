@@ -2,13 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
-async function assertAdmin(ctx: { supabase: ReturnType<typeof getSb>; userId: string }) {
+type Ctx = { supabase: { from: (t: string) => { select: (c: string) => { eq: (col: string, v: string) => { eq: (col: string, v: string) => { maybeSingle: () => Promise<{ data: unknown; error: { message: string } | null }> } } } } }; userId: string };
+
+async function assertAdmin(ctx: Ctx) {
   const { data, error } = await ctx.supabase.from("user_roles").select("role").eq("user_id", ctx.userId).eq("role", "admin").maybeSingle();
   if (error) throw new Error(error.message);
   if (!data) throw new Error("Zabranjen pristup");
 }
-type SbClient = { from: (t: string) => { select: (c?: string) => { eq: (...args: unknown[]) => unknown } } };
-function getSb(): SbClient { return {} as SbClient; }
 
 export const amIAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

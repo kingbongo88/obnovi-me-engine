@@ -18,9 +18,15 @@ import { Route as KosaricaRouteImport } from './routes/kosarica'
 import { Route as KontaktRouteImport } from './routes/kontakt'
 import { Route as KakoRadiRouteImport } from './routes/kako-radi'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as NarudzbaRefRouteImport } from './routes/narudzba.$ref'
 import { Route as KupiIdRouteImport } from './routes/kupi.$id'
+import { Route as AdminOtkupiRouteImport } from './routes/admin.otkupi'
+import { Route as AdminNarudzbeRouteImport } from './routes/admin.narudzbe'
+import { Route as AdminInventarRouteImport } from './routes/admin.inventar'
+import { Route as AdminCjenovnikRouteImport } from './routes/admin.cjenovnik'
 import { Route as ProdajUspjehRefRouteImport } from './routes/prodaj.uspjeh.$ref'
 
 const ProdajRoute = ProdajRouteImport.update({
@@ -68,10 +74,20 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const NarudzbaRefRoute = NarudzbaRefRouteImport.update({
   id: '/narudzba/$ref',
@@ -83,6 +99,26 @@ const KupiIdRoute = KupiIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => KupiRoute,
 } as any)
+const AdminOtkupiRoute = AdminOtkupiRouteImport.update({
+  id: '/otkupi',
+  path: '/otkupi',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminNarudzbeRoute = AdminNarudzbeRouteImport.update({
+  id: '/narudzbe',
+  path: '/narudzbe',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminInventarRoute = AdminInventarRouteImport.update({
+  id: '/inventar',
+  path: '/inventar',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCjenovnikRoute = AdminCjenovnikRouteImport.update({
+  id: '/cjenovnik',
+  path: '/cjenovnik',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ProdajUspjehRefRoute = ProdajUspjehRefRouteImport.update({
   id: '/uspjeh/$ref',
   path: '/uspjeh/$ref',
@@ -91,6 +127,7 @@ const ProdajUspjehRefRoute = ProdajUspjehRefRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/kako-radi': typeof KakoRadiRoute
   '/kontakt': typeof KontaktRoute
@@ -100,8 +137,13 @@ export interface FileRoutesByFullPath {
   '/o-nama': typeof ONamaRoute
   '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
+  '/admin/cjenovnik': typeof AdminCjenovnikRoute
+  '/admin/inventar': typeof AdminInventarRoute
+  '/admin/narudzbe': typeof AdminNarudzbeRoute
+  '/admin/otkupi': typeof AdminOtkupiRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
+  '/admin/': typeof AdminIndexRoute
   '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRoutesByTo {
@@ -115,13 +157,19 @@ export interface FileRoutesByTo {
   '/o-nama': typeof ONamaRoute
   '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
+  '/admin/cjenovnik': typeof AdminCjenovnikRoute
+  '/admin/inventar': typeof AdminInventarRoute
+  '/admin/narudzbe': typeof AdminNarudzbeRoute
+  '/admin/otkupi': typeof AdminOtkupiRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
+  '/admin': typeof AdminIndexRoute
   '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/kako-radi': typeof KakoRadiRoute
   '/kontakt': typeof KontaktRoute
@@ -131,14 +179,20 @@ export interface FileRoutesById {
   '/o-nama': typeof ONamaRoute
   '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
+  '/admin/cjenovnik': typeof AdminCjenovnikRoute
+  '/admin/inventar': typeof AdminInventarRoute
+  '/admin/narudzbe': typeof AdminNarudzbeRoute
+  '/admin/otkupi': typeof AdminOtkupiRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
+  '/admin/': typeof AdminIndexRoute
   '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/auth'
     | '/kako-radi'
     | '/kontakt'
@@ -148,8 +202,13 @@ export interface FileRouteTypes {
     | '/o-nama'
     | '/pitanja'
     | '/prodaj'
+    | '/admin/cjenovnik'
+    | '/admin/inventar'
+    | '/admin/narudzbe'
+    | '/admin/otkupi'
     | '/kupi/$id'
     | '/narudzba/$ref'
+    | '/admin/'
     | '/prodaj/uspjeh/$ref'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -163,12 +222,18 @@ export interface FileRouteTypes {
     | '/o-nama'
     | '/pitanja'
     | '/prodaj'
+    | '/admin/cjenovnik'
+    | '/admin/inventar'
+    | '/admin/narudzbe'
+    | '/admin/otkupi'
     | '/kupi/$id'
     | '/narudzba/$ref'
+    | '/admin'
     | '/prodaj/uspjeh/$ref'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/auth'
     | '/kako-radi'
     | '/kontakt'
@@ -178,13 +243,19 @@ export interface FileRouteTypes {
     | '/o-nama'
     | '/pitanja'
     | '/prodaj'
+    | '/admin/cjenovnik'
+    | '/admin/inventar'
+    | '/admin/narudzbe'
+    | '/admin/otkupi'
     | '/kupi/$id'
     | '/narudzba/$ref'
+    | '/admin/'
     | '/prodaj/uspjeh/$ref'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   KakoRadiRoute: typeof KakoRadiRoute
   KontaktRoute: typeof KontaktRoute
@@ -262,12 +333,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/narudzba/$ref': {
       id: '/narudzba/$ref'
@@ -283,6 +368,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KupiIdRouteImport
       parentRoute: typeof KupiRoute
     }
+    '/admin/otkupi': {
+      id: '/admin/otkupi'
+      path: '/otkupi'
+      fullPath: '/admin/otkupi'
+      preLoaderRoute: typeof AdminOtkupiRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/narudzbe': {
+      id: '/admin/narudzbe'
+      path: '/narudzbe'
+      fullPath: '/admin/narudzbe'
+      preLoaderRoute: typeof AdminNarudzbeRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/inventar': {
+      id: '/admin/inventar'
+      path: '/inventar'
+      fullPath: '/admin/inventar'
+      preLoaderRoute: typeof AdminInventarRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cjenovnik': {
+      id: '/admin/cjenovnik'
+      path: '/cjenovnik'
+      fullPath: '/admin/cjenovnik'
+      preLoaderRoute: typeof AdminCjenovnikRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/prodaj/uspjeh/$ref': {
       id: '/prodaj/uspjeh/$ref'
       path: '/uspjeh/$ref'
@@ -292,6 +405,24 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminRouteChildren {
+  AdminCjenovnikRoute: typeof AdminCjenovnikRoute
+  AdminInventarRoute: typeof AdminInventarRoute
+  AdminNarudzbeRoute: typeof AdminNarudzbeRoute
+  AdminOtkupiRoute: typeof AdminOtkupiRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminCjenovnikRoute: AdminCjenovnikRoute,
+  AdminInventarRoute: AdminInventarRoute,
+  AdminNarudzbeRoute: AdminNarudzbeRoute,
+  AdminOtkupiRoute: AdminOtkupiRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface KupiRouteChildren {
   KupiIdRoute: typeof KupiIdRoute
@@ -316,6 +447,7 @@ const ProdajRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   KakoRadiRoute: KakoRadiRoute,
   KontaktRoute: KontaktRoute,
