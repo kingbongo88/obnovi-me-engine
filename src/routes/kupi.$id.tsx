@@ -4,7 +4,7 @@ import { getInventoryItem } from "@/lib/pricing.functions";
 import { useCart } from "@/lib/cart";
 import { me } from "@/i18n/me";
 import { Shield, RotateCcw, Battery } from "lucide-react";
-import { DeviceSilhouette } from "@/components/device-silhouette";
+import { DevicePhoto } from "@/components/device-photo";
 import { GradeMeter } from "@/components/grade-meter";
 import { toast } from "sonner";
 
@@ -76,11 +76,11 @@ function Detail() {
       <SiteHeader />
       <main className="container-narrow py-12">
         <div className="grid gap-10 md:grid-cols-2">
-          <div className="flex aspect-square items-center justify-center rounded-3xl bg-[color:var(--surface-2)] text-[color:var(--accent-brand)]">
+          <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-[color:var(--surface-2)]">
             {item.photos?.[0] ? (
               <img src={item.photos[0]} alt={model} className="h-full w-full rounded-3xl object-cover" />
             ) : (
-              <DeviceSilhouette modelName={model} className="h-64 w-auto" />
+              <DevicePhoto modelName={model} className="h-full w-full object-contain p-8" />
             )}
           </div>
           <div>
