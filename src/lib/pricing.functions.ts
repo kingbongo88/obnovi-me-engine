@@ -190,7 +190,8 @@ export interface OrderInput {
 export const placeOrder = createServerFn({ method: "POST" })
   .inputValidator((data: OrderInput) => data)
   .handler(async ({ data }) => {
-    const sb = serverClient();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const sb = supabaseAdmin;
     // Only 1 unit per order for now (each inventory row is unique)
     const first = data.items[0];
     if (!first) throw new Error("Prazna korpa");
