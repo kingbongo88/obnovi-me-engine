@@ -37,60 +37,155 @@ function SellPage() {
   const [s, setS] = useState<WizardState>({ step: 1 });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[color:var(--surface-2)]">
       <SiteHeader />
-      <main className="container-narrow py-10 md:py-16">
-        <div className="mx-auto max-w-3xl">
-          <Stepper step={s.step} />
-          {s.step === 1 && <Step1 bundle={bundle} onNext={(device_id) => setS({ ...s, device_id, step: 2 })} />}
-          {s.step === 2 && (
-            <Step2
-              bundle={bundle}
-              deviceId={s.device_id!}
-              onBack={() => setS({ ...s, step: 1 })}
-              onNext={(storage_gb) => setS({ ...s, storage_gb, step: 3 })}
-            />
-          )}
-          {s.step === 3 && (
-            <Step3
-              onBack={() => setS({ ...s, step: 2 })}
-              onNext={(v) => setS({ ...s, ...v, step: 4 })}
-            />
-          )}
-          {s.step === 4 && (
-            <Step4
-              minBattery={bundle.config.diagnostic_min_battery}
-              onBack={() => setS({ ...s, step: 3 })}
-              onNext={(bh) => setS({ ...s, battery_health: bh, step: 5 })}
-            />
-          )}
-          {s.step === 5 && (
-            <Step5
-              onBack={() => setS({ ...s, step: 4 })}
-              onNext={(v) => setS({ ...s, ...v, step: 6 })}
-            />
-          )}
-          {s.step === 6 && (
-            <Step6
-              bundle={bundle}
-              input={s as OfferInput}
-              onBack={() => setS({ ...s, step: 5 })}
-              onNext={() => setS({ ...s, step: 7 })}
-              onRestart={() => setS({ step: 1 })}
-            />
-          )}
-          {s.step === 7 && (
-            <Step7
-              input={s as OfferInput}
-              onBack={() => setS({ ...s, step: 6 })}
-            />
-          )}
+      <main className="mx-auto max-w-6xl px-4 py-8 md:py-12">
+        <Stepper step={s.step} />
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="rounded-3xl border border-border bg-background p-6 md:p-10">
+            {s.step === 1 && <Step1 bundle={bundle} onNext={(device_id) => setS({ ...s, device_id, step: 2 })} />}
+            {s.step === 2 && (
+              <Step2
+                bundle={bundle}
+                deviceId={s.device_id!}
+                onBack={() => setS({ ...s, step: 1 })}
+                onNext={(storage_gb) => setS({ ...s, storage_gb, step: 3 })}
+              />
+            )}
+            {s.step === 3 && (
+              <Step3
+                onBack={() => setS({ ...s, step: 2 })}
+                onNext={(v) => setS({ ...s, ...v, step: 4 })}
+              />
+            )}
+            {s.step === 4 && (
+              <Step4
+                minBattery={bundle.config.diagnostic_min_battery}
+                onBack={() => setS({ ...s, step: 3 })}
+                onNext={(bh) => setS({ ...s, battery_health: bh, step: 5 })}
+              />
+            )}
+            {s.step === 5 && (
+              <Step5
+                onBack={() => setS({ ...s, step: 4 })}
+                onNext={(v) => setS({ ...s, ...v, step: 6 })}
+              />
+            )}
+            {s.step === 6 && (
+              <Step6
+                bundle={bundle}
+                input={s as OfferInput}
+                onBack={() => setS({ ...s, step: 5 })}
+                onNext={() => setS({ ...s, step: 7 })}
+                onRestart={() => setS({ step: 1 })}
+              />
+            )}
+            {s.step === 7 && (
+              <Step7
+                input={s as OfferInput}
+                onBack={() => setS({ ...s, step: 6 })}
+              />
+            )}
+          </div>
+          <QuoteSidebar bundle={bundle} state={s} />
         </div>
       </main>
       <SiteFooter />
     </div>
   );
 }
+
+function QuoteSidebar({
+  bundle,
+  state,
+}: {
+  bundle: Awaited<ReturnType<typeof getPricingBundle>>;
+  state: WizardState;
+}) {
+  const device = bundle.devices.find((d) => d.id === state.device_id);
+
+  // Optimistic fill: unanswered fields assume best case for a live preview.
+  const preview: OfferInput = {
+    device_id: state.device_id ?? "",
+    storage_gb: state.storage_gb ?? 128,
+    find_my_off: state.find_my_off ?? true,
+    reported_stolen: state.reported_stolen ?? false,
+    water_corrosion: state.water_corrosion ?? false,
+    unauthorized_repair: state.unauthorized_repair ?? false,
+    battery_health: state.battery_health ?? 95,
+    screen: state.screen ?? "none",
+    back: state.back ?? "none",
+    charging_works: state.charging_works ?? true,
+    speaker_mic_works: state.speaker_mic_works ?? true,
+    camera_works: state.camera_works ?? true,
+    face_id_works: state.face_id_works ?? true,
+  };
+  const offer = device ? computeOffer(preview, bundle) : null;
+  const payout = offer?.status === "ok" ? offer.payout : null;
+
+  return (
+    <aside className="lg:sticky lg:top-6 lg:self-start">
+      <div className="rounded-3xl border border-border bg-background p-6">
+        <div className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Tvoja procjena</div>
+        {device ? (
+          <>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="flex h-16 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[color:var(--surface-2)]">
+                <DevicePhoto modelName={device.model_name} className="h-full w-full object-contain" />
+              </div>
+              <div className="min-w-0">
+                <div className="truncate font-semibold">{device.model_name}</div>
+                <div className="text-xs text-muted-foreground">
+                  {state.storage_gb ? (state.storage_gb >= 1024 ? "1 TB" : `${state.storage_gb} GB`) : "Odaberi memoriju"}
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 border-t border-border pt-5">
+              {payout !== null ? (
+                <>
+                  <div className="font-display text-5xl font-semibold text-[color:var(--accent-brand)]">{payout} €</div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {state.step < 6 ? "Okvirna procjena — može se promijeniti" : "Konačna ponuda"}
+                  </div>
+                </>
+              ) : (
+                <div className="text-sm text-muted-foreground">Nastavi da vidiš iznos.</div>
+              )}
+            </div>
+            <ul className="mt-5 space-y-2 text-xs">
+              <SummaryRow label="Model" value={device.model_name} />
+              {state.storage_gb != null && (
+                <SummaryRow label="Memorija" value={state.storage_gb >= 1024 ? "1 TB" : `${state.storage_gb} GB`} />
+              )}
+              {state.battery_health != null && <SummaryRow label="Baterija" value={`${state.battery_health}%`} />}
+              {state.screen && <SummaryRow label="Ekran" value={me.sell[`screen_${state.screen}`]} />}
+              {state.back && <SummaryRow label="Leđa" value={me.sell[`back_${state.back}`]} />}
+            </ul>
+          </>
+        ) : (
+          <div className="mt-4 text-sm text-muted-foreground">
+            Izaberi svoj model da započneš procjenu — obično traje manje od 3 minuta.
+          </div>
+        )}
+        <div className="mt-6 space-y-2 border-t border-border pt-4 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-2"><Check className="h-3 w-3 text-[color:var(--accent-brand)]" /> Isplata odmah nakon pregleda</div>
+          <div className="flex items-center gap-2"><Check className="h-3 w-3 text-[color:var(--accent-brand)]" /> Bez obaveze prihvatanja</div>
+          <div className="flex items-center gap-2"><Check className="h-3 w-3 text-[color:var(--accent-brand)]" /> 6 mjeseci naša garancija na kupca</div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function SummaryRow({ label, value }: { label: string; value: string }) {
+  return (
+    <li className="flex items-center justify-between gap-2">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="truncate text-right font-medium text-foreground">{value}</span>
+    </li>
+  );
+}
+
 
 function Stepper({ step }: { step: number }) {
   return (
