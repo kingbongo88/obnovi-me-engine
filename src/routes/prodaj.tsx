@@ -39,9 +39,9 @@ function SellPage() {
   return (
     <div className="min-h-screen bg-[color:var(--surface-2)]">
       <SiteHeader />
-      <main className="mx-auto max-w-6xl px-4 py-8 md:py-12">
+      <main className="mx-auto max-w-[1400px] px-4 py-8 md:py-12">
         <Stepper step={s.step} />
-        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px]">
           <div className="rounded-3xl border border-border bg-background p-6 md:p-10">
             {s.step === 1 && <Step1 bundle={bundle} onNext={(device_id) => setS({ ...s, device_id, step: 2 })} />}
             {s.step === 2 && (
@@ -266,21 +266,24 @@ function ModelGrid({
   return (
     <div className="mt-8">
       <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{title}</h2>
-      <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {list.map((d) => (
           <button
             key={d.id}
             onClick={() => onPick(d.id)}
-            className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition-all hover:-translate-y-0.5 hover:border-[color:var(--accent-brand)] hover:shadow-md"
+            className="group flex items-center gap-5 rounded-2xl border border-border bg-card p-6 text-left transition-all hover:-translate-y-0.5 hover:border-[color:var(--accent-brand)] hover:shadow-lg"
           >
-            <div className="flex h-24 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[color:var(--surface-2)]">
+            <div className="flex h-28 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[color:var(--surface-2)]">
               <DevicePhoto modelName={d.model_name} className="h-full w-full object-contain" />
             </div>
-            <div className="min-w-0 flex-1">
-              <div className="font-medium leading-tight [overflow-wrap:anywhere]">{d.model_name}</div>
-              <div className="mt-1 text-xs text-muted-foreground">{d.release_year}</div>
+            <div
+              className="min-w-0 flex-1"
+              style={{ wordBreak: "keep-all", overflowWrap: "break-word" }}
+            >
+              <div className="text-[21px] font-bold leading-[1.15] tracking-tight">{d.model_name}</div>
+              <div className="mt-1.5 text-sm text-muted-foreground">{d.release_year}</div>
             </div>
-            <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="h-5 w-5 shrink-0 self-center text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-[color:var(--accent-brand)]" />
           </button>
         ))}
       </div>

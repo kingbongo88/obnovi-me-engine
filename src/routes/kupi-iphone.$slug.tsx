@@ -74,18 +74,18 @@ function fmtStorage(gb: number) {
 }
 
 const COLOR_HEX: Record<string, string> = {
-  crna: "#111827", black: "#111827",
-  bijela: "#f5f5f5", white: "#f5f5f5",
+  crna: "#111827", black: "#111827", midnight: "#1d2530", "space black": "#1a1a1c", "space gray": "#3a3a3c", "space grey": "#3a3a3c", graphite: "#3a3a3c",
+  bijela: "#f5f5f5", white: "#f5f5f5", starlight: "#f0ead6",
   siva: "#9ca3af", grey: "#9ca3af", gray: "#9ca3af",
-  plava: "#2563eb", blue: "#2563eb",
-  crvena: "#dc2626", red: "#dc2626",
-  zelena: "#16a34a", green: "#16a34a",
-  žuta: "#eab308", zuta: "#eab308", yellow: "#eab308",
-  ljubičasta: "#7c3aed", ljubicasta: "#7c3aed", purple: "#7c3aed",
-  roze: "#ec4899", pink: "#ec4899",
+  plava: "#2563eb", blue: "#4a6b8a", "sierra blue": "#a7c1d9", "pacific blue": "#2e5266", "blue titanium": "#4a6b8a",
+  crvena: "#dc2626", red: "#dc2626", "product red": "#c1272d",
+  zelena: "#16a34a", green: "#3d5b4a", "alpine green": "#3d5b4a", "midnight green": "#4e5851",
+  žuta: "#eab308", zuta: "#eab308", yellow: "#f6e199",
+  ljubičasta: "#7c3aed", ljubicasta: "#7c3aed", purple: "#b6b1d8", "deep purple": "#5c4a6b",
+  roze: "#ec4899", pink: "#fadfd8", rose: "#fadfd8",
   zlatna: "#d4af37", gold: "#d4af37",
-  titan: "#8b8680", titanium: "#8b8680",
-  srebrna: "#c0c0c0", silver: "#c0c0c0",
+  titan: "#8b8680", titanium: "#8b8680", "natural titanium": "#a8a29e", "white titanium": "#dcd8d1", "black titanium": "#3f3f3f", "desert titanium": "#c9a882",
+  srebrna: "#c0c0c0", silver: "#e3e4e6",
 };
 function colorHex(name: string): string {
   return COLOR_HEX[name.toLowerCase()] ?? "#94a3b8";
