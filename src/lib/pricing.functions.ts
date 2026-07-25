@@ -250,3 +250,82 @@ export const getOrderByRef = createServerFn({ method: "GET" })
 export function calcListPrice(resaleValue: number, ending: number) {
   return roundListPriceEnding(resaleValue, ending);
 }
+
+// Model-level catalog: aggregates inventory into one card per iPhone model
+// (derived from the existing `devices` + `inventory` tables — no schema change).
+export const getModelCatalog = createServerFn({ method: "GET" }).handler(async () => {
+  const sb = serverClient();
+  const { data, error } = await sb
+    .from("inventory")
+    .select("storage_gb, grade, battery_health, list_price, color, device_id, devices(model_name, release_year, sort_order, storage_options)")
+    .eq("status", "available");
+  if (error) throw new Error(error.message);
+
+  type Row = NonNullable<typeof data>[number];
+  const groups = new Map<string, { model: string; year: number; sort: number; rows: Row[] }>();
+  for (const r of data ?? []) {
+    const d = r.devices as { model_name: string; release_year: number; sort_order: number } | null;
+    if (!d) continue;
+    const key = d.model_name;
+    if (!groups.has(key)) groups.set(key, { model: d.model_name, year: d.release_year, sort: d.sort_order, rows: [] });
+    groups.get(key)!.rows.push(r);
+  }
+
+  const models = Array.from(groups.values()).map((g) => {
+    const prices = g.rows.map((r) => Number(r.list_price));
+    const storages = Array.from(new Set(g.rows.map((r) => r.storage_gb))).sort((a, b) => a - b);
+    const grades = Array.from(new Set(g.rows.map((r) => r.grade)));
+    const colors = Array.from(new Set(g.rows.map((r) => r.color).filter((c): c is string => !!c)));
+    return {
+      slug: modelToSlug(g.model),
+      model_name: g.model,
+      release_year: g.year,
+      sort_order: g.sort,
+      min_price: Math.min(...prices),
+      storages,
+      grades,
+      colors,
+      units: g.rows.length,
+    };
+  });
+  models.sort((a, b) => a.sort_order - b.sort_order || b.release_year - a.release_year);
+  return models;
+});
+
+// Detail: all available inventory rows for one model_name (matched by slug).
+export const getModelBySlug = createServerFn({ method: "GET" })
+  .inputValidator((data: { slug: string }) => data)
+  .handler(async ({ data }) => {
+    const sb = serverClient();
+    const { data: devices, error: devErr } = await sb
+      .from("devices")
+      .select("id, model_name, release_year, storage_options")
+      .eq("active", true);
+    if (devErr) throw new Error(devErr.message);
+    const device = (devices ?? []).find((d) => modelToSlug(d.model_name) === data.slug);
+    if (!device) return null;
+
+    const { data: rows, error } = await sb
+      .from("inventory")
+      .select("id, storage_gb, grade, battery_health, list_price, photos, color, description_me")
+      .eq("device_id", device.id)
+      .eq("status", "available")
+      .order("list_price", { ascending: true });
+    if (error) throw new Error(error.message);
+
+    return {
+      model_name: device.model_name,
+      release_year: device.release_year,
+      storage_options: device.storage_options,
+      units: (rows ?? []).map((r) => ({
+        id: r.id,
+        storage_gb: r.storage_gb,
+        grade: r.grade,
+        battery_health: r.battery_health,
+        list_price: Number(r.list_price),
+        photos: r.photos,
+        color: r.color,
+        description_me: r.description_me,
+      })),
+    };
+  });
