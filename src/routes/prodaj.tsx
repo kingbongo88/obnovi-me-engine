@@ -266,19 +266,19 @@ function ModelGrid({
   return (
     <div className="mt-8">
       <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{title}</h2>
-      <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((d) => (
           <button
             key={d.id}
             onClick={() => onPick(d.id)}
-            className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-3 text-left transition-all hover:-translate-y-0.5 hover:border-[color:var(--accent-brand)] hover:shadow-md"
+            className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition-all hover:-translate-y-0.5 hover:border-[color:var(--accent-brand)] hover:shadow-md"
           >
-            <div className="flex h-20 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[color:var(--surface-2)]">
+            <div className="flex h-24 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[color:var(--surface-2)]">
               <DevicePhoto modelName={d.model_name} className="h-full w-full object-contain" />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="truncate font-medium">{d.model_name}</div>
-              <div className="text-xs text-muted-foreground">{d.release_year}</div>
+              <div className="font-medium leading-tight [overflow-wrap:anywhere]">{d.model_name}</div>
+              <div className="mt-1 text-xs text-muted-foreground">{d.release_year}</div>
             </div>
             <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
           </button>
