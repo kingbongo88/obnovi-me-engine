@@ -239,8 +239,9 @@ export const placeOrder = createServerFn({ method: "POST" })
 export const getOrderByRef = createServerFn({ method: "GET" })
   .inputValidator((data: { ref: string }) => data)
   .handler(async ({ data }) => {
-    const sb = serverClient();
-    const { data: row, error } = await sb
+    if (!data.ref || data.ref.length < 6) return null;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
       .from("orders")
       .select("reference_code, item_snapshot, unit_price, total_price, status, city, address, payment_method, created_at")
       .eq("reference_code", data.ref)
