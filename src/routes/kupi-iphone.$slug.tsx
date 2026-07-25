@@ -15,7 +15,7 @@ const modelQuery = (slug: string) => ({
 });
 
 export const Route = createFileRoute("/kupi-iphone/$slug")({
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const m = loaderData as Awaited<ReturnType<typeof getModelBySlug>> | undefined;
     if (!m) {
       return { meta: [{ title: "Model nedostupan — Obnovi.me" }, { name: "robots", content: "noindex" }] };
@@ -23,12 +23,42 @@ export const Route = createFileRoute("/kupi-iphone/$slug")({
     const min = Math.min(...m.units.map((u) => u.list_price));
     const title = `${m.model_name} obnovljeni — od ${min} € — Obnovi.me`;
     const desc = `Konfiguriši memoriju i stanje za ${m.model_name}. 6 mjeseci garancije, ≥85% baterija, 14 dana povrata.`;
+    const url = `https://obnovi.app/kupi-iphone/${params.slug}`;
+    const image = m.units.find((u) => Array.isArray(u.photos) && u.photos[0])?.photos?.[0];
     return {
       meta: [
         { title },
         { name: "description", content: desc },
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
+        { property: "og:type", content: "product" },
+        { property: "og:url", content: url },
+        ...(image ? [{ property: "og:image", content: image } as const, { name: "twitter:image", content: image } as const] : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: `${m.model_name} (obnovljen)`,
+            description: desc,
+            ...(image ? { image } : {}),
+            brand: { "@type": "Brand", name: "Apple" },
+            category: "Refurbished smartphone",
+            offers: {
+              "@type": "AggregateOffer",
+              url,
+              priceCurrency: "EUR",
+              lowPrice: min.toFixed(2),
+              highPrice: Math.max(...m.units.map((u) => u.list_price)).toFixed(2),
+              offerCount: m.units.length,
+              availability: "https://schema.org/InStock",
+              itemCondition: "https://schema.org/RefurbishedCondition",
+            },
+          }),
+        },
       ],
     };
   },
