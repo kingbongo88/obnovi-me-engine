@@ -91,69 +91,73 @@ function colorHex(name: string): string {
   return COLOR_HEX[name.toLowerCase()] ?? "#94a3b8";
 }
 
-// Per-color CSS filter that shifts the base render (which is pink/rose across
-// generations) toward the selected color. Not as accurate as per-color photos,
-// but visibly changes the phone body until real photos are uploaded per unit.
+// Per-color CSS filter. We normalize the source render to monochrome first
+// (grayscale + sepia = uniform orange base at ~30° hue), then rotate/saturate
+// to the target color. This works regardless of the base image's original color.
+// Neutrals skip sepia and just adjust brightness/grayscale.
+const TINT = (hueDeg: number, sat = 1, bright = 1) =>
+  `grayscale(1) sepia(1) hue-rotate(${hueDeg - 30}deg) saturate(${sat}) brightness(${bright})`;
+const NEUTRAL = (bright: number) => `grayscale(1) brightness(${bright})`;
+
 const COLOR_FILTER: Record<string, string> = {
-  // pinks / rose — base image is already pink, no shift
-  pink: "none", rose: "none", roze: "none",
+  // pinks / rose
+  pink: TINT(330, 2, 1.05), rose: TINT(340, 1.8, 1), roze: TINT(330, 2, 1.05),
   // reds
-  red: "hue-rotate(-15deg) saturate(1.6) brightness(0.95)",
-  "product red": "hue-rotate(-15deg) saturate(1.7) brightness(0.9)",
-  crvena: "hue-rotate(-15deg) saturate(1.6) brightness(0.95)",
+  red: TINT(0, 3, 0.95), "product red": TINT(0, 3.2, 0.9), crvena: TINT(0, 3, 0.95),
   // blues
-  blue: "hue-rotate(200deg) saturate(0.9) brightness(0.95)",
-  "sierra blue": "hue-rotate(190deg) saturate(0.5) brightness(1.05)",
-  "pacific blue": "hue-rotate(200deg) saturate(1.1) brightness(0.75)",
-  "blue titanium": "hue-rotate(200deg) saturate(0.6) brightness(0.9)",
-  ultramarine: "hue-rotate(210deg) saturate(1.2) brightness(0.85)",
-  plava: "hue-rotate(200deg) saturate(0.9) brightness(0.95)",
+  blue: TINT(220, 2.5, 0.95),
+  "sierra blue": TINT(215, 1.5, 1.05),
+  "pacific blue": TINT(220, 2, 0.75),
+  "blue titanium": TINT(215, 1.2, 0.9),
+  ultramarine: TINT(230, 2.8, 0.85),
+  plava: TINT(220, 2.5, 0.95),
   // greens / teal
-  green: "hue-rotate(90deg) saturate(0.8) brightness(0.95)",
-  "alpine green": "hue-rotate(100deg) saturate(0.7) brightness(0.85)",
-  "midnight green": "hue-rotate(100deg) saturate(0.5) brightness(0.75)",
-  teal: "hue-rotate(130deg) saturate(0.8) brightness(0.95)",
-  zelena: "hue-rotate(90deg) saturate(0.8) brightness(0.95)",
+  green: TINT(120, 2, 0.95),
+  "alpine green": TINT(130, 1.5, 0.85),
+  "midnight green": TINT(140, 1.2, 0.6),
+  teal: TINT(175, 2, 0.95),
+  zelena: TINT(120, 2, 0.95),
   // yellows / golds
-  yellow: "hue-rotate(50deg) saturate(1.3) brightness(1.05)",
-  gold: "hue-rotate(25deg) saturate(0.7) brightness(1.05)",
-  zlatna: "hue-rotate(25deg) saturate(0.7) brightness(1.05)",
-  žuta: "hue-rotate(50deg) saturate(1.3) brightness(1.05)",
-  zuta: "hue-rotate(50deg) saturate(1.3) brightness(1.05)",
+  yellow: TINT(55, 2.5, 1.1),
+  gold: TINT(40, 1.2, 1.05),
+  zlatna: TINT(40, 1.2, 1.05),
+  žuta: TINT(55, 2.5, 1.1),
+  zuta: TINT(55, 2.5, 1.1),
   // purples
-  purple: "hue-rotate(240deg) saturate(0.6) brightness(1)",
-  "deep purple": "hue-rotate(240deg) saturate(0.9) brightness(0.75)",
-  ljubičasta: "hue-rotate(240deg) saturate(0.6) brightness(1)",
-  ljubicasta: "hue-rotate(240deg) saturate(0.6) brightness(1)",
-  // neutrals — kill saturation
-  starlight: "saturate(0.12) brightness(1.05)",
-  white: "saturate(0.05) brightness(1.08)",
-  bijela: "saturate(0.05) brightness(1.08)",
-  silver: "saturate(0.05) brightness(1.05)",
-  srebrna: "saturate(0.05) brightness(1.05)",
-  grey: "saturate(0.05) brightness(0.92)",
-  gray: "saturate(0.05) brightness(0.92)",
-  siva: "saturate(0.05) brightness(0.92)",
+  purple: TINT(280, 1.8, 1),
+  "deep purple": TINT(275, 1.6, 0.75),
+  ljubičasta: TINT(280, 1.8, 1),
+  ljubicasta: TINT(280, 1.8, 1),
+  // neutrals
+  starlight: NEUTRAL(1.05),
+  white: NEUTRAL(1.1),
+  bijela: NEUTRAL(1.1),
+  silver: NEUTRAL(1),
+  srebrna: NEUTRAL(1),
+  grey: NEUTRAL(0.85),
+  gray: NEUTRAL(0.85),
+  siva: NEUTRAL(0.85),
   // darks
-  black: "saturate(0) brightness(0.35)",
-  crna: "saturate(0) brightness(0.35)",
-  midnight: "saturate(0.15) brightness(0.28) hue-rotate(200deg)",
-  "space black": "saturate(0) brightness(0.3)",
-  "space gray": "saturate(0.05) brightness(0.5)",
-  "space grey": "saturate(0.05) brightness(0.5)",
-  graphite: "saturate(0.05) brightness(0.45)",
-  "black titanium": "saturate(0) brightness(0.4)",
+  black: NEUTRAL(0.32),
+  crna: NEUTRAL(0.32),
+  midnight: `grayscale(1) sepia(1) hue-rotate(190deg) saturate(1.5) brightness(0.3)`,
+  "space black": NEUTRAL(0.3),
+  "space gray": NEUTRAL(0.5),
+  "space grey": NEUTRAL(0.5),
+  graphite: NEUTRAL(0.45),
+  "black titanium": NEUTRAL(0.4),
   // titanium neutrals
-  titanium: "saturate(0.08) brightness(0.9)",
-  titan: "saturate(0.08) brightness(0.9)",
-  "natural titanium": "saturate(0.1) brightness(0.95) hue-rotate(20deg)",
-  "white titanium": "saturate(0.05) brightness(1.05)",
-  "desert titanium": "hue-rotate(25deg) saturate(0.4) brightness(0.95)",
+  titanium: NEUTRAL(0.88),
+  titan: NEUTRAL(0.88),
+  "natural titanium": TINT(35, 0.4, 0.95),
+  "white titanium": NEUTRAL(1.05),
+  "desert titanium": TINT(30, 0.8, 0.95),
 };
 function colorFilter(name: string | null | undefined): string {
   if (!name) return "none";
   return COLOR_FILTER[name.toLowerCase()] ?? "none";
 }
+
 
 type ModelData = NonNullable<Awaited<ReturnType<typeof getModelBySlug>>>;
 
