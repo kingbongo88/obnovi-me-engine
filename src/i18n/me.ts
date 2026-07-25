@@ -28,8 +28,8 @@ export const me = {
       warrantySub: "Servisiramo ili mijenjamo, bez raspravljanja.",
       returns: "14 dana povrata",
       returnsSub: "Vratite uređaj bez razloga u prvih 14 dana.",
-      shipMail: "Pošaljite poštom",
-      shipMailSub: "Mi pokrivamo troškove slanja u cijeloj Crnoj Gori.",
+      shipMail: "Pošalji poštom",
+      shipMailSub: "Šaljemo ti uputstvo za pakovanje i adresu. Trošak slanja snosi pošiljalac.",
       meet: "Sastanak sa predstavnikom",
       meetSub: "Dogovorite lični sastanak putem kontakt forme.",
     },
@@ -103,8 +103,8 @@ export const me = {
     phoneLabel: "Telefon",
     emailLabel: "Email (opciono)",
     dropoffLabel: "Kako želiš predati uređaj?",
-    dropoff_mail: "Pošaljite poštom",
-    dropoff_mail_sub: "Besplatno — mi pokrivamo troškove slanja. Šaljemo ti upute za pakovanje i etiketu.",
+    dropoff_mail: "Pošalji poštom",
+    dropoff_mail_sub: "Vi snosite trošak slanja. Pošaljemo ti uputstvo za pakovanje i adresu za slanje.",
     dropoff_meet: "Sastanak sa predstavnikom",
     dropoff_meet_sub: "Naš predstavnik dolazi na dogovoreno mjesto i vrijeme. Detalje potvrđujemo telefonom.",
 
@@ -182,7 +182,7 @@ export const me = {
       title: "Prodaja iPhone-a",
       s1: "Popuni obrazac — traje 3 minuta.",
       s2: "Dobiješ konkretnu ponudu na osnovu stanja uređaja.",
-      s3: "Pošalješ uređaj poštom (mi pokrivamo trošak) ili dogovoriš sastanak sa predstavnikom.",
+      s3: "Pošalješ uređaj poštom (trošak slanja snosi pošiljalac) ili dogovoriš sastanak sa predstavnikom.",
       s4: "Isplata odmah nakon potvrde stanja.",
     },
     buy: {
@@ -223,7 +223,7 @@ export const me = {
       },
       {
         q: "Kako predajem svoj uređaj?",
-        a: "Dvije opcije: pošalješ poštom (mi pokrivamo trošak slanja) ili dogovoriš sastanak sa našim predstavnikom putem kontakt forme. Trenutno nemamo fizičku prodavnicu.",
+        a: "Dvije opcije: pošalješ poštom (trošak slanja snosi pošiljalac) ili dogovoriš sastanak sa našim predstavnikom putem kontakt forme. Trenutno nemamo fizičku prodavnicu.",
       },
       {
         q: "Kako se plaća pri kupovini?",

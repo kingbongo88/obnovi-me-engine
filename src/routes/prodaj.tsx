@@ -7,7 +7,7 @@ import { me } from "@/i18n/me";
 import { getPricingBundle, submitTradeIn } from "@/lib/pricing.functions";
 import { computeOffer, type OfferInput, type OfferResult } from "@/lib/pricing";
 import { ArrowRight, ArrowLeft, Search, Check, X, AlertTriangle } from "lucide-react";
-import { DeviceSilhouette } from "@/components/device-silhouette";
+import { DevicePhoto } from "@/components/device-photo";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/prodaj")({
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/prodaj")({
       { title: "Prodaj svoj iPhone — Obnovi.me" },
       { name: "description", content: "Dobij konkretnu ponudu za svoj iPhone za 3 minuta. Otkup u Crnoj Gori." },
       { property: "og:title", content: "Prodaj svoj iPhone — Obnovi.me" },
-      { property: "og:description", content: "Konkretna ponuda za 3 minuta. Šalji poštom (besplatno) ili sastanak sa predstavnikom." },
+      { property: "og:description", content: "Konkretna ponuda za 3 minuta. Šalji poštom ili dogovori sastanak sa predstavnikom." },
     ],
   }),
   loader: ({ context }) =>
@@ -176,10 +176,10 @@ function ModelGrid({
           <button
             key={d.id}
             onClick={() => onPick(d.id)}
-            className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:border-[color:var(--accent-brand)]"
+            className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-3 text-left transition-all hover:-translate-y-0.5 hover:border-[color:var(--accent-brand)] hover:shadow-md"
           >
-            <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-[color:var(--surface-2)] text-[color:var(--accent-brand)]">
-              <DeviceSilhouette modelName={d.model_name} className="h-14 w-auto" />
+            <div className="flex h-20 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[color:var(--surface-2)]">
+              <DevicePhoto modelName={d.model_name} className="h-full w-full object-contain" />
             </div>
             <div className="min-w-0 flex-1">
               <div className="truncate font-medium">{d.model_name}</div>

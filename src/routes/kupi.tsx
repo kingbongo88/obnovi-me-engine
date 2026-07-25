@@ -4,8 +4,9 @@ import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { getInventory } from "@/lib/pricing.functions";
 import { me } from "@/i18n/me";
 import { useMemo, useState } from "react";
-import { DeviceSilhouette } from "@/components/device-silhouette";
+import { DevicePhoto } from "@/components/device-photo";
 import { GradeMeter } from "@/components/grade-meter";
+import { msrpFor, savingsPct } from "@/lib/msrp";
 
 export const Route = createFileRoute("/kupi")({
   head: () => ({
@@ -61,18 +62,26 @@ function ShopPage() {
             {filtered.map((it) => {
               const model = (it.devices as { model_name: string } | null)?.model_name ?? "iPhone";
               const grade = (it.grade as "A+" | "A" | "B") ?? "A";
+              const price = Number(it.list_price);
+              const orig = msrpFor(model, it.storage_gb);
+              const pct = savingsPct(price, model, it.storage_gb);
               return (
                 <Link
                   key={it.id}
                   to="/kupi/$id"
                   params={{ id: it.id }}
-                  className="group overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg"
+                  className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-xl"
                 >
-                  <div className="flex aspect-[4/3] items-center justify-center bg-[color:var(--surface-2)] text-[color:var(--accent-brand)]">
+                  <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-[color:var(--surface-2)]">
                     {it.photos && it.photos[0] ? (
-                      <img src={it.photos[0]} alt={model} className="h-full w-full object-cover" />
+                      <img src={it.photos[0]} alt={model} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     ) : (
-                      <DeviceSilhouette modelName={model} className="h-32 w-auto" />
+                      <DevicePhoto modelName={model} className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" />
+                    )}
+                    {pct !== null && (
+                      <span className="absolute left-3 top-3 rounded-full bg-[color:var(--cta)] px-2.5 py-1 text-[11px] font-semibold text-[color:var(--cta-foreground)]">
+                        −{pct}%
+                      </span>
                     )}
                   </div>
                   <div className="p-4">
@@ -84,7 +93,12 @@ function ShopPage() {
                       {it.storage_gb >= 1024 ? "1 TB" : `${it.storage_gb} GB`} · Baterija {it.battery_health}%
                     </div>
                     <div className="mt-3"><GradeMeter grade={grade} size="sm" showLabel={false} /></div>
-                    <div className="mt-3 font-display text-2xl">{Number(it.list_price)} €</div>
+                    <div className="mt-3 flex items-baseline gap-2">
+                      <div className="font-display text-2xl">{price} €</div>
+                      {orig && orig > price && (
+                        <div className="text-sm text-muted-foreground line-through">{orig} €</div>
+                      )}
+                    </div>
                   </div>
                 </Link>
               );
