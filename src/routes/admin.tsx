@@ -75,6 +75,7 @@ function AdminLayout() {
             <AdminLink to="/admin/inventar" label={me.admin.inventory} />
             <AdminLink to="/admin/narudzbe" label={me.admin.orders} />
             <AdminLink to="/admin/cjenovnik" label={me.admin.pricing} />
+            <AdminLink to="/admin/sadrzaj" label="Sadržaj" />
           </nav>
           <button
             onClick={async () => { await supabase.auth.signOut(); nav({ to: "/auth" }); }}

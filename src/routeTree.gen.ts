@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as NarudzbaRefRouteImport } from './routes/narudzba.$ref'
 import { Route as KupiIdRouteImport } from './routes/kupi.$id'
+import { Route as AdminSadrzajRouteImport } from './routes/admin.sadrzaj'
 import { Route as AdminOtkupiRouteImport } from './routes/admin.otkupi'
 import { Route as AdminNarudzbeRouteImport } from './routes/admin.narudzbe'
 import { Route as AdminInventarRouteImport } from './routes/admin.inventar'
@@ -99,6 +100,11 @@ const KupiIdRoute = KupiIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => KupiRoute,
 } as any)
+const AdminSadrzajRoute = AdminSadrzajRouteImport.update({
+  id: '/sadrzaj',
+  path: '/sadrzaj',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminOtkupiRoute = AdminOtkupiRouteImport.update({
   id: '/otkupi',
   path: '/otkupi',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/admin/inventar': typeof AdminInventarRoute
   '/admin/narudzbe': typeof AdminNarudzbeRoute
   '/admin/otkupi': typeof AdminOtkupiRoute
+  '/admin/sadrzaj': typeof AdminSadrzajRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
   '/admin/': typeof AdminIndexRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/admin/inventar': typeof AdminInventarRoute
   '/admin/narudzbe': typeof AdminNarudzbeRoute
   '/admin/otkupi': typeof AdminOtkupiRoute
+  '/admin/sadrzaj': typeof AdminSadrzajRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
   '/admin': typeof AdminIndexRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/admin/inventar': typeof AdminInventarRoute
   '/admin/narudzbe': typeof AdminNarudzbeRoute
   '/admin/otkupi': typeof AdminOtkupiRoute
+  '/admin/sadrzaj': typeof AdminSadrzajRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
   '/admin/': typeof AdminIndexRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/admin/inventar'
     | '/admin/narudzbe'
     | '/admin/otkupi'
+    | '/admin/sadrzaj'
     | '/kupi/$id'
     | '/narudzba/$ref'
     | '/admin/'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/admin/inventar'
     | '/admin/narudzbe'
     | '/admin/otkupi'
+    | '/admin/sadrzaj'
     | '/kupi/$id'
     | '/narudzba/$ref'
     | '/admin'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/admin/inventar'
     | '/admin/narudzbe'
     | '/admin/otkupi'
+    | '/admin/sadrzaj'
     | '/kupi/$id'
     | '/narudzba/$ref'
     | '/admin/'
@@ -368,6 +380,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KupiIdRouteImport
       parentRoute: typeof KupiRoute
     }
+    '/admin/sadrzaj': {
+      id: '/admin/sadrzaj'
+      path: '/sadrzaj'
+      fullPath: '/admin/sadrzaj'
+      preLoaderRoute: typeof AdminSadrzajRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/otkupi': {
       id: '/admin/otkupi'
       path: '/otkupi'
@@ -411,6 +430,7 @@ interface AdminRouteChildren {
   AdminInventarRoute: typeof AdminInventarRoute
   AdminNarudzbeRoute: typeof AdminNarudzbeRoute
   AdminOtkupiRoute: typeof AdminOtkupiRoute
+  AdminSadrzajRoute: typeof AdminSadrzajRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -419,6 +439,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminInventarRoute: AdminInventarRoute,
   AdminNarudzbeRoute: AdminNarudzbeRoute,
   AdminOtkupiRoute: AdminOtkupiRoute,
+  AdminSadrzajRoute: AdminSadrzajRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
