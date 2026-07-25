@@ -226,11 +226,11 @@ function ProductCard({ it, idx, visible }: { it: InvItem; idx: number; visible: 
       }}
     >
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-[color:var(--surface-2)]">
-        {it.photos && it.photos[0] ? (
-          <img src={it.photos[0]} alt={model} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        ) : (
-          <DevicePhoto modelName={model} className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105" />
-        )}
+        <DevicePhoto
+          modelName={model}
+          color={it.color}
+          className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+        />
         <span className={`absolute left-3 top-3 rounded-full px-2 py-0.5 text-[11px] font-bold ${gradeBadgeClass(grade)}`}>
           {grade}
         </span>
