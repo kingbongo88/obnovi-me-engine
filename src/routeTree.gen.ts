@@ -17,6 +17,7 @@ import { Route as KupiRouteImport } from './routes/kupi'
 import { Route as KosaricaRouteImport } from './routes/kosarica'
 import { Route as KontaktRouteImport } from './routes/kontakt'
 import { Route as KakoRadiRouteImport } from './routes/kako-radi'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NarudzbaRefRouteImport } from './routes/narudzba.$ref'
 import { Route as KupiIdRouteImport } from './routes/kupi.$id'
@@ -62,6 +63,11 @@ const KakoRadiRoute = KakoRadiRouteImport.update({
   path: '/kako-radi',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -85,6 +91,7 @@ const ProdajUspjehRefRoute = ProdajUspjehRefRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/kako-radi': typeof KakoRadiRoute
   '/kontakt': typeof KontaktRoute
   '/kosarica': typeof KosaricaRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/kako-radi': typeof KakoRadiRoute
   '/kontakt': typeof KontaktRoute
   '/kosarica': typeof KosaricaRoute
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/kako-radi': typeof KakoRadiRoute
   '/kontakt': typeof KontaktRoute
   '/kosarica': typeof KosaricaRoute
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/kako-radi'
     | '/kontakt'
     | '/kosarica'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/kako-radi'
     | '/kontakt'
     | '/kosarica'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/kako-radi'
     | '/kontakt'
     | '/kosarica'
@@ -173,6 +185,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   KakoRadiRoute: typeof KakoRadiRoute
   KontaktRoute: typeof KontaktRoute
   KosaricaRoute: typeof KosaricaRoute
@@ -242,6 +255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KakoRadiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -296,6 +316,7 @@ const ProdajRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   KakoRadiRoute: KakoRadiRoute,
   KontaktRoute: KontaktRoute,
   KosaricaRoute: KosaricaRoute,
