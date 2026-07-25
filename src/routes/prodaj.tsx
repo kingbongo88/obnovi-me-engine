@@ -289,11 +289,24 @@ function Step4({
   onNext: (n: number) => void;
 }) {
   const [v, setV] = useState<string>("");
-  const n = parseInt(v, 10);
-  const valid = !isNaN(n) && n >= 0 && n <= 100;
-  if (valid && n < minBattery) {
-    return <RejectCard title="Baterija je preslaba" body={me.sell.reject.battery} />;
+  const [rejected, setRejected] = useState(false);
+  const trimmed = v.trim();
+  const n = parseInt(trimmed, 10);
+  const valid = /^\d{1,3}$/.test(trimmed) && !isNaN(n) && n >= 0 && n <= 100;
+
+  const onConfirm = () => {
+    if (!valid) return;
+    if (n < minBattery) {
+      setRejected(true);
+      return;
+    }
+    onNext(n);
+  };
+
+  if (rejected) {
+    return <RejectCard title="Baterija je preslaba" body={me.sell.reject.battery} onAction={() => { setRejected(false); setV(""); }} actionLabel="Unesi ponovo" />;
   }
+
   return (
     <div>
       <BackBtn onBack={onBack} />
@@ -301,18 +314,20 @@ function Step4({
       <p className="mt-2 text-muted-foreground">{me.sell.step4Sub}</p>
       <div className="mt-6 flex items-center gap-3">
         <input
-          type="number"
-          min={0}
-          max={100}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={3}
           value={v}
-          onChange={(e) => setV(e.target.value)}
+          onChange={(e) => setV(e.target.value.replace(/[^0-9]/g, ""))}
+          onKeyDown={(e) => { if (e.key === "Enter") onConfirm(); }}
           className="w-32 rounded-2xl border border-border bg-card px-4 py-3 text-3xl font-semibold outline-none focus:border-[color:var(--accent-brand)]"
           placeholder="92"
         />
         <span className="text-2xl text-muted-foreground">%</span>
       </div>
       <div className="mt-8">
-        <button disabled={!valid} onClick={() => onNext(n)} className="btn-primary disabled:opacity-40">
+        <button disabled={!valid} onClick={onConfirm} className="btn-primary disabled:opacity-40">
           {me.common.next}
         </button>
       </div>
@@ -492,21 +507,20 @@ function Step7({ input, onBack }: { input: OfferInput; onBack: () => void }) {
           <label className="mb-1 block text-sm font-medium">{me.sell.dropoffLabel}</label>
           <div className="grid gap-2 sm:grid-cols-2">
             {[
-              { v: "pickup:podgorica", l: me.sell.dropoff_pg, city: "Podgorica" },
-              { v: "pickup:budva", l: me.sell.dropoff_bd, city: "Budva" },
-              { v: "pickup:kotor", l: me.sell.dropoff_kt, city: "Kotor" },
-              { v: "pickup:niksic", l: me.sell.dropoff_nk, city: "Nikšić" },
+              { v: "mail", l: me.sell.dropoff_mail, sub: me.sell.dropoff_mail_sub },
+              { v: "meet", l: me.sell.dropoff_meet, sub: me.sell.dropoff_meet_sub },
             ].map((o) => (
               <button
                 key={o.v}
                 type="button"
-                onClick={() => setForm({ ...form, dropoff_method: o.v, dropoff_city: o.city })}
+                onClick={() => setForm({ ...form, dropoff_method: o.v, dropoff_city: "" })}
                 className={
-                  "rounded-xl border p-3 text-left text-sm " +
+                  "rounded-xl border p-4 text-left text-sm " +
                   (form.dropoff_method === o.v ? "border-[color:var(--accent-brand)] bg-[color:var(--accent)]" : "border-border bg-card")
                 }
               >
-                {o.l}
+                <div className="font-medium">{o.l}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{o.sub}</div>
               </button>
             ))}
           </div>
