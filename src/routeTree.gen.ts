@@ -10,9 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProdajRouteImport } from './routes/prodaj'
+import { Route as PitanjaRouteImport } from './routes/pitanja'
+import { Route as ONamaRouteImport } from './routes/o-nama'
 import { Route as NaplataRouteImport } from './routes/naplata'
 import { Route as KupiRouteImport } from './routes/kupi'
 import { Route as KosaricaRouteImport } from './routes/kosarica'
+import { Route as KontaktRouteImport } from './routes/kontakt'
+import { Route as KakoRadiRouteImport } from './routes/kako-radi'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NarudzbaRefRouteImport } from './routes/narudzba.$ref'
 import { Route as KupiIdRouteImport } from './routes/kupi.$id'
@@ -21,6 +25,16 @@ import { Route as ProdajUspjehRefRouteImport } from './routes/prodaj.uspjeh.$ref
 const ProdajRoute = ProdajRouteImport.update({
   id: '/prodaj',
   path: '/prodaj',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PitanjaRoute = PitanjaRouteImport.update({
+  id: '/pitanja',
+  path: '/pitanja',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ONamaRoute = ONamaRouteImport.update({
+  id: '/o-nama',
+  path: '/o-nama',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NaplataRoute = NaplataRouteImport.update({
@@ -36,6 +50,16 @@ const KupiRoute = KupiRouteImport.update({
 const KosaricaRoute = KosaricaRouteImport.update({
   id: '/kosarica',
   path: '/kosarica',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktRoute = KontaktRouteImport.update({
+  id: '/kontakt',
+  path: '/kontakt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KakoRadiRoute = KakoRadiRouteImport.update({
+  id: '/kako-radi',
+  path: '/kako-radi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -61,9 +85,13 @@ const ProdajUspjehRefRoute = ProdajUspjehRefRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/kako-radi': typeof KakoRadiRoute
+  '/kontakt': typeof KontaktRoute
   '/kosarica': typeof KosaricaRoute
   '/kupi': typeof KupiRouteWithChildren
   '/naplata': typeof NaplataRoute
+  '/o-nama': typeof ONamaRoute
+  '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
@@ -71,9 +99,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/kako-radi': typeof KakoRadiRoute
+  '/kontakt': typeof KontaktRoute
   '/kosarica': typeof KosaricaRoute
   '/kupi': typeof KupiRouteWithChildren
   '/naplata': typeof NaplataRoute
+  '/o-nama': typeof ONamaRoute
+  '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
@@ -82,9 +114,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/kako-radi': typeof KakoRadiRoute
+  '/kontakt': typeof KontaktRoute
   '/kosarica': typeof KosaricaRoute
   '/kupi': typeof KupiRouteWithChildren
   '/naplata': typeof NaplataRoute
+  '/o-nama': typeof ONamaRoute
+  '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
@@ -94,9 +130,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/kako-radi'
+    | '/kontakt'
     | '/kosarica'
     | '/kupi'
     | '/naplata'
+    | '/o-nama'
+    | '/pitanja'
     | '/prodaj'
     | '/kupi/$id'
     | '/narudzba/$ref'
@@ -104,9 +144,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/kako-radi'
+    | '/kontakt'
     | '/kosarica'
     | '/kupi'
     | '/naplata'
+    | '/o-nama'
+    | '/pitanja'
     | '/prodaj'
     | '/kupi/$id'
     | '/narudzba/$ref'
@@ -114,9 +158,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/kako-radi'
+    | '/kontakt'
     | '/kosarica'
     | '/kupi'
     | '/naplata'
+    | '/o-nama'
+    | '/pitanja'
     | '/prodaj'
     | '/kupi/$id'
     | '/narudzba/$ref'
@@ -125,9 +173,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KakoRadiRoute: typeof KakoRadiRoute
+  KontaktRoute: typeof KontaktRoute
   KosaricaRoute: typeof KosaricaRoute
   KupiRoute: typeof KupiRouteWithChildren
   NaplataRoute: typeof NaplataRoute
+  ONamaRoute: typeof ONamaRoute
+  PitanjaRoute: typeof PitanjaRoute
   ProdajRoute: typeof ProdajRouteWithChildren
   NarudzbaRefRoute: typeof NarudzbaRefRoute
 }
@@ -139,6 +191,20 @@ declare module '@tanstack/react-router' {
       path: '/prodaj'
       fullPath: '/prodaj'
       preLoaderRoute: typeof ProdajRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pitanja': {
+      id: '/pitanja'
+      path: '/pitanja'
+      fullPath: '/pitanja'
+      preLoaderRoute: typeof PitanjaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/o-nama': {
+      id: '/o-nama'
+      path: '/o-nama'
+      fullPath: '/o-nama'
+      preLoaderRoute: typeof ONamaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/naplata': {
@@ -160,6 +226,20 @@ declare module '@tanstack/react-router' {
       path: '/kosarica'
       fullPath: '/kosarica'
       preLoaderRoute: typeof KosaricaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontakt': {
+      id: '/kontakt'
+      path: '/kontakt'
+      fullPath: '/kontakt'
+      preLoaderRoute: typeof KontaktRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kako-radi': {
+      id: '/kako-radi'
+      path: '/kako-radi'
+      fullPath: '/kako-radi'
+      preLoaderRoute: typeof KakoRadiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -216,9 +296,13 @@ const ProdajRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KakoRadiRoute: KakoRadiRoute,
+  KontaktRoute: KontaktRoute,
   KosaricaRoute: KosaricaRoute,
   KupiRoute: KupiRouteWithChildren,
   NaplataRoute: NaplataRoute,
+  ONamaRoute: ONamaRoute,
+  PitanjaRoute: PitanjaRoute,
   ProdajRoute: ProdajRouteWithChildren,
   NarudzbaRefRoute: NarudzbaRefRoute,
 }
