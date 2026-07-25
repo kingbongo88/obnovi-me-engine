@@ -134,7 +134,7 @@ function QuoteSidebar({
                 <DevicePhoto modelName={device.model_name} className="h-full w-full object-contain" />
               </div>
               <div className="min-w-0">
-                <div className="truncate font-semibold">{device.model_name}</div>
+                <div className="font-semibold leading-tight [overflow-wrap:anywhere]">{device.model_name}</div>
                 <div className="text-xs text-muted-foreground">
                   {state.storage_gb ? (state.storage_gb >= 1024 ? "1 TB" : `${state.storage_gb} GB`) : "Odaberi memoriju"}
                 </div>
