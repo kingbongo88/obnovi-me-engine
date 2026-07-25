@@ -194,7 +194,10 @@ function ModelDetail() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
           {/* Left: gallery */}
           <div>
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-[color:var(--surface-2)]">
+            <div
+              className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl transition-colors duration-500"
+              style={{ background: `color-mix(in oklab, ${tintHex} 22%, var(--surface-2))` }}
+            >
               {galleryImages.length > 0 ? (
                 <img src={galleryImages[gallery]} alt={m.model_name} className="h-full w-full object-cover" />
               ) : (
@@ -203,6 +206,12 @@ function ModelDetail() {
               <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-md">
                 <Shield className="h-3.5 w-3.5 text-[color:var(--accent-brand)]" /> 6 mjeseci garancije
               </div>
+              {color && (
+                <div className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold capitalize shadow-md">
+                  <span className="h-3 w-3 rounded-full border border-black/10" style={{ background: tintHex }} />
+                  {color}
+                </div>
+              )}
             </div>
             {galleryImages.length > 1 && (
               <div className="mt-3 flex gap-2">
