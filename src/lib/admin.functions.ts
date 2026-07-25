@@ -209,3 +209,38 @@ export const adminUpdatePricingConfig = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+/* ---------------- Site content (CMS) ---------------- */
+
+export const adminListContent = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
+    const { data, error } = await context.supabase.from("site_content").select("*").order("key");
+    if (error) throw new Error(error.message);
+    return data ?? [];
+  });
+
+export const adminSaveContent = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { key: string; value: string }) =>
+    z.object({ key: z.string().min(1).max(120), value: z.string().max(5000) }).parse(d),
+  )
+  .handler(async ({ context, data }) => {
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
+    const { error } = await context.supabase
+      .from("site_content")
+      .upsert({ key: data.key, value: data.value }, { onConflict: "key" });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const adminDeleteContent = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { key: string }) => z.object({ key: z.string() }).parse(d))
+  .handler(async ({ context, data }) => {
+    await assertAdmin({ supabase: context.supabase as unknown as Ctx["supabase"], userId: context.userId });
+    const { error } = await context.supabase.from("site_content").delete().eq("key", data.key);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
