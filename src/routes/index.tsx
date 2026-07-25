@@ -15,8 +15,10 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
       { property: "og:description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://obnovi.app/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://obnovi.app/" }],
   }),
   loader: ({ context }) =>
     context.queryClient.ensureQueryData({ queryKey: ["inventory"], queryFn: () => getInventory() }),
