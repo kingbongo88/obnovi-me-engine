@@ -314,6 +314,46 @@ function ModelDetail() {
               </div>
             </Section>
 
+            {/* Color */}
+            {allColors.length > 0 && (
+              <Section label="Boja">
+                <div className="flex flex-wrap gap-3">
+                  {allColors.map((c) => {
+                    const on = c === color;
+                    const available = availableColors.has(c);
+                    return (
+                      <button
+                        key={c}
+                        onClick={() => available && setColor(c)}
+                        disabled={!available}
+                        title={available ? c : `${c} — nedostupno`}
+                        className={
+                          "relative flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium capitalize transition-all " +
+                          (on
+                            ? "border-[color:var(--accent-brand)] bg-[color:var(--accent-brand)]/5"
+                            : available
+                              ? "border-border bg-card hover:border-[color:var(--accent-brand)]/40"
+                              : "cursor-not-allowed border-border bg-card text-muted-foreground line-through opacity-60")
+                        }
+                      >
+                        <span
+                          className="h-4 w-4 rounded-full border border-black/10 shadow-sm"
+                          style={{ background: colorHex(c) }}
+                        />
+                        {c}
+                        {!available && (
+                          <span
+                            aria-hidden
+                            className="pointer-events-none absolute inset-x-2 top-1/2 h-px -translate-y-1/2 bg-muted-foreground/60"
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </Section>
+            )}
+
             {/* Battery */}
             <Section label="Baterija">
               <div className="grid gap-2 sm:grid-cols-2">
