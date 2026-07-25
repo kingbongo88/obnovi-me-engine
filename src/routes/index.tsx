@@ -2,25 +2,20 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
-import { me } from "@/i18n/me";
-import { Shield, RotateCcw, Battery, Truck, ArrowRight, Check, Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { GradeMeter } from "@/components/grade-meter";
-import { DevicePhoto } from "@/components/device-photo";
+import { Shield, Battery, Truck, RotateCcw, ArrowRight, Star } from "lucide-react";
+import { DevicePhoto, devicePhotoFor } from "@/components/device-photo";
 import { getInventory } from "@/lib/pricing.functions";
 import { msrpFor, savingsPct } from "@/lib/msrp";
-import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
-      {
-        name: "description",
-        content:
-          "Prodajte svoj iPhone ili kupite obnovljeni uređaj sa 6 mjeseci garancije. Plaćanje pouzećem, isporuka u Crnoj Gori.",
-      },
-      { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom" },
-      { property: "og:description", content: "Otkup i prodaja obnovljenih iPhone uređaja u Crnoj Gori." },
+      { name: "description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
+      { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone" },
+      { property: "og:description", content: "Kupi ili prodaj obnovljeni iPhone. Garancija, provjereno stanje, brza dostava." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: ({ context }) =>
@@ -34,9 +29,9 @@ function Home() {
       <SiteHeader />
       <main>
         <Hero />
-        <ProductCarousel />
-        <TrustStrip />
-        <GradeExplain />
+        <TrustBar />
+        <ProductGrid />
+        <GradeSection />
         <Testimonials />
       </main>
       <SiteFooter />
@@ -44,7 +39,7 @@ function Home() {
   );
 }
 
-/* -------- Reveal on scroll -------- */
+/* ------------------------------ Reveal ----------------------------- */
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
   const [shown, setShown] = useState(false);
@@ -52,186 +47,13 @@ function useReveal<T extends HTMLElement>() {
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) { setShown(true); io.disconnect(); break; }
-      },
-      { threshold: 0.15 },
+      (entries) => { for (const e of entries) if (e.isIntersecting) { setShown(true); io.disconnect(); break; } },
+      { threshold: 0.12 },
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
   return { ref, shown };
-}
-
-function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const { ref, shown } = useReveal<HTMLDivElement>();
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: shown ? 1 : 0,
-        transform: shown ? "translateY(0)" : "translateY(16px)",
-        transition: `opacity 600ms ease ${delay}ms, transform 600ms ease ${delay}ms`,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-/* -------- Hero -------- */
-function Hero() {
-  return (
-    <section className="container-narrow pb-10 pt-6 md:pt-10">
-      <div className="grid items-center gap-8 md:grid-cols-[1.05fr_1fr] md:gap-12">
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[color:var(--surface-2)] px-3 py-1 text-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--cta)]" />
-            Otkup i prodaja u Crnoj Gori
-          </div>
-          <h1 className="mt-5 font-display text-5xl leading-[1.05] md:text-6xl">
-            Obnovljeni iPhone.
-            <br />
-            <span className="text-[color:var(--accent-brand)]">Bez rizika.</span>
-          </h1>
-          <p className="mt-5 max-w-xl text-lg text-muted-foreground">{me.home.heroSub}</p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link to="/kupi" className="btn-primary group">
-              {me.home.ctaShop}
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <Link to="/prodaj" className="btn-outline">
-              {me.home.ctaSell}
-            </Link>
-          </div>
-        </div>
-        <div className="relative">
-          <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-[color:var(--surface-2)] md:aspect-[5/6]">
-            <img
-              src={heroImg}
-              alt="Ruke drže obnovljeni iPhone"
-              width={1600}
-              height={1200}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="absolute -bottom-4 left-6 right-6 rounded-2xl border border-border bg-card p-4 shadow-sm md:left-auto md:right-4 md:w-64">
-            <div className="text-xs uppercase tracking-wider text-muted-foreground">Provjereno stanje</div>
-            <div className="mt-2">
-              <GradeMeter grade="A+" size="sm" showLabel />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* -------- Product carousel (from live inventory) -------- */
-function ProductCarousel() {
-  const { data } = useSuspenseQuery({ queryKey: ["inventory"], queryFn: () => getInventory() });
-  const items = (data ?? []).slice(0, 8);
-  const scroller = useRef<HTMLDivElement | null>(null);
-  const { ref: sectionRef, shown } = useReveal<HTMLElement>();
-
-  const scrollBy = (dir: 1 | -1) => {
-    const el = scroller.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * Math.min(el.clientWidth * 0.9, 720), behavior: "smooth" });
-  };
-
-  return (
-    <section ref={sectionRef} className="container-narrow pt-14 pb-6">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <div className="text-xs uppercase tracking-widest text-muted-foreground">Ponuda uživo</div>
-          <h2 className="mt-2 font-display text-3xl md:text-4xl">Trenutno dostupno</h2>
-        </div>
-        <div className="hidden gap-2 md:flex">
-          <button onClick={() => scrollBy(-1)} aria-label="Nazad" className="rounded-full border border-border bg-card p-2 transition hover:border-[color:var(--accent-brand)]">
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button onClick={() => scrollBy(1)} aria-label="Naprijed" className="rounded-full border border-border bg-card p-2 transition hover:border-[color:var(--accent-brand)]">
-            <ChevronRight className="h-4 w-4" />
-          </button>
-          <Link to="/kupi" className="ml-2 inline-flex items-center gap-1 rounded-full border border-border bg-card px-4 py-2 text-sm hover:border-[color:var(--accent-brand)]">
-            Sve <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-
-      {items.length === 0 ? (
-        <div className="mt-6 rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
-          Uskoro — puni se inventar.
-        </div>
-      ) : (
-        <div
-          ref={scroller}
-          className="mt-6 -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4"
-          style={{ scrollbarWidth: "thin" }}
-        >
-          {items.map((it, idx) => (
-            <ProductCard key={it.id} it={it} idx={idx} visible={shown} />
-          ))}
-        </div>
-      )}
-    </section>
-  );
-}
-
-type InvItem = Awaited<ReturnType<typeof getInventory>>[number];
-
-function ProductCard({ it, idx, visible }: { it: InvItem; idx: number; visible: boolean }) {
-  const model = (it.devices as { model_name: string } | null)?.model_name ?? "iPhone";
-  const grade = (it.grade as "A+" | "A" | "B") ?? "A";
-  const price = Number(it.list_price);
-  const orig = msrpFor(model, it.storage_gb);
-  const pct = savingsPct(price, model, it.storage_gb);
-  const displayPrice = useCountUp(price, visible, 700, idx * 80);
-  const displayPct = useCountUp(pct ?? 0, visible, 700, idx * 80);
-
-  return (
-    <Link
-      to="/kupi/$id"
-      params={{ id: it.id }}
-      className="group w-[78%] shrink-0 snap-start overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:w-[46%] md:w-[31%]"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(14px)",
-        transition: `opacity 500ms ease ${idx * 70}ms, transform 500ms ease ${idx * 70}ms, box-shadow 300ms ease, translate 300ms ease`,
-      }}
-    >
-      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-[color:var(--surface-2)]">
-        {it.photos && it.photos[0] ? (
-          <img src={it.photos[0]} alt={model} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        ) : (
-          <DevicePhoto modelName={model} className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" />
-        )}
-        {pct !== null && (
-          <span className="absolute left-3 top-3 rounded-full bg-[color:var(--cta)] px-2.5 py-1 text-[11px] font-semibold text-[color:var(--cta-foreground)]">
-            −{displayPct}%
-          </span>
-        )}
-        <span className="absolute right-3 top-3 rounded-full border border-border bg-card/90 px-2 py-0.5 text-[11px] backdrop-blur">
-          {grade}
-        </span>
-      </div>
-      <div className="p-4">
-        <div className="font-medium">{model}</div>
-        <div className="mt-1 text-xs text-muted-foreground">
-          {it.storage_gb >= 1024 ? "1 TB" : `${it.storage_gb} GB`} · Baterija {it.battery_health}%
-        </div>
-        <div className="mt-3"><GradeMeter grade={grade} size="sm" showLabel={false} /></div>
-        <div className="mt-3 flex items-baseline gap-2">
-          <div className="font-display text-2xl">{displayPrice} €</div>
-          {orig && orig > price && (
-            <div className="text-sm text-muted-foreground line-through">{orig} €</div>
-          )}
-        </div>
-      </div>
-    </Link>
-  );
 }
 
 function useCountUp(target: number, run: boolean, duration = 700, delay = 0) {
@@ -244,7 +66,6 @@ function useCountUp(target: number, run: boolean, duration = 700, delay = 0) {
       const step = (ts: number) => {
         if (!start) start = ts;
         const p = Math.min(1, (ts - start) / duration);
-        // easeOutCubic
         const eased = 1 - Math.pow(1 - p, 3);
         setV(Math.round(target * eased));
         if (p < 1) raf = requestAnimationFrame(step);
@@ -252,105 +73,244 @@ function useCountUp(target: number, run: boolean, duration = 700, delay = 0) {
       raf = requestAnimationFrame(step);
     }, delay);
     return () => { window.clearTimeout(t); cancelAnimationFrame(raf); };
-  }, [target, run, duration, delay]);
+  }, [run, target, duration, delay]);
   return v;
 }
 
-/* -------- Teal trust strip -------- */
-function TrustStrip() {
-  const items = [
-    { icon: Battery, label: "Baterija ≥ 85%", sub: "Zagarantovano pri prodaji" },
-    { icon: Shield, label: "6 mjeseci garancije", sub: "Servisiramo ili mijenjamo" },
-    { icon: RotateCcw, label: "14 dana povrata", sub: "Bez razloga, bez pitanja" },
-    { icon: Truck, label: "Pouzećem", sub: "Plaćaš kuriru pri dostavi" },
-  ];
+/* ------------------------------ Hero ------------------------------- */
+function Hero() {
   return (
-    <section className="mt-10 bg-[color:var(--primary)] text-[color:var(--primary-foreground)]">
-      <div className="container-narrow py-12">
-        <Reveal>
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
-            {items.map((it) => (
-              <div key={it.label} className="flex items-start gap-3">
-                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[color:var(--cta)] text-[color:var(--cta-foreground)]">
-                  <it.icon className="h-5 w-5" />
-                </span>
-                <div>
-                  <div className="text-sm font-semibold">{it.label}</div>
-                  <div className="text-sm opacity-75">{it.sub}</div>
-                </div>
-              </div>
-            ))}
+    <section className="relative overflow-hidden bg-[color:var(--surface-dark)] text-white">
+      {/* Mesh gradient */}
+      <div className="pointer-events-none absolute inset-0 opacity-70">
+        <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-[color:var(--accent-brand)] opacity-20 blur-3xl" />
+        <div className="absolute right-0 top-1/3 h-96 w-96 rounded-full bg-indigo-500 opacity-20 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-teal-400 opacity-15 blur-3xl" />
+      </div>
+
+      <div className="container-wide relative grid items-center gap-10 py-12 md:grid-cols-[1.05fr_1fr] md:py-16">
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent-brand)]" />
+            Kupovina i otkup u Crnoj Gori
           </div>
-        </Reveal>
+          <h1 className="mt-5 font-display text-5xl font-bold leading-[1.02] tracking-tight md:text-6xl">
+            Obnovljeni iPhone. <span className="text-[color:var(--accent-brand)]">Bez rizika.</span>
+          </h1>
+          <p className="mt-5 max-w-xl text-lg text-slate-300">
+            6 mjeseci garancije. Baterija 85%+. 14 dana povrata. Uštedi do 50% u odnosu na novi.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link to="/kupi" className="btn-primary group">
+              Kupi odmah
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <Link to="/prodaj" className="btn-outline-light">
+              Prodaj svoj iPhone
+            </Link>
+          </div>
+        </div>
+
+        <HeroPhoneCluster />
       </div>
     </section>
   );
 }
 
-/* -------- Grading explainer (kept from before) -------- */
-function GradeExplain() {
-  const grades: Array<{ grade: "A+" | "A" | "B"; label: string; desc: string }> = [
-    { grade: "A+", label: "Odlično", desc: "Bez vidljivih tragova. Kao nov." },
-    { grade: "A", label: "Vrlo dobro", desc: "Lagane ogrebotine, nevidljive sa normalne razdaljine." },
-    { grade: "B", label: "Dobro", desc: "Vidljivi tragovi korišćenja. Sve funkcije rade." },
+function HeroPhoneCluster() {
+  return (
+    <div className="relative mx-auto h-[280px] w-full max-w-md md:h-[360px]">
+      <div
+        className="absolute left-0 top-6 w-1/2 rounded-2xl bg-white/95 p-3 shadow-2xl float-slow"
+        style={{ ["--r" as string]: "-6deg" }}
+      >
+        <img src={devicePhotoFor("iPhone 13")} alt="iPhone" className="h-full w-full rounded-xl object-contain" />
+      </div>
+      <div
+        className="absolute left-1/2 top-0 w-1/2 -translate-x-1/2 rounded-2xl bg-white/95 p-3 shadow-2xl float-slow-2"
+        style={{ ["--r" as string]: "3deg" }}
+      >
+        <img src={devicePhotoFor("iPhone 15")} alt="iPhone" className="h-full w-full rounded-xl object-contain" />
+      </div>
+      <div
+        className="absolute right-0 top-10 w-1/2 rounded-2xl bg-white/95 p-3 shadow-2xl float-slow-3"
+        style={{ ["--r" as string]: "8deg" }}
+      >
+        <img src={devicePhotoFor("iPhone 16 Pro")} alt="iPhone" className="h-full w-full rounded-xl object-contain" />
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------ Trust bar (dense, dark) ------------------------------ */
+function TrustBar() {
+  const items = [
+    { icon: Shield, label: "6 mjeseci garancije" },
+    { icon: Battery, label: "Baterija 85%+" },
+    { icon: RotateCcw, label: "14 dana povrata" },
+    { icon: Truck, label: "Brza dostava po Crnoj Gori" },
   ];
   return (
-    <section className="container-narrow py-16">
-      <Reveal>
-        <h2 className="font-display text-4xl">Tri jasne kategorije.</h2>
-        <p className="mt-3 max-w-xl text-muted-foreground">
-          Ocjenjujemo svaki uređaj pošteno. Ono što piše — to i dobiješ.
-        </p>
-      </Reveal>
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
-        {grades.map((g, i) => (
-          <Reveal key={g.grade} delay={i * 100}>
-            <div className="rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-[color:var(--accent-brand)]" />
-                <div className="text-lg font-semibold">{g.label}</div>
-              </div>
-              <div className="mt-4"><GradeMeter grade={g.grade} size="md" showLabel={false} /></div>
-              <p className="mt-3 text-sm text-muted-foreground">{g.desc}</p>
-            </div>
-          </Reveal>
+    <section className="border-y border-white/10 bg-[color:var(--surface-dark-2)] text-white">
+      <div className="container-wide grid grid-cols-2 gap-3 py-4 md:grid-cols-4">
+        {items.map(({ icon: Icon, label }) => (
+          <div key={label} className="flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--accent-brand)]/15 text-[color:var(--accent-brand)]">
+              <Icon className="h-4 w-4" />
+            </span>
+            <span className="text-sm font-medium">{label}</span>
+          </div>
         ))}
       </div>
     </section>
   );
 }
 
-/* -------- Testimonials -------- */
-function Testimonials() {
-  const quotes = [
-    { name: "Marko J.", city: "Podgorica", text: "Prodao stari 12 Pro za pošteniju cijenu nego bilo gdje drugdje. Sve prošlo za dva dana." },
-    { name: "Ana P.", city: "Budva", text: "Uzela obnovljeni 14 — izgleda kao nov, baterija 92%. Isporuka za jedan dan, platila kuriru." },
-    { name: "Nikola R.", city: "Nikšić", text: "Zvučalo predobro, pa sam bio skeptičan. Dobio račun, garantni list, sve uredno." },
-  ];
+/* ------------------------------ Product grid ------------------------------ */
+function ProductGrid() {
+  const { data } = useSuspenseQuery({ queryKey: ["inventory"], queryFn: () => getInventory() });
+  const items = (data ?? []).slice(0, 8);
+  const { ref, shown } = useReveal<HTMLElement>();
+
   return (
-    <section className="bg-[color:var(--surface-2)]">
-      <div className="container-narrow py-16">
-        <Reveal>
-          <div className="text-xs uppercase tracking-widest text-muted-foreground">Iskustva</div>
-          <h2 className="mt-2 font-display text-4xl">Šta kažu naši korisnici.</h2>
-        </Reveal>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {quotes.map((q, i) => (
-            <Reveal key={q.name} delay={i * 100}>
-              <figure className="h-full rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                <div className="flex gap-0.5 text-[color:var(--cta)]">
-                  {Array.from({ length: 5 }).map((_, s) => (
-                    <Star key={s} className="h-4 w-4 fill-current" />
-                  ))}
-                </div>
-                <blockquote className="mt-3 text-sm text-foreground">"{q.text}"</blockquote>
-                <figcaption className="mt-4 text-xs text-muted-foreground">
-                  {q.name} · {q.city}
-                </figcaption>
-              </figure>
-            </Reveal>
+    <section ref={ref} className="container-wide py-10 md:py-14">
+      <div className="mb-6 flex items-end justify-between">
+        <h2 className="font-display text-3xl font-bold md:text-4xl">Trenutno dostupno</h2>
+        <Link to="/kupi" className="inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--accent-brand)] hover:underline">
+          Sve <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+
+      {items.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
+          Uskoro — puni se inventar.
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((it, idx) => (
+            <ProductCard key={it.id} it={it} idx={idx} visible={shown} />
           ))}
         </div>
+      )}
+    </section>
+  );
+}
+
+type InvItem = Awaited<ReturnType<typeof getInventory>>[number];
+
+function gradeBadgeClass(g: string) {
+  if (g === "A+") return "badge-grade-aplus";
+  if (g === "A") return "badge-grade-a";
+  return "badge-grade-b";
+}
+
+function ProductCard({ it, idx, visible }: { it: InvItem; idx: number; visible: boolean }) {
+  const model = (it.devices as { model_name: string } | null)?.model_name ?? "iPhone";
+  const grade = (it.grade as "A+" | "A" | "B") ?? "A";
+  const price = Number(it.list_price);
+  const orig = msrpFor(model, it.storage_gb);
+  const pct = savingsPct(price, model, it.storage_gb);
+  const displayPrice = useCountUp(price, visible, 700, idx * 60);
+  const displayPct = useCountUp(pct ?? 0, visible, 700, idx * 60);
+  const batteryClass = it.battery_health >= 90 ? "text-[color:var(--grade-a-plus)]" : "text-[color:var(--grade-b)]";
+
+  return (
+    <Link
+      to="/kupi/$id"
+      params={{ id: it.id }}
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card card-hover"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(12px)",
+        transition: `opacity 500ms ease ${idx * 60}ms, transform 500ms ease ${idx * 60}ms, box-shadow 250ms ease, translate 250ms ease`,
+      }}
+    >
+      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-[color:var(--surface-2)]">
+        {it.photos && it.photos[0] ? (
+          <img src={it.photos[0]} alt={model} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        ) : (
+          <DevicePhoto modelName={model} className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105" />
+        )}
+        <span className={`absolute left-3 top-3 rounded-full px-2 py-0.5 text-[11px] font-bold ${gradeBadgeClass(grade)}`}>
+          {grade}
+        </span>
+        {pct !== null && (
+          <span className="absolute right-3 top-3 rounded-full bg-[color:var(--foreground)]/90 px-2 py-0.5 text-[11px] font-semibold text-white backdrop-blur">
+            −{displayPct}%
+          </span>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col p-4">
+        <div className="text-sm font-semibold">{model}</div>
+        <div className="mt-0.5 text-xs text-muted-foreground">
+          {it.storage_gb >= 1024 ? "1 TB" : `${it.storage_gb} GB`}
+          {it.color ? ` · ${it.color}` : ""}
+        </div>
+        <div className={`mt-1 text-xs font-medium ${batteryClass}`}>Baterija {it.battery_health}%</div>
+        <div className="mt-3 flex items-baseline gap-2">
+          <div className="font-display text-2xl font-bold">{displayPrice} €</div>
+          {orig && orig > price && (
+            <div className="text-sm text-muted-foreground line-through">{orig} €</div>
+          )}
+        </div>
+        <button className="mt-3 w-full rounded-full bg-[color:var(--foreground)] py-2 text-sm font-semibold text-white transition-colors hover:bg-[color:var(--accent-brand)]">
+          Dodaj u korpu
+        </button>
+      </div>
+    </Link>
+  );
+}
+
+/* ------------------------------ Grade explanation ------------------------------ */
+function GradeSection() {
+  const grades = [
+    { g: "A+", cls: "badge-grade-aplus", title: "Odlično", body: "Kao novo. Bez vidljivih tragova upotrebe. Baterija 95%+." },
+    { g: "A",  cls: "badge-grade-a",     title: "Vrlo dobro", body: "Sitne mikrogrebotine vidljive iz određenog ugla. Baterija 90%+." },
+    { g: "B",  cls: "badge-grade-b",     title: "Dobro", body: "Vidljivi tragovi upotrebe. Puna funkcionalnost. Baterija 85%+." },
+  ];
+  return (
+    <section className="bg-[color:var(--surface-2)] py-14">
+      <div className="container-wide">
+        <div className="mb-8 max-w-2xl">
+          <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--accent-brand)]">Naša kategorizacija</div>
+          <h2 className="mt-2 font-display text-3xl font-bold md:text-4xl">Tri klase stanja — jasno i pošteno</h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {grades.map((x) => (
+            <div key={x.g} className="rounded-2xl border border-border bg-card p-6 card-hover">
+              <div className="flex items-center gap-3">
+                <span className={`rounded-full px-2.5 py-0.5 text-sm font-bold ${x.cls}`}>{x.g}</span>
+                <div className="font-semibold">{x.title}</div>
+              </div>
+              <p className="mt-3 text-sm text-muted-foreground">{x.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------ Testimonials ------------------------------ */
+function Testimonials() {
+  const items = [
+    { name: "Marko", city: "Podgorica", body: "Kupio iPhone 14. Stanje kao na slikama, brza dostava. Preporučujem." },
+    { name: "Ana",   city: "Budva",     body: "Prodala sam stari 12 Pro — ponuda poštena, isplata brza." },
+    { name: "Nikola",city: "Nikšić",    body: "Prvi put kupujem obnovljen. Garancija radi — smireno spavam." },
+  ];
+  return (
+    <section className="container-wide py-14">
+      <h2 className="mb-8 font-display text-3xl font-bold md:text-4xl">Šta kažu naši kupci</h2>
+      <div className="grid gap-4 md:grid-cols-3">
+        {items.map((t) => (
+          <div key={t.name} className="rounded-2xl border border-border bg-card p-6 card-hover">
+            <div className="flex gap-0.5 text-[color:var(--grade-b)]">
+              {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+            </div>
+            <p className="mt-3 text-sm">{t.body}</p>
+            <div className="mt-4 text-sm font-semibold">{t.name} <span className="text-muted-foreground font-normal">· {t.city}</span></div>
+          </div>
+        ))}
       </div>
     </section>
   );

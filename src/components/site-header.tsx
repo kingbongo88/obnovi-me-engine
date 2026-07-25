@@ -3,35 +3,45 @@ import { ShoppingBag } from "lucide-react";
 import { me } from "@/i18n/me";
 import { useCart } from "@/lib/cart";
 
+export function Logo({ size = "md", tone = "dark" }: { size?: "sm" | "md" | "lg"; tone?: "dark" | "light" }) {
+  const sz = size === "lg" ? "text-2xl" : size === "sm" ? "text-base" : "text-xl";
+  const base = tone === "light" ? "text-white" : "text-[color:var(--foreground)]";
+  return (
+    <span className={`font-display font-extrabold tracking-tight ${sz} ${base}`}>
+      <span>obnovi</span>
+      <span className="font-semibold text-[color:var(--accent-brand)]">.me</span>
+    </span>
+  );
+}
+
 export function SiteHeader() {
   const count = useCart((s) => s.items.length);
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link to="/" className="flex items-baseline gap-1 font-semibold tracking-tight">
-          <span className="text-lg">obnovi</span>
-          <span className="text-lg text-[color:var(--accent-brand)]">.me</span>
+    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+        <Link to="/" className="flex items-baseline gap-1">
+          <Logo size="md" />
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-          <Link to="/prodaj" className="hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
-            {me.nav.sell}
-          </Link>
-          <Link to="/kupi" className="hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
+        <nav className="hidden items-center gap-7 text-sm font-medium text-muted-foreground md:flex">
+          <Link to="/kupi" className="hover:text-foreground" activeProps={{ className: "text-foreground" }}>
             {me.nav.shop}
           </Link>
-          <Link to="/kako-radi" className="hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
+          <Link to="/prodaj" className="hover:text-foreground" activeProps={{ className: "text-foreground" }}>
+            {me.nav.sell}
+          </Link>
+          <Link to="/kako-radi" className="hover:text-foreground" activeProps={{ className: "text-foreground" }}>
             {me.nav.how}
           </Link>
-          <Link to="/pitanja" className="hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
+          <Link to="/pitanja" className="hover:text-foreground" activeProps={{ className: "text-foreground" }}>
             {me.nav.faq}
           </Link>
-          <Link to="/kontakt" className="hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
+          <Link to="/kontakt" className="hover:text-foreground" activeProps={{ className: "text-foreground" }}>
             {me.nav.contact}
           </Link>
         </nav>
         <Link
           to="/kosarica"
-          className="relative inline-flex h-9 items-center gap-2 rounded-full border border-border px-3 text-sm hover:bg-accent"
+          className="relative inline-flex h-9 items-center gap-2 rounded-full border border-border px-3 text-sm font-medium hover:border-[color:var(--accent-brand)]"
         >
           <ShoppingBag className="h-4 w-4" />
           <span className="hidden sm:inline">Korpa</span>
@@ -48,13 +58,10 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-border bg-[color:var(--surface-2)]">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-4">
+    <footer className="mt-20 border-t border-border bg-[color:var(--surface-2)]">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-4">
         <div>
-          <div className="flex items-baseline gap-1 font-semibold">
-            <span>obnovi</span>
-            <span className="text-[color:var(--accent-brand)]">.me</span>
-          </div>
+          <Logo size="md" />
           <p className="mt-3 max-w-xs text-sm text-muted-foreground">{me.tagline}</p>
         </div>
         <div>
