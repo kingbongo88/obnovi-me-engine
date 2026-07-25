@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as NarudzbaRefRouteImport } from './routes/narudzba.$ref'
 import { Route as KupiIdRouteImport } from './routes/kupi.$id'
+import { Route as KupiIphoneSlugRouteImport } from './routes/kupi-iphone.$slug'
 import { Route as AdminSadrzajRouteImport } from './routes/admin.sadrzaj'
 import { Route as AdminOtkupiRouteImport } from './routes/admin.otkupi'
 import { Route as AdminNarudzbeRouteImport } from './routes/admin.narudzbe'
@@ -100,6 +101,11 @@ const KupiIdRoute = KupiIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => KupiRoute,
 } as any)
+const KupiIphoneSlugRoute = KupiIphoneSlugRouteImport.update({
+  id: '/kupi-iphone/$slug',
+  path: '/kupi-iphone/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSadrzajRoute = AdminSadrzajRouteImport.update({
   id: '/sadrzaj',
   path: '/sadrzaj',
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/admin/narudzbe': typeof AdminNarudzbeRoute
   '/admin/otkupi': typeof AdminOtkupiRoute
   '/admin/sadrzaj': typeof AdminSadrzajRoute
+  '/kupi-iphone/$slug': typeof KupiIphoneSlugRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
   '/admin/': typeof AdminIndexRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByTo {
   '/admin/narudzbe': typeof AdminNarudzbeRoute
   '/admin/otkupi': typeof AdminOtkupiRoute
   '/admin/sadrzaj': typeof AdminSadrzajRoute
+  '/kupi-iphone/$slug': typeof KupiIphoneSlugRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
   '/admin': typeof AdminIndexRoute
@@ -192,6 +200,7 @@ export interface FileRoutesById {
   '/admin/narudzbe': typeof AdminNarudzbeRoute
   '/admin/otkupi': typeof AdminOtkupiRoute
   '/admin/sadrzaj': typeof AdminSadrzajRoute
+  '/kupi-iphone/$slug': typeof KupiIphoneSlugRoute
   '/kupi/$id': typeof KupiIdRoute
   '/narudzba/$ref': typeof NarudzbaRefRoute
   '/admin/': typeof AdminIndexRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/admin/narudzbe'
     | '/admin/otkupi'
     | '/admin/sadrzaj'
+    | '/kupi-iphone/$slug'
     | '/kupi/$id'
     | '/narudzba/$ref'
     | '/admin/'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/admin/narudzbe'
     | '/admin/otkupi'
     | '/admin/sadrzaj'
+    | '/kupi-iphone/$slug'
     | '/kupi/$id'
     | '/narudzba/$ref'
     | '/admin'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/admin/narudzbe'
     | '/admin/otkupi'
     | '/admin/sadrzaj'
+    | '/kupi-iphone/$slug'
     | '/kupi/$id'
     | '/narudzba/$ref'
     | '/admin/'
@@ -277,6 +289,7 @@ export interface RootRouteChildren {
   ONamaRoute: typeof ONamaRoute
   PitanjaRoute: typeof PitanjaRoute
   ProdajRoute: typeof ProdajRouteWithChildren
+  KupiIphoneSlugRoute: typeof KupiIphoneSlugRoute
   NarudzbaRefRoute: typeof NarudzbaRefRoute
 }
 
@@ -380,6 +393,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KupiIdRouteImport
       parentRoute: typeof KupiRoute
     }
+    '/kupi-iphone/$slug': {
+      id: '/kupi-iphone/$slug'
+      path: '/kupi-iphone/$slug'
+      fullPath: '/kupi-iphone/$slug'
+      preLoaderRoute: typeof KupiIphoneSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/sadrzaj': {
       id: '/admin/sadrzaj'
       path: '/sadrzaj'
@@ -478,6 +498,7 @@ const rootRouteChildren: RootRouteChildren = {
   ONamaRoute: ONamaRoute,
   PitanjaRoute: PitanjaRoute,
   ProdajRoute: ProdajRouteWithChildren,
+  KupiIphoneSlugRoute: KupiIphoneSlugRoute,
   NarudzbaRefRoute: NarudzbaRefRoute,
 }
 export const routeTree = rootRouteImport

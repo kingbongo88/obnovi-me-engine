@@ -73,8 +73,10 @@ function fmtStorage(gb: number) {
   return gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`;
 }
 
+type ModelData = NonNullable<Awaited<ReturnType<typeof getModelBySlug>>>;
+
 function ModelDetail() {
-  const m = Route.useLoaderData();
+  const m = Route.useLoaderData() as ModelData;
   const nav = useNavigate();
   const add = useCart((s) => s.add);
 
