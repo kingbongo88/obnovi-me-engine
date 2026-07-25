@@ -6,7 +6,7 @@ import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { me } from "@/i18n/me";
 import { getPricingBundle, submitTradeIn } from "@/lib/pricing.functions";
 import { computeOffer, type OfferInput, type OfferResult } from "@/lib/pricing";
-import { ArrowRight, ArrowLeft, Search, Check, X, AlertTriangle } from "lucide-react";
+import { ArrowRight, ArrowLeft, Search, Check, X, AlertTriangle, Truck, Shield, RotateCcw } from "lucide-react";
 import { DevicePhoto } from "@/components/device-photo";
 import { toast } from "sonner";
 
