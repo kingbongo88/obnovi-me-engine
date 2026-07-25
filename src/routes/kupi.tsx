@@ -4,13 +4,14 @@ import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { getInventory } from "@/lib/pricing.functions";
 import { me } from "@/i18n/me";
 import { useMemo, useState } from "react";
-import { Smartphone } from "lucide-react";
+import { DeviceSilhouette } from "@/components/device-silhouette";
+import { GradeMeter } from "@/components/grade-meter";
 
 export const Route = createFileRoute("/kupi")({
   head: () => ({
     meta: [
       { title: "Kupi obnovljeni iPhone — Obnovi.me" },
-      { name: "description", content: "Obnovljeni iPhone uređaji sa 12 mjeseci garancije, ≥90% baterija, 14 dana povrata." },
+      { name: "description", content: "Obnovljeni iPhone uređaji sa 6 mjeseci garancije, ≥85% baterija, 14 dana povrata." },
       { property: "og:title", content: "Kupi obnovljeni iPhone — Obnovi.me" },
       { property: "og:description", content: "Testirani uređaji, garancija, plaćanje pouzećem." },
     ],
@@ -57,32 +58,37 @@ function ShopPage() {
           </div>
         ) : (
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((it) => (
-              <Link
-                key={it.id}
-                to="/kupi/$id"
-                params={{ id: it.id }}
-                className="group overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg"
-              >
-                <div className="flex aspect-[4/3] items-center justify-center bg-[color:var(--surface-2)]">
-                  {it.photos && it.photos[0] ? (
-                    <img src={it.photos[0]} alt={(it.devices as { model_name: string } | null)?.model_name ?? ""} className="h-full w-full object-cover" />
-                  ) : (
-                    <Smartphone className="h-16 w-16 text-muted-foreground/40" />
-                  )}
-                </div>
-                <div className="p-4">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <div className="font-medium">{(it.devices as { model_name: string } | null)?.model_name}</div>
-                    <span className="rounded-full border border-border px-2 py-0.5 text-[11px]">{it.grade}</span>
+            {filtered.map((it) => {
+              const model = (it.devices as { model_name: string } | null)?.model_name ?? "iPhone";
+              const grade = (it.grade as "A+" | "A" | "B") ?? "A";
+              return (
+                <Link
+                  key={it.id}
+                  to="/kupi/$id"
+                  params={{ id: it.id }}
+                  className="group overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-lg"
+                >
+                  <div className="flex aspect-[4/3] items-center justify-center bg-[color:var(--surface-2)] text-[color:var(--accent-brand)]">
+                    {it.photos && it.photos[0] ? (
+                      <img src={it.photos[0]} alt={model} className="h-full w-full object-cover" />
+                    ) : (
+                      <DeviceSilhouette modelName={model} className="h-32 w-auto" />
+                    )}
                   </div>
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    {it.storage_gb >= 1024 ? "1 TB" : `${it.storage_gb} GB`} · Baterija {it.battery_health}%
+                  <div className="p-4">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <div className="font-medium">{model}</div>
+                      <span className="rounded-full border border-border px-2 py-0.5 text-[11px]">{grade}</span>
+                    </div>
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      {it.storage_gb >= 1024 ? "1 TB" : `${it.storage_gb} GB`} · Baterija {it.battery_health}%
+                    </div>
+                    <div className="mt-3"><GradeMeter grade={grade} size="sm" showLabel={false} /></div>
+                    <div className="mt-3 font-display text-2xl">{Number(it.list_price)} €</div>
                   </div>
-                  <div className="mt-3 font-display text-2xl">{Number(it.list_price)} €</div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
       </main>

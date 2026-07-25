@@ -7,6 +7,7 @@ import { me } from "@/i18n/me";
 import { getPricingBundle, submitTradeIn } from "@/lib/pricing.functions";
 import { computeOffer, type OfferInput, type OfferResult } from "@/lib/pricing";
 import { ArrowRight, ArrowLeft, Search, Check, X, AlertTriangle } from "lucide-react";
+import { DeviceSilhouette } from "@/components/device-silhouette";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/prodaj")({
@@ -170,18 +171,21 @@ function ModelGrid({
   return (
     <div className="mt-8">
       <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{title}</h2>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
         {list.map((d) => (
           <button
             key={d.id}
             onClick={() => onPick(d.id)}
-            className="group flex items-center justify-between rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:border-[color:var(--accent-brand)]"
+            className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:border-[color:var(--accent-brand)]"
           >
-            <div>
-              <div className="font-medium">{d.model_name}</div>
+            <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-[color:var(--surface-2)] text-[color:var(--accent-brand)]">
+              <DeviceSilhouette modelName={d.model_name} className="h-14 w-auto" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate font-medium">{d.model_name}</div>
               <div className="text-xs text-muted-foreground">{d.release_year}</div>
             </div>
-            <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
           </button>
         ))}
       </div>
