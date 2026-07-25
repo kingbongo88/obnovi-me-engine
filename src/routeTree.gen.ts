@@ -10,7 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProdajRouteImport } from './routes/prodaj'
+import { Route as NaplataRouteImport } from './routes/naplata'
+import { Route as KupiRouteImport } from './routes/kupi'
+import { Route as KosaricaRouteImport } from './routes/kosarica'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NarudzbaRefRouteImport } from './routes/narudzba.$ref'
+import { Route as KupiIdRouteImport } from './routes/kupi.$id'
 import { Route as ProdajUspjehRefRouteImport } from './routes/prodaj.uspjeh.$ref'
 
 const ProdajRoute = ProdajRouteImport.update({
@@ -18,10 +23,35 @@ const ProdajRoute = ProdajRouteImport.update({
   path: '/prodaj',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NaplataRoute = NaplataRouteImport.update({
+  id: '/naplata',
+  path: '/naplata',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KupiRoute = KupiRouteImport.update({
+  id: '/kupi',
+  path: '/kupi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KosaricaRoute = KosaricaRouteImport.update({
+  id: '/kosarica',
+  path: '/kosarica',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const NarudzbaRefRoute = NarudzbaRefRouteImport.update({
+  id: '/narudzba/$ref',
+  path: '/narudzba/$ref',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KupiIdRoute = KupiIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => KupiRoute,
 } as any)
 const ProdajUspjehRefRoute = ProdajUspjehRefRouteImport.update({
   id: '/uspjeh/$ref',
@@ -31,31 +61,75 @@ const ProdajUspjehRefRoute = ProdajUspjehRefRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/kosarica': typeof KosaricaRoute
+  '/kupi': typeof KupiRouteWithChildren
+  '/naplata': typeof NaplataRoute
   '/prodaj': typeof ProdajRouteWithChildren
+  '/kupi/$id': typeof KupiIdRoute
+  '/narudzba/$ref': typeof NarudzbaRefRoute
   '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/kosarica': typeof KosaricaRoute
+  '/kupi': typeof KupiRouteWithChildren
+  '/naplata': typeof NaplataRoute
   '/prodaj': typeof ProdajRouteWithChildren
+  '/kupi/$id': typeof KupiIdRoute
+  '/narudzba/$ref': typeof NarudzbaRefRoute
   '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/kosarica': typeof KosaricaRoute
+  '/kupi': typeof KupiRouteWithChildren
+  '/naplata': typeof NaplataRoute
   '/prodaj': typeof ProdajRouteWithChildren
+  '/kupi/$id': typeof KupiIdRoute
+  '/narudzba/$ref': typeof NarudzbaRefRoute
   '/prodaj/uspjeh/$ref': typeof ProdajUspjehRefRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/prodaj' | '/prodaj/uspjeh/$ref'
+  fullPaths:
+    | '/'
+    | '/kosarica'
+    | '/kupi'
+    | '/naplata'
+    | '/prodaj'
+    | '/kupi/$id'
+    | '/narudzba/$ref'
+    | '/prodaj/uspjeh/$ref'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/prodaj' | '/prodaj/uspjeh/$ref'
-  id: '__root__' | '/' | '/prodaj' | '/prodaj/uspjeh/$ref'
+  to:
+    | '/'
+    | '/kosarica'
+    | '/kupi'
+    | '/naplata'
+    | '/prodaj'
+    | '/kupi/$id'
+    | '/narudzba/$ref'
+    | '/prodaj/uspjeh/$ref'
+  id:
+    | '__root__'
+    | '/'
+    | '/kosarica'
+    | '/kupi'
+    | '/naplata'
+    | '/prodaj'
+    | '/kupi/$id'
+    | '/narudzba/$ref'
+    | '/prodaj/uspjeh/$ref'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KosaricaRoute: typeof KosaricaRoute
+  KupiRoute: typeof KupiRouteWithChildren
+  NaplataRoute: typeof NaplataRoute
   ProdajRoute: typeof ProdajRouteWithChildren
+  NarudzbaRefRoute: typeof NarudzbaRefRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -67,12 +141,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdajRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/naplata': {
+      id: '/naplata'
+      path: '/naplata'
+      fullPath: '/naplata'
+      preLoaderRoute: typeof NaplataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kupi': {
+      id: '/kupi'
+      path: '/kupi'
+      fullPath: '/kupi'
+      preLoaderRoute: typeof KupiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kosarica': {
+      id: '/kosarica'
+      path: '/kosarica'
+      fullPath: '/kosarica'
+      preLoaderRoute: typeof KosaricaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/narudzba/$ref': {
+      id: '/narudzba/$ref'
+      path: '/narudzba/$ref'
+      fullPath: '/narudzba/$ref'
+      preLoaderRoute: typeof NarudzbaRefRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kupi/$id': {
+      id: '/kupi/$id'
+      path: '/$id'
+      fullPath: '/kupi/$id'
+      preLoaderRoute: typeof KupiIdRouteImport
+      parentRoute: typeof KupiRoute
     }
     '/prodaj/uspjeh/$ref': {
       id: '/prodaj/uspjeh/$ref'
@@ -83,6 +192,16 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface KupiRouteChildren {
+  KupiIdRoute: typeof KupiIdRoute
+}
+
+const KupiRouteChildren: KupiRouteChildren = {
+  KupiIdRoute: KupiIdRoute,
+}
+
+const KupiRouteWithChildren = KupiRoute._addFileChildren(KupiRouteChildren)
 
 interface ProdajRouteChildren {
   ProdajUspjehRefRoute: typeof ProdajUspjehRefRoute
@@ -97,7 +216,11 @@ const ProdajRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KosaricaRoute: KosaricaRoute,
+  KupiRoute: KupiRouteWithChildren,
+  NaplataRoute: NaplataRoute,
   ProdajRoute: ProdajRouteWithChildren,
+  NarudzbaRefRoute: NarudzbaRefRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
