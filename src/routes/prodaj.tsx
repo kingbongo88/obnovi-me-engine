@@ -17,7 +17,9 @@ export const Route = createFileRoute("/prodaj")({
       { name: "description", content: "Dobij konkretnu ponudu za svoj iPhone za 3 minuta. Otkup u Crnoj Gori." },
       { property: "og:title", content: "Prodaj svoj iPhone — Obnovi.me" },
       { property: "og:description", content: "Konkretna ponuda za 3 minuta. Šalji poštom ili dogovori sastanak sa predstavnikom." },
+      { property: "og:url", content: "https://obnovi.app/prodaj" },
     ],
+    links: [{ rel: "canonical", href: "https://obnovi.app/prodaj" }],
   }),
   loader: ({ context }) =>
     context.queryClient.ensureQueryData({
@@ -242,6 +244,7 @@ function Step1({
       <div className="mt-6 flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2">
         <Search className="h-4 w-4 text-muted-foreground" />
         <input
+          aria-label="Pretraži modele"
           className="w-full bg-transparent text-sm outline-none"
           placeholder={me.sell.searchPlaceholder}
           value={q}

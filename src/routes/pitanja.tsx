@@ -9,6 +9,22 @@ export const Route = createFileRoute("/pitanja")({
       { name: "description", content: "Odgovori na česta pitanja o garanciji, povratu, klasifikaciji i procesu otkupa." },
       { property: "og:title", content: "Česta pitanja — Obnovi.me" },
       { property: "og:description", content: "Garancija, povrat, klasifikacija, otkup." },
+      { property: "og:url", content: "https://obnovi.app/pitanja" },
+    ],
+    links: [{ rel: "canonical", href: "https://obnovi.app/pitanja" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: me.faq.items.map((it) => ({
+            "@type": "Question",
+            name: it.q,
+            acceptedAnswer: { "@type": "Answer", text: it.a },
+          })),
+        }),
+      },
     ],
   }),
   component: FAQ,

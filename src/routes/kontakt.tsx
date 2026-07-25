@@ -10,7 +10,9 @@ export const Route = createFileRoute("/kontakt")({
       { name: "description", content: "Kontaktirajte nas. Kontakt forma i telefon." },
       { property: "og:title", content: "Kontakt — Obnovi.me" },
       { property: "og:description", content: "Kontakt podaci i lokacije." },
+      { property: "og:url", content: "https://obnovi.app/kontakt" },
     ],
+    links: [{ rel: "canonical", href: "https://obnovi.app/kontakt" }],
   }),
   component: Contact,
 });

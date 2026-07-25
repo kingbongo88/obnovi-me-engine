@@ -17,7 +17,9 @@ export const Route = createFileRoute("/kupi")({
       { name: "description", content: "Odaberi model. Obnovljeni iPhone uređaji sa 6 mjeseci garancije, ≥85% baterija, 14 dana povrata." },
       { property: "og:title", content: "Kupi obnovljeni iPhone — Obnovi.me" },
       { property: "og:description", content: "Testirani obnovljeni iPhone modeli, garancija, plaćanje pouzećem." },
+      { property: "og:url", content: "https://obnovi.app/kupi" },
     ],
+    links: [{ rel: "canonical", href: "https://obnovi.app/kupi" }],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQuery),
   component: ShopPage,
@@ -146,6 +148,7 @@ function ShopPage() {
               <div className="text-xs text-muted-foreground">Do {priceMax} €</div>
               <input
                 type="range"
+                aria-label="Maksimalna cijena"
                 min={100}
                 max={3000}
                 step={50}

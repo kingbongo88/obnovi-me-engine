@@ -9,7 +9,7 @@ import { GradeMeter } from "@/components/grade-meter";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/kupi/$id")({
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const item = loaderData as Awaited<ReturnType<typeof getInventoryItem>> | undefined;
     if (!item) {
       return {
@@ -20,14 +20,44 @@ export const Route = createFileRoute("/kupi/$id")({
       };
     }
     const model = (item.devices as { model_name: string } | null)?.model_name ?? "iPhone";
-    const title = `${model} ${item.storage_gb >= 1024 ? "1 TB" : `${item.storage_gb} GB`} (${item.grade}) — ${Number(item.list_price)} € — Obnovi.me`;
-    const desc = `Obnovljeni ${model}, ${item.storage_gb >= 1024 ? "1TB" : item.storage_gb + "GB"}, stanje ${item.grade}, baterija ${item.battery_health}%. 6 mjeseci garancije.`;
+    const storage = item.storage_gb >= 1024 ? "1 TB" : `${item.storage_gb} GB`;
+    const price = Number(item.list_price);
+    const title = `${model} ${storage} (${item.grade}) — ${price} € — Obnovi.me`;
+    const desc = `Obnovljeni ${model}, ${storage}, stanje ${item.grade}, baterija ${item.battery_health}%. 6 mjeseci garancije.`;
+    const url = `https://obnovi.app/kupi/${params.id}`;
+    const image = Array.isArray(item.photos) && item.photos[0] ? item.photos[0] : undefined;
     return {
       meta: [
         { title },
         { name: "description", content: desc },
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
+        { property: "og:type", content: "product" },
+        { property: "og:url", content: url },
+        ...(image ? [{ property: "og:image", content: image } as const, { name: "twitter:image", content: image } as const] : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: `${model} ${storage} (${item.grade})`,
+            description: desc,
+            ...(image ? { image } : {}),
+            brand: { "@type": "Brand", name: "Apple" },
+            category: "Refurbished smartphone",
+            offers: {
+              "@type": "Offer",
+              url,
+              priceCurrency: "EUR",
+              price: price.toFixed(2),
+              itemCondition: "https://schema.org/RefurbishedCondition",
+              availability: item.status === "available" ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            },
+          }),
+        },
       ],
     };
   },

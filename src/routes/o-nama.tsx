@@ -9,7 +9,9 @@ export const Route = createFileRoute("/o-nama")({
       { name: "description", content: "Ko smo mi i zašto radimo obnovu iPhone uređaja u Crnoj Gori." },
       { property: "og:title", content: "O nama — Obnovi.me" },
       { property: "og:description", content: "Transparentan otkup i prodaja obnovljenih iPhone uređaja." },
+      { property: "og:url", content: "https://obnovi.app/o-nama" },
     ],
+    links: [{ rel: "canonical", href: "https://obnovi.app/o-nama" }],
   }),
   component: About,
 });

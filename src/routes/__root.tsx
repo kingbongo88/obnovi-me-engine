@@ -82,6 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1139c88c-809a-40f6-bd67-b59bff04ba41/id-preview-24837618--f5d18c75-67b1-4f39-8d80-0ae1ca0a4101.lovable.app-1784975985926.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1139c88c-809a-40f6-bd67-b59bff04ba41/id-preview-24837618--f5d18c75-67b1-4f39-8d80-0ae1ca0a4101.lovable.app-1784975985926.png" },
+      { property: "og:site_name", content: "Obnovi.me" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -91,6 +92,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Obnovi.me",
+          url: "https://obnovi.app",
+          logo: "https://obnovi.app/favicon.ico",
+          areaServed: "ME",
+          email: "kontakt@obnovi.me",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Obnovi.me",
+          url: "https://obnovi.app",
+          inLanguage: "sr-Latn-ME",
+        }),
       },
     ],
   }),

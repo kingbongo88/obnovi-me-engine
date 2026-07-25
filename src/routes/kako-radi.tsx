@@ -10,7 +10,9 @@ export const Route = createFileRoute("/kako-radi")({
       { name: "description", content: "Kako otkupljujemo i obnavljamo iPhone uređaje. Klasifikacija, garancija, proces." },
       { property: "og:title", content: "Kako radi — Obnovi.me" },
       { property: "og:description", content: "Kako otkupljujemo i obnavljamo iPhone uređaje." },
+      { property: "og:url", content: "https://obnovi.app/kako-radi" },
     ],
+    links: [{ rel: "canonical", href: "https://obnovi.app/kako-radi" }],
   }),
   component: How,
 });

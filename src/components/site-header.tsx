@@ -41,6 +41,7 @@ export function SiteHeader() {
         </nav>
         <Link
           to="/kosarica"
+          aria-label="Korpa"
           className="relative inline-flex h-9 items-center gap-2 rounded-full border border-border px-3 text-sm font-medium hover:border-[color:var(--accent-brand)]"
         >
           <ShoppingBag className="h-4 w-4" />
