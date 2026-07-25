@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-ro
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { getModelBySlug } from "@/lib/pricing.functions";
-import { DevicePhoto } from "@/components/device-photo";
+import { devicePhotoFor } from "@/components/device-photo";
 import { useCart } from "@/lib/cart";
 import { msrpFor } from "@/lib/msrp";
 import { useMemo, useState } from "react";
@@ -91,72 +91,6 @@ function colorHex(name: string): string {
   return COLOR_HEX[name.toLowerCase()] ?? "#94a3b8";
 }
 
-// Per-color CSS filter. We normalize the source render to monochrome first
-// (grayscale + sepia = uniform orange base at ~30° hue), then rotate/saturate
-// to the target color. This works regardless of the base image's original color.
-// Neutrals skip sepia and just adjust brightness/grayscale.
-const TINT = (hueDeg: number, sat = 1, bright = 1) =>
-  `grayscale(1) sepia(1) hue-rotate(${hueDeg - 30}deg) saturate(${sat}) brightness(${bright})`;
-const NEUTRAL = (bright: number) => `grayscale(1) brightness(${bright})`;
-
-const COLOR_FILTER: Record<string, string> = {
-  // pinks / rose
-  pink: TINT(330, 2, 1.05), rose: TINT(340, 1.8, 1), roze: TINT(330, 2, 1.05),
-  // reds
-  red: TINT(0, 3, 0.95), "product red": TINT(0, 3.2, 0.9), crvena: TINT(0, 3, 0.95),
-  // blues
-  blue: TINT(220, 2.5, 0.95),
-  "sierra blue": TINT(215, 1.5, 1.05),
-  "pacific blue": TINT(220, 2, 0.75),
-  "blue titanium": TINT(215, 1.2, 0.9),
-  ultramarine: TINT(230, 2.8, 0.85),
-  plava: TINT(220, 2.5, 0.95),
-  // greens / teal
-  green: TINT(120, 2, 0.95),
-  "alpine green": TINT(130, 1.5, 0.85),
-  "midnight green": TINT(140, 1.2, 0.6),
-  teal: TINT(175, 2, 0.95),
-  zelena: TINT(120, 2, 0.95),
-  // yellows / golds
-  yellow: TINT(55, 2.5, 1.1),
-  gold: TINT(40, 1.2, 1.05),
-  zlatna: TINT(40, 1.2, 1.05),
-  žuta: TINT(55, 2.5, 1.1),
-  zuta: TINT(55, 2.5, 1.1),
-  // purples
-  purple: TINT(280, 1.8, 1),
-  "deep purple": TINT(275, 1.6, 0.75),
-  ljubičasta: TINT(280, 1.8, 1),
-  ljubicasta: TINT(280, 1.8, 1),
-  // neutrals
-  starlight: NEUTRAL(1.05),
-  white: NEUTRAL(1.1),
-  bijela: NEUTRAL(1.1),
-  silver: NEUTRAL(1),
-  srebrna: NEUTRAL(1),
-  grey: NEUTRAL(0.85),
-  gray: NEUTRAL(0.85),
-  siva: NEUTRAL(0.85),
-  // darks
-  black: NEUTRAL(0.32),
-  crna: NEUTRAL(0.32),
-  midnight: `grayscale(1) sepia(1) hue-rotate(190deg) saturate(1.5) brightness(0.3)`,
-  "space black": NEUTRAL(0.3),
-  "space gray": NEUTRAL(0.5),
-  "space grey": NEUTRAL(0.5),
-  graphite: NEUTRAL(0.45),
-  "black titanium": NEUTRAL(0.4),
-  // titanium neutrals
-  titanium: NEUTRAL(0.88),
-  titan: NEUTRAL(0.88),
-  "natural titanium": TINT(35, 0.4, 0.95),
-  "white titanium": NEUTRAL(1.05),
-  "desert titanium": TINT(30, 0.8, 0.95),
-};
-function colorFilter(name: string | null | undefined): string {
-  if (!name) return "none";
-  return COLOR_FILTER[name.toLowerCase()] ?? "none";
-}
 
 
 type ModelData = NonNullable<Awaited<ReturnType<typeof getModelBySlug>>>;
@@ -229,8 +163,10 @@ function ModelDetail() {
   const savings = orig && orig > price ? orig - price : null;
 
   const [gallery, setGallery] = useState(0);
-  const galleryImages = chosen?.photos && chosen.photos.length > 0 ? chosen.photos : [];
+  const fallbackImage = devicePhotoFor(m.model_name, color);
+  const galleryImages = chosen?.photos && chosen.photos.length > 0 ? chosen.photos : [fallbackImage];
   const tintHex = color ? colorHex(color) : "#e5e7eb";
+
 
   const onBuy = () => {
     if (!chosen) return;
@@ -266,16 +202,11 @@ function ModelDetail() {
               className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl transition-colors duration-500"
               style={{ background: `color-mix(in oklab, ${tintHex} 22%, var(--surface-2))` }}
             >
-              {galleryImages.length > 0 ? (
-                <img src={galleryImages[gallery]} alt={m.model_name} className="h-full w-full object-cover" />
-              ) : (
-                <div
-                  className="h-full w-full transition-[filter] duration-500"
-                  style={{ filter: colorFilter(color) }}
-                >
-                  <DevicePhoto modelName={m.model_name} className="h-full w-full object-contain p-10" eager />
-                </div>
-              )}
+              <img
+                src={galleryImages[Math.min(gallery, galleryImages.length - 1)]}
+                alt={color ? `${m.model_name} ${color}` : m.model_name}
+                className="h-full w-full object-contain p-10"
+              />
               <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-md">
                 <Shield className="h-3.5 w-3.5 text-[color:var(--accent-brand)]" /> 6 mjeseci garancije
               </div>
