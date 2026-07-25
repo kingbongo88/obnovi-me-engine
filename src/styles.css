@@ -147,8 +147,9 @@
   border-color: rgba(255,255,255,0.3);
   background: transparent;
   color: #FFFFFF;
+  &:hover { background: rgba(255,255,255,0.08); }
 }
-@utility btn-outline-light:hover { background: rgba(255,255,255,0.08); }
+
 
 /* Grade badges */
 @utility badge-grade-aplus { background-color: var(--grade-a-plus); color: #fff; }
