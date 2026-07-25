@@ -265,7 +265,12 @@ function ModelDetail() {
               {galleryImages.length > 0 ? (
                 <img src={galleryImages[gallery]} alt={m.model_name} className="h-full w-full object-cover" />
               ) : (
-                <DevicePhoto modelName={m.model_name} className="h-full w-full object-contain p-10" eager />
+                <div
+                  className="h-full w-full transition-[filter] duration-500"
+                  style={{ filter: colorFilter(color) }}
+                >
+                  <DevicePhoto modelName={m.model_name} className="h-full w-full object-contain p-10" eager />
+                </div>
               )}
               <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-md">
                 <Shield className="h-3.5 w-3.5 text-[color:var(--accent-brand)]" /> 6 mjeseci garancije
