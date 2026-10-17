@@ -61,7 +61,7 @@ function InvPage() {
             {((q.data ?? []) as unknown as InvRow[]).map((r) => (
               <tr key={r.id} className="border-t border-border">
                 <td className="px-4 py-3">{r.devices?.model_name}</td>
-                <td className="px-4 py-3">{r.storage_gb >= 1024 ? "1TB" : `${r.storage_gb}GB`}</td>
+                <td className="px-4 py-3">{r.storage_gb >= 1024 ? `${r.storage_gb / 1024} TB` : `${r.storage_gb}GB`}</td>
                 <td className="px-4 py-3">{r.grade}</td>
                 <td className="px-4 py-3">{r.battery_health}%</td>
                 <td className="px-4 py-3 font-medium">{Number(r.list_price)} €</td>

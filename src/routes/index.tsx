@@ -245,7 +245,7 @@ function ProductCard({ it, idx, visible }: { it: InvItem; idx: number; visible: 
       <div className="flex flex-1 flex-col p-4">
         <div className="text-sm font-semibold">{model}</div>
         <div className="mt-0.5 text-xs text-muted-foreground">
-          {it.storage_gb >= 1024 ? "1 TB" : `${it.storage_gb} GB`}
+          {it.storage_gb >= 1024 ? `${it.storage_gb / 1024} TB` : `${it.storage_gb} GB`}
           {it.color ? ` · ${it.color}` : ""}
         </div>
         <div className={`mt-1 text-xs font-medium ${batteryClass}`}>Baterija {it.battery_health}%</div>

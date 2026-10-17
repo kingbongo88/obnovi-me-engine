@@ -138,7 +138,7 @@ function QuoteSidebar({
               <div className="min-w-0">
                 <div className="font-semibold leading-tight [overflow-wrap:anywhere]">{device.model_name}</div>
                 <div className="text-xs text-muted-foreground">
-                  {state.storage_gb ? (state.storage_gb >= 1024 ? "1 TB" : `${state.storage_gb} GB`) : "Odaberi memoriju"}
+                  {state.storage_gb ? (state.storage_gb >= 1024 ? `${state.storage_gb / 1024} TB` : `${state.storage_gb} GB`) : "Odaberi memoriju"}
                 </div>
               </div>
             </div>
@@ -157,7 +157,7 @@ function QuoteSidebar({
             <ul className="mt-5 space-y-2 text-xs">
               <SummaryRow label="Model" value={device.model_name} />
               {state.storage_gb != null && (
-                <SummaryRow label="Memorija" value={state.storage_gb >= 1024 ? "1 TB" : `${state.storage_gb} GB`} />
+                <SummaryRow label="Memorija" value={state.storage_gb >= 1024 ? `${state.storage_gb / 1024} TB` : `${state.storage_gb} GB`} />
               )}
               {state.battery_health != null && <SummaryRow label="Baterija" value={`${state.battery_health}%`} />}
               {state.screen && <SummaryRow label="Ekran" value={me.sell[`screen_${state.screen}`]} />}
@@ -319,7 +319,7 @@ function Step2({
             onClick={() => onNext(gb)}
             className="rounded-2xl border border-border bg-card p-6 text-left transition-colors hover:border-[color:var(--accent-brand)]"
           >
-            <div className="font-display text-3xl">{gb >= 1024 ? "1 TB" : `${gb} GB`}</div>
+            <div className="font-display text-3xl">{gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`}</div>
           </button>
         ))}
       </div>

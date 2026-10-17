@@ -40,7 +40,7 @@ function OrdersPage() {
                 <tr key={o.id as string} className="border-t border-border">
                   <td className="px-4 py-3 font-mono text-xs">{o.reference_code as string}</td>
                   <td className="px-4 py-3">
-                    {snap.model_name} {snap.storage_gb ? (snap.storage_gb >= 1024 ? "1TB" : snap.storage_gb + "GB") : ""} {snap.grade ? `· ${snap.grade}` : ""}
+                    {snap.model_name} {snap.storage_gb ? (snap.storage_gb >= 1024 ? `${snap.storage_gb / 1024} TB` : snap.storage_gb + "GB") : ""} {snap.grade ? `· ${snap.grade}` : ""}
                   </td>
                   <td className="px-4 py-3 font-medium">{Number(o.total_price)} €</td>
                   <td className="px-4 py-3">

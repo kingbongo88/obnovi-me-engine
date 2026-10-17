@@ -41,7 +41,7 @@ function SubmissionsPage() {
               <tr key={s.id as string} className="border-t border-border">
                 <td className="px-4 py-3 font-mono text-xs">{s.reference_code as string}</td>
                 <td className="px-4 py-3">{s.model_name as string}</td>
-                <td className="px-4 py-3">{(s.storage_gb as number) >= 1024 ? "1TB" : `${s.storage_gb}GB`}</td>
+                <td className="px-4 py-3">{(s.storage_gb as number) >= 1024 ? `${s.storage_gb / 1024} TB` : `${s.storage_gb}GB`}</td>
                 <td className="px-4 py-3">{s.battery_health as number}%</td>
                 <td className="px-4 py-3">{(s.effective_grade as string) ?? "—"}</td>
                 <td className="px-4 py-3 font-medium">

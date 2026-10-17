@@ -112,7 +112,7 @@ function Checkout() {
             <div className="mt-3 space-y-2">
               {items.map((i) => (
                 <div key={i.inventory_id} className="flex justify-between text-sm">
-                  <span>{i.model_name} · {i.storage_gb >= 1024 ? "1TB" : `${i.storage_gb}GB`}</span>
+                  <span>{i.model_name} · {i.storage_gb >= 1024 ? `${i.storage_gb / 1024} TB` : `${i.storage_gb}GB`}</span>
                   <span>{i.list_price} €</span>
                 </div>
               ))}
