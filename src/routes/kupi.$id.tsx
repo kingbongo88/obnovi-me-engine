@@ -83,7 +83,7 @@ function NotFound() {
 }
 
 function Detail() {
-  const item = Route.useLoaderData();
+  const item = Route.useLoaderData()!;
   const nav = useNavigate();
   const add = useCart((s) => s.add);
   const model = (item.devices as { model_name: string } | null)?.model_name ?? "iPhone";

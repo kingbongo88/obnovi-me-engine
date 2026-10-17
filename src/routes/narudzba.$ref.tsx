@@ -26,7 +26,7 @@ export const Route = createFileRoute("/narudzba/$ref")({
 });
 
 function OrderPage() {
-  const order = Route.useLoaderData();
+  const order = Route.useLoaderData()!;
   const snap = order.item_snapshot as { model_name?: string; storage_gb?: number; grade?: string };
   const statusMap: Record<string, string> = {
     new: "Nova",
