@@ -36,6 +36,9 @@ const BASE_MSRP: Record<string, number> = {
   "iPhone Air": 1199,
   "iPhone 17 Pro": 1299,
   "iPhone 17 Pro Max": 1549,
+  "iPhone 18 Pro": 1399,
+  "iPhone 18 Pro Max": 1649,
+  "iPhone Duo": 2299,
 };
 
 // Very rough storage step-up (matches Apple's typical +€120 per tier).
@@ -45,6 +48,7 @@ const STORAGE_UPLIFT: Record<number, number> = {
   256: 120,
   512: 350,
   1024: 580,
+  2048: 1180,
 };
 
 export function msrpFor(modelName: string, storageGb: number): number | null {
