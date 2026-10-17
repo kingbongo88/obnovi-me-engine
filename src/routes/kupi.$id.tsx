@@ -20,7 +20,7 @@ export const Route = createFileRoute("/kupi/$id")({
       };
     }
     const model = (item.devices as { model_name: string } | null)?.model_name ?? "iPhone";
-    const storage = item.storage_gb >= 1024 ? "1 TB" : `${item.storage_gb} GB`;
+    const storage = item.storage_gb >= 1024 ? `${item.storage_gb / 1024} TB` : `${item.storage_gb} GB`;
     const price = Number(item.list_price);
     const title = `${model} ${storage} (${item.grade}) — ${price} € — Obnovi.me`;
     const desc = `Obnovljeni ${model}, ${storage}, stanje ${item.grade}, baterija ${item.battery_health}%. 6 mjeseci garancije.`;
@@ -117,7 +117,7 @@ function Detail() {
             <div className="text-xs uppercase tracking-widest text-muted-foreground">Obnovljeni</div>
             <h1 className="mt-2 font-display text-4xl">{model}</h1>
             <div className="mt-2 text-muted-foreground">
-              {item.storage_gb >= 1024 ? "1 TB" : `${item.storage_gb} GB`}
+              {item.storage_gb >= 1024 ? `${item.storage_gb / 1024} TB` : `${item.storage_gb} GB`}
               {item.color ? ` · ${item.color}` : ""}
             </div>
             <div className="mt-6 font-display text-5xl">{Number(item.list_price)} €</div>

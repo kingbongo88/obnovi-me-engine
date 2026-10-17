@@ -36,15 +36,15 @@ function AdminLayout() {
   }, [checkAdmin]);
 
   if (state === "loading") {
-    return <div className="min-h-screen"><SiteHeader /><main className="container-narrow py-24 text-center text-muted-foreground">{me.common.loading}</main></div>;
+    return <div className="min-h-screen"><SiteHeader /><main className="container-narrow py-24 text-center text-muted-foreground">Loading…</main></div>;
   }
   if (state === "no-session") {
     return (
       <div className="min-h-screen">
         <SiteHeader />
         <main className="container-narrow py-24 text-center">
-          <p className="text-muted-foreground">Potrebna je prijava.</p>
-          <Link to="/auth" className="btn-primary mt-4">Prijava</Link>
+          <p className="text-muted-foreground">Please sign in to continue.</p>
+          <Link to="/auth" className="btn-primary mt-4">Sign in</Link>
         </main>
       </div>
     );
@@ -70,12 +70,12 @@ function AdminLayout() {
         <aside className="w-56 shrink-0">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">{me.admin.title}</h2>
           <nav className="space-y-1 text-sm">
-            <AdminLink to="/admin" label="Pregled" />
+            <AdminLink to="/admin" label="Overview" />
             <AdminLink to="/admin/otkupi" label={me.admin.submissions} />
             <AdminLink to="/admin/inventar" label={me.admin.inventory} />
             <AdminLink to="/admin/narudzbe" label={me.admin.orders} />
             <AdminLink to="/admin/cjenovnik" label={me.admin.pricing} />
-            <AdminLink to="/admin/sadrzaj" label="Sadržaj" />
+            <AdminLink to="/admin/sadrzaj" label="Site content" />
           </nav>
           <button
             onClick={async () => { await supabase.auth.signOut(); nav({ to: "/auth" }); }}

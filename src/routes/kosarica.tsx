@@ -35,7 +35,7 @@ function Cart() {
                   <div className="flex-1">
                     <div className="font-medium">{i.model_name}</div>
                     <div className="text-xs text-muted-foreground">
-                      {i.storage_gb >= 1024 ? "1 TB" : `${i.storage_gb} GB`} · {i.grade}
+                      {i.storage_gb >= 1024 ? `${i.storage_gb / 1024} TB` : `${i.storage_gb} GB`} · {i.grade}
                     </div>
                   </div>
                   <div className="font-medium">{i.list_price} €</div>

@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { adminListContent, adminSaveContent, adminDeleteContent } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin/sadrzaj")({
-  head: () => ({ meta: [{ title: "Sadržaj — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Site content — Admin" }, { name: "robots", content: "noindex" }] }),
   component: AdminContent,
 });
 
@@ -54,7 +54,7 @@ function AdminContent() {
   }
 
   async function handleDelete(key: string) {
-    if (!confirm(`Obrisati "${key}"?`)) return;
+    if (!confirm(`Delete "${key}"?`)) return;
     await del({ data: { key } });
     await refresh();
   }
@@ -62,12 +62,12 @@ function AdminContent() {
   return (
     <div>
       <div className="mb-6 flex items-baseline justify-between">
-        <h1 className="text-2xl font-semibold">Sadržaj sajta</h1>
-        <p className="text-sm text-muted-foreground">Uredite tekstove početne, statičnih stranica i FAQ-a.</p>
+        <h1 className="text-2xl font-semibold">Site content</h1>
+        <p className="text-sm text-muted-foreground">Edit the text on the homepage, static pages and FAQ.</p>
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground">Učitavanje…</p>
+        <p className="text-muted-foreground">Loading…</p>
       ) : (
         <div className="space-y-4">
           {rows.map((r) => {
@@ -81,7 +81,7 @@ function AdminContent() {
                     onClick={() => handleDelete(r.key)}
                     className="text-xs text-muted-foreground hover:text-destructive"
                   >
-                    Obriši
+                    Delete
                   </button>
                 </div>
                 {isLong ? (
@@ -100,14 +100,14 @@ function AdminContent() {
                 )}
                 <div className="mt-2 flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">
-                    Ažurirano: {new Date(r.updated_at).toLocaleString("sr-Latn")}
+                    Updated: {new Date(r.updated_at).toLocaleString("en-GB")}
                   </span>
                   <button
                     disabled={!dirty || savingKey === r.key}
                     onClick={() => handleSave(r.key)}
                     className="btn-primary px-4 py-1.5 text-xs disabled:opacity-40"
                   >
-                    {savingKey === r.key ? "Čuva…" : "Sačuvaj"}
+                    {savingKey === r.key ? "Saving…" : "Save"}
                   </button>
                 </div>
               </div>
@@ -117,21 +117,21 @@ function AdminContent() {
       )}
 
       <div className="mt-8 rounded-xl border border-dashed bg-muted/30 p-4">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Novi ključ</h2>
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">New key</h2>
         <div className="grid gap-2 md:grid-cols-[220px_1fr_auto]">
           <input
-            placeholder="npr. home.hero_title"
+            placeholder="e.g. home.hero_title"
             value={newKey}
             onChange={(e) => setNewKey(e.target.value)}
             className="rounded-md border bg-background p-2 text-sm"
           />
           <input
-            placeholder="Vrijednost"
+            placeholder="Value"
             value={newValue}
             onChange={(e) => setNewValue(e.target.value)}
             className="rounded-md border bg-background p-2 text-sm"
           />
-          <button onClick={handleAdd} className="btn-primary px-4 py-2 text-sm">Dodaj</button>
+          <button onClick={handleAdd} className="btn-primary px-4 py-2 text-sm">Add</button>
         </div>
       </div>
     </div>

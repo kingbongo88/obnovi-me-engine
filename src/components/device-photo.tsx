@@ -50,6 +50,7 @@ function classify(name: string): Key {
   const isPro = /\bpro\b/.test(n);
   if (/\b16\b|16e/.test(n)) return isPro ? "E_PRO" : "E";
   if (/\b17\b|17e|\bair\b/.test(n)) return isPro ? "E_PRO" : "E";
+  if (/\b18\b|\bduo\b/.test(n)) return "E_PRO";
   if (/\b15\b/.test(n)) return isPro ? "D_PRO" : "D";
   if (/\b14\b/.test(n)) return isPro ? "C_PRO" : "C";
   if (/\b13\b/.test(n)) return isPro ? "C_PRO" : "C";

@@ -48,7 +48,7 @@ function OrderPage() {
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <Info label={me.checkout.orderRefLabel} value={order.reference_code} />
             <Info label="Status" value={statusMap[order.status] ?? order.status} />
-            <Info label="Uređaj" value={`${snap.model_name ?? ""} ${snap.storage_gb ? (snap.storage_gb >= 1024 ? "1TB" : snap.storage_gb + "GB") : ""}`} />
+            <Info label="Uređaj" value={`${snap.model_name ?? ""} ${snap.storage_gb ? (snap.storage_gb >= 1024 ? `${snap.storage_gb / 1024} TB` : snap.storage_gb + "GB") : ""}`} />
             <Info label="Iznos" value={`${Number(order.total_price)} €`} />
           </div>
           <Link to="/" className="btn-outline mt-8">Nazad na početnu</Link>

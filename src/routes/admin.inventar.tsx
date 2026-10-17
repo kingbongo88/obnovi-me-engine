@@ -33,15 +33,15 @@ function InvPage() {
   const p = useQuery({ queryKey: ["admin","pricing-all"], queryFn: () => getPricing() });
   const dm = useMutation({
     mutationFn: (id: string) => del({ data: { id } }),
-    onSuccess: () => { q.refetch(); toast.success("Obrisano"); },
+    onSuccess: () => { q.refetch(); toast.success("Deleted"); },
   });
   const [editing, setEditing] = useState<Partial<InvRow> | null>(null);
 
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl">Inventar</h1>
-        <button onClick={() => setEditing({})} className="btn-primary"><Plus className="mr-1 h-4 w-4" />Novi uređaj</button>
+        <h1 className="font-display text-3xl">Inventory</h1>
+        <button onClick={() => setEditing({})} className="btn-primary"><Plus className="mr-1 h-4 w-4" />New phone</button>
       </div>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
@@ -49,10 +49,10 @@ function InvPage() {
           <thead className="bg-[color:var(--surface-2)] text-left text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-4 py-3">Model</th>
-              <th className="px-4 py-3">Mem.</th>
-              <th className="px-4 py-3">Stanje</th>
-              <th className="px-4 py-3">Bat.</th>
-              <th className="px-4 py-3">Cijena</th>
+              <th className="px-4 py-3">Storage</th>
+              <th className="px-4 py-3">Grade</th>
+              <th className="px-4 py-3">Battery</th>
+              <th className="px-4 py-3">Price</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3"></th>
             </tr>
@@ -61,7 +61,7 @@ function InvPage() {
             {((q.data ?? []) as unknown as InvRow[]).map((r) => (
               <tr key={r.id} className="border-t border-border">
                 <td className="px-4 py-3">{r.devices?.model_name}</td>
-                <td className="px-4 py-3">{r.storage_gb >= 1024 ? "1TB" : `${r.storage_gb}GB`}</td>
+                <td className="px-4 py-3">{r.storage_gb >= 1024 ? `${r.storage_gb / 1024} TB` : `${r.storage_gb}GB`}</td>
                 <td className="px-4 py-3">{r.grade}</td>
                 <td className="px-4 py-3">{r.battery_health}%</td>
                 <td className="px-4 py-3 font-medium">{Number(r.list_price)} €</td>
@@ -69,13 +69,13 @@ function InvPage() {
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
                     <button onClick={() => setEditing(r)} className="text-muted-foreground hover:text-foreground"><Pencil className="h-4 w-4" /></button>
-                    <button onClick={() => { if (confirm("Obrisati?")) dm.mutate(r.id); }} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                    <button onClick={() => { if (confirm("Delete this phone?")) dm.mutate(r.id); }} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
                   </div>
                 </td>
               </tr>
             ))}
             {q.data && q.data.length === 0 && (
-              <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">Nema uređaja.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">No phones yet.</td></tr>
             )}
           </tbody>
         </table>
@@ -126,7 +126,7 @@ function InvEditor({
 
   const m = useMutation({
     mutationFn: async () => {
-      if (!f.device_id) throw new Error("Model je obavezan");
+      if (!f.device_id) throw new Error("Model is required");
       return save({
         data: {
           id: f.id,
@@ -142,46 +142,46 @@ function InvEditor({
         },
       });
     },
-    onSuccess: () => { toast.success("Sačuvano"); onSaved(); },
-    onError: (e) => toast.error(e instanceof Error ? e.message : "Greška"),
+    onSuccess: () => { toast.success("Saved"); onSaved(); },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Error"),
   });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-card p-6" onClick={(e) => e.stopPropagation()}>
-        <h2 className="font-display text-2xl">{f.id ? "Izmjena uređaja" : "Novi uređaj"}</h2>
+        <h2 className="font-display text-2xl">{f.id ? "Edit phone" : "New phone"}</h2>
         <div className="mt-4 grid gap-3">
           <label className="block">
             <div className="mb-1 text-xs font-medium">Model</div>
             <select value={f.device_id ?? ""} onChange={(e) => setF({ ...f, device_id: e.target.value })}
               className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm">
-              <option value="">— izaberi —</option>
+              <option value="">— select —</option>
               {pricing.devices.map((d) => <option key={d.id} value={d.id}>{d.model_name}</option>)}
             </select>
           </label>
           <div className="grid grid-cols-3 gap-2">
-            <Field label="Memorija (GB)" type="number" value={String(f.storage_gb ?? "")} onChange={(v) => setF({ ...f, storage_gb: parseInt(v)||0 })} />
+            <Field label="Storage (GB)" type="number" value={String(f.storage_gb ?? "")} onChange={(v) => setF({ ...f, storage_gb: parseInt(v)||0 })} />
             <label className="block">
-              <div className="mb-1 text-xs font-medium">Stanje</div>
+              <div className="mb-1 text-xs font-medium">Grade</div>
               <select value={f.grade ?? "A"} onChange={(e) => setF({ ...f, grade: e.target.value as "A+"|"A"|"B" })} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm">
                 <option value="A+">A+</option><option value="A">A</option><option value="B">B</option>
               </select>
             </label>
-            <Field label="Baterija (%)" type="number" value={String(f.battery_health ?? "")} onChange={(v) => setF({ ...f, battery_health: parseInt(v)||0 })} />
+            <Field label="Battery (%)" type="number" value={String(f.battery_health ?? "")} onChange={(v) => setF({ ...f, battery_health: parseInt(v)||0 })} />
           </div>
           <div className="flex items-end gap-2">
-            <Field label="Cijena (€)" type="number" value={String(f.list_price ?? "")} onChange={(v) => setF({ ...f, list_price: parseFloat(v)||0 })} />
+            <Field label="Price (€)" type="number" value={String(f.list_price ?? "")} onChange={(v) => setF({ ...f, list_price: parseFloat(v)||0 })} />
             <button type="button" onClick={() => setF({ ...f, list_price: suggested() })} className="rounded-full border border-border px-3 py-2 text-xs">
-              Predloži: {suggested()} €
+              Suggest: {suggested()} €
             </button>
           </div>
-          <Field label="Boja" value={f.color ?? ""} onChange={(v) => setF({ ...f, color: v })} />
+          <Field label="Color" value={f.color ?? ""} onChange={(v) => setF({ ...f, color: v })} />
           <label className="block">
-            <div className="mb-1 text-xs font-medium">Fotografije (URL, po jedan u redu)</div>
+            <div className="mb-1 text-xs font-medium">Photos (URLs, one per line)</div>
             <textarea rows={3} value={(f.photos ?? []).join("\n")} onChange={(e) => setF({ ...f, photos: e.target.value.split("\n").map((s) => s.trim()).filter(Boolean) })} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
           </label>
           <label className="block">
-            <div className="mb-1 text-xs font-medium">Opis</div>
+            <div className="mb-1 text-xs font-medium">Description</div>
             <textarea rows={3} value={f.description_me ?? ""} onChange={(e) => setF({ ...f, description_me: e.target.value })} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
           </label>
           <label className="block">
@@ -193,8 +193,8 @@ function InvEditor({
           </label>
         </div>
         <div className="mt-6 flex justify-end gap-2">
-          <button onClick={onClose} className="btn-outline">Otkaži</button>
-          <button onClick={() => m.mutate()} disabled={m.isPending} className="btn-primary disabled:opacity-40">Sačuvaj</button>
+          <button onClick={onClose} className="btn-outline">Cancel</button>
+          <button onClick={() => m.mutate()} disabled={m.isPending} className="btn-primary disabled:opacity-40">Save</button>
         </div>
       </div>
     </div>
