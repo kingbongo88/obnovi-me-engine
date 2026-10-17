@@ -7,7 +7,7 @@ type Ctx = { supabase: { from: (t: string) => { select: (c: string) => { eq: (co
 async function assertAdmin(ctx: Ctx) {
   const { data, error } = await ctx.supabase.from("user_roles").select("role").eq("user_id", ctx.userId).eq("role", "admin").maybeSingle();
   if (error) throw new Error(error.message);
-  if (!data) throw new Error("Zabranjen pristup");
+  if (!data) throw new Error("Access denied");
 }
 
 export const amIAdmin = createServerFn({ method: "GET" })

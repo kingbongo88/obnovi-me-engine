@@ -14,22 +14,22 @@ function OrdersPage() {
   const q = useQuery({ queryKey: ["admin","orders"], queryFn: () => list() });
   const m = useMutation({
     mutationFn: (v: { id: string; status: "new"|"confirmed"|"shipped"|"delivered"|"cancelled" }) => update({ data: v }),
-    onSuccess: () => { q.refetch(); toast.success("Ažurirano"); },
-    onError: (e) => toast.error(e instanceof Error ? e.message : "Greška"),
+    onSuccess: () => { q.refetch(); toast.success("Updated"); },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Error"),
   });
 
   return (
     <div>
-      <h1 className="font-display text-3xl">Porudžbine</h1>
+      <h1 className="font-display text-3xl">Orders</h1>
       <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
         <table className="w-full text-sm">
           <thead className="bg-[color:var(--surface-2)] text-left text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-4 py-3">Ref</th>
-              <th className="px-4 py-3">Uređaj</th>
-              <th className="px-4 py-3">Iznos</th>
-              <th className="px-4 py-3">Kupac</th>
-              <th className="px-4 py-3">Adresa</th>
+              <th className="px-4 py-3">Phone</th>
+              <th className="px-4 py-3">Total</th>
+              <th className="px-4 py-3">Customer</th>
+              <th className="px-4 py-3">Address</th>
               <th className="px-4 py-3">Status</th>
             </tr>
           </thead>
@@ -65,7 +65,7 @@ function OrdersPage() {
               );
             })}
             {q.data && q.data.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">Nema porudžbina.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">No orders yet.</td></tr>
             )}
           </tbody>
         </table>

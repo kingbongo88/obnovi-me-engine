@@ -14,26 +14,26 @@ function SubmissionsPage() {
   const q = useQuery({ queryKey: ["admin","submissions"], queryFn: () => list() });
   const m = useMutation({
     mutationFn: (v: { id: string; status: "pending"|"accepted"|"rejected"|"completed"|"cancelled" }) => update({ data: v }),
-    onSuccess: () => { q.refetch(); toast.success("Ažurirano"); },
-    onError: (e) => toast.error(e instanceof Error ? e.message : "Greška"),
+    onSuccess: () => { q.refetch(); toast.success("Updated"); },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Error"),
   });
 
   return (
     <div>
-      <h1 className="font-display text-3xl">Otkupi</h1>
+      <h1 className="font-display text-3xl">Trade-ins</h1>
       <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
         <table className="w-full text-sm">
           <thead className="bg-[color:var(--surface-2)] text-left text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-4 py-3">Ref</th>
               <th className="px-4 py-3">Model</th>
-              <th className="px-4 py-3">Memorija</th>
-              <th className="px-4 py-3">Bat.</th>
-              <th className="px-4 py-3">Stanje</th>
-              <th className="px-4 py-3">Ponuda</th>
-              <th className="px-4 py-3">Kontakt</th>
+              <th className="px-4 py-3">Storage</th>
+              <th className="px-4 py-3">Battery</th>
+              <th className="px-4 py-3">Grade</th>
+              <th className="px-4 py-3">Offer</th>
+              <th className="px-4 py-3">Contact</th>
               <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Akcije</th>
+              <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +70,7 @@ function SubmissionsPage() {
               </tr>
             ))}
             {q.data && q.data.length === 0 && (
-              <tr><td colSpan={9} className="px-4 py-8 text-center text-muted-foreground">Nema zahtjeva.</td></tr>
+              <tr><td colSpan={9} className="px-4 py-8 text-center text-muted-foreground">No requests yet.</td></tr>
             )}
           </tbody>
         </table>

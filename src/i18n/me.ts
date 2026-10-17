@@ -250,13 +250,13 @@ export const me = {
   },
 
   admin: {
-    title: "Administracija",
-    pricing: "Cjenovnik",
-    submissions: "Otkupi",
-    inventory: "Inventar",
-    orders: "Porudžbine",
-    signIn: "Prijava",
-    signOut: "Odjava",
-    notAuthorized: "Nemate pristup administraciji.",
+    title: "Admin",
+    pricing: "Pricing",
+    submissions: "Trade-ins",
+    inventory: "Inventory",
+    orders: "Orders",
+    signIn: "Sign in",
+    signOut: "Sign out",
+    notAuthorized: "You do not have admin access.",
   },
 } as const;
