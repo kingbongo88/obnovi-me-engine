@@ -28,16 +28,18 @@ function serverClient() {
 export const getPricingBundle = createServerFn({ method: "GET" }).handler(
   async (): Promise<PricingBundle> => {
     const sb = serverClient();
+    // Pricing tables are not publicly readable; load them server-side only.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const [devicesRes, storageRes, gradeRes, refurbRes, cfgRes] = await Promise.all([
       sb
         .from("devices")
         .select("id, model_name, release_year, base_resale_value, buy_tier, storage_options, image_url, sort_order")
         .eq("active", true)
         .order("sort_order", { ascending: true }),
-      sb.from("storage_multipliers").select("storage_gb, multiplier"),
-      sb.from("grade_multipliers").select("grade, multiplier"),
+      supabaseAdmin.from("storage_multipliers").select("storage_gb, multiplier"),
+      supabaseAdmin.from("grade_multipliers").select("grade, multiplier"),
       sb.from("refurb_cost_items").select("key, amount").eq("active", true),
-      sb.from("pricing_config").select("*").eq("id", 1).single(),
+      supabaseAdmin.from("pricing_config").select("*").eq("id", 1).single(),
     ]);
 
     if (devicesRes.error) throw devicesRes.error;
