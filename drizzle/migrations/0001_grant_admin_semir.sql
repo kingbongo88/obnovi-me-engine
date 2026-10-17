@@ -1,0 +1,1 @@
+INSERT INTO public.user_roles (user_id, role) SELECT 'e70ee67d-be40-4d6a-bbec-c9a2c89d1d3d'::uuid, 'admin'::public.app_role WHERE NOT EXISTS (SELECT 1 FROM public.user_roles WHERE user_id = 'e70ee67d-be40-4d6a-bbec-c9a2c89d1d3d'::uuid AND role = 'admin');
