@@ -18,14 +18,14 @@ export const me = {
   },
 
   home: {
-    heroTitle: "Obnovljeni iPhone,\nsa 6 mjeseci garancije.",
+    heroTitle: "Obnovljeni iPhone,\nsa 3 mjeseca garancije.",
     heroSub:
-      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 14 dana povrata i 6 mjeseci garancije.",
+      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 14 dana povrata i 3 mjeseca garancije.",
     ctaSell: "Prodaj svoj iPhone",
     ctaShop: "Kupi obnovljeni iPhone",
     trust: {
-      warranty: "6 mjeseci garancije",
-      warrantySub: "Servisiramo ili mijenjamo, bez raspravljanja.",
+      warranty: "3 mjeseca garancije",
+      warrantySub: "Zamjena ili povrat novca za fabričke kvarove.",
       returns: "14 dana povrata",
       returnsSub: "Vratite uređaj bez razloga u prvih 14 dana.",
       shipMail: "Pošalji poštom",
@@ -138,7 +138,7 @@ export const me = {
 
   shop: {
     title: "Obnovljeni iPhone uređaji",
-    sub: "Svaki uređaj je testiran, sa baterijom ≥ 85%, 6 mjeseci garancije i 14 dana povrata.",
+    sub: "Svaki uređaj je testiran, sa baterijom ≥ 85%, 3 mjeseca garancije i 14 dana povrata.",
     filterModel: "Model",
     filterStorage: "Memorija",
     filterGrade: "Stanje",
@@ -190,24 +190,40 @@ export const me = {
       s1: "Izabereš model i stanje.",
       s2: "Poručiš — plaćaš kuriru pri dostavi.",
       s3: "Ako nešto nije u redu, imaš 14 dana da vratiš uređaj.",
-      s4: "6 mjeseci garancije, servis kod nas.",
+      s4: "3 mjeseca garancije na hardverske kvarove.",
     },
     gradeTitle: "Kako klasifikujemo stanje",
     warrantyTitle: "Šta pokriva garancija",
     warrantyText:
-      "Garancija od 6 mjeseci pokriva sve hardverske kvarove koji nijesu posljedica pada, vode ili neovlašćene intervencije. Baterija je garantovano ≥ 85% kapaciteta prilikom prodaje.",
+      "Garancija od 3 mjeseca pokriva hardverske kvarove koji nastanu pri normalnoj upotrebi (npr. dugmad, zvučnik, mikrofon, kamera, punjenje, Face ID). Ne pokriva fizička oštećenja kao što su napukao ekran ili staklo, oštećenja od vode, niti uređaje koje je otvarao neko drugi. Ne vršimo popravke oštećenja nastalih krivicom korisnika.",
   },
 
   faq: {
     title: "Česta pitanja",
     items: [
       {
-        q: "Kakva je garancija na obnovljene uređaje?",
-        a: "Svaki uređaj dolazi sa garancijom od 6 mjeseci koja pokriva hardverske kvarove. Baterija je garantovano ≥ 85% kapaciteta u trenutku prodaje.",
+        q: "Koliko traje garancija?",
+        a: "Svaki obnovljeni iPhone kupljen kod nas ima garanciju od 3 mjeseca od dana isporuke. Garancija važi samo za prvog kupca i uz broj narudžbe.",
+      },
+      {
+        q: "Šta pokriva garancija?",
+        a: "Garancija pokriva hardverske kvarove koji nastanu pri normalnoj upotrebi: ekran koji prestane da reaguje na dodir ili prikazuje greške (bez fizičkog oštećenja), dugmad, zvučnike, mikrofon, kamere, port za punjenje, Face ID / Touch ID, Wi-Fi, Bluetooth i mrežu. Baterija je pokrivena ako kapacitet padne ispod 80% u garantnom roku.",
+      },
+      {
+        q: "Šta garancija NE pokriva?",
+        a: "Garancija ne pokriva: napukao ili razbijen ekran i zadnje staklo, udarce i padove, oštećenja od vode ili drugih tečnosti, savijeno kućište, kozmetičko habanje nakon kupovine, uređaje koje je otvarao ili popravljao neko drugi, softverske probleme (iOS, aplikacije, zaboravljene lozinke), gubitak ili krađu, te dodatnu opremu. Ne popravljamo oštećenja nastala krivicom korisnika, ni uz plaćanje.",
       },
       {
         q: "Šta ako se uređaj pokvari u roku garancije?",
-        a: "Doneseš ga kod nas, mi ga popravljamo ili mijenjamo o svom trošku. Nema skrivenih troškova.",
+        a: "Javi nam se putem kontakt forme sa brojem narudžbe i opisom problema. Poslaćemo ti uputstvo za slanje uređaja. Prije slanja isključi Find My iPhone i napravi backup podataka. Kad pregledamo uređaj, mijenjamo ga istim ili sličnim modelom, a ako to nije moguće, vraćamo novac. Ako je kvar pokriven garancijom, troškove slanja snosimo mi.",
+      },
+      {
+        q: "Šta ako kvar nije pokriven garancijom?",
+        a: "Ako pregled pokaže da kvar nije pokriven (npr. fizičko ili oštećenje od vode) ili da nema kvara, uređaj ti vraćamo u stanju u kojem smo ga primili. Troškove povratnog slanja tada snosi kupac.",
+      },
+      {
+        q: "Da li garancija utiče na moja zakonska prava?",
+        a: "Ne. Garancija je dodatak tvojim zakonskim pravima potrošača po zakonima Crne Gore i ne umanjuje ih.",
       },
       {
         q: "Kako klasifikujete stanje uređaja?",

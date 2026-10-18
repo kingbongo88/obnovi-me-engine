@@ -22,7 +22,7 @@ export const Route = createFileRoute("/kupi-iphone/$slug")({
     }
     const min = Math.min(...m.units.map((u) => u.list_price));
     const title = `${m.model_name} obnovljeni — od ${min} € — Obnovi.me`;
-    const desc = `Konfiguriši memoriju i stanje za ${m.model_name}. 6 mjeseci garancije, ≥85% baterija, 14 dana povrata.`;
+    const desc = `Konfiguriši memoriju i stanje za ${m.model_name}. 3 mjeseca garancije, ≥85% baterija, 14 dana povrata.`;
     const url = `https://obnovi.app/kupi-iphone/${params.slug}`;
     const image = m.units.find((u) => Array.isArray(u.photos) && u.photos[0])?.photos?.[0];
     return {
@@ -238,7 +238,7 @@ function ModelDetail() {
                 className="h-full w-full object-contain p-10"
               />
               <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-md">
-                <Shield className="h-3.5 w-3.5 text-[color:var(--accent-brand)]" /> 6 mjeseci garancije
+                <Shield className="h-3.5 w-3.5 text-[color:var(--accent-brand)]" /> 3 mjeseca garancije
               </div>
               {color && (
                 <div className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold capitalize shadow-md">
@@ -428,7 +428,7 @@ function ModelDetail() {
             <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1"><RotateCcw className="h-3.5 w-3.5" /> 14 dana povrata</span>
               <span className="inline-flex items-center gap-1"><Truck className="h-3.5 w-3.5" /> Besplatna dostava</span>
-              <span className="inline-flex items-center gap-1"><Shield className="h-3.5 w-3.5" /> 6 mjeseci garancije</span>
+              <span className="inline-flex items-center gap-1"><Shield className="h-3.5 w-3.5" /> 3 mjeseca garancije</span>
             </div>
           </div>
         </div>

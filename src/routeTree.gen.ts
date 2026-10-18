@@ -21,6 +21,7 @@ import { Route as ONamaRouteImport } from './routes/o-nama'
 import { Route as PitanjaRouteImport } from './routes/pitanja'
 import { Route as ProdajRouteImport } from './routes/prodaj'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as UsloviRouteImport } from './routes/uslovi'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminCjenovnikRouteImport } from './routes/admin.cjenovnik'
 import { Route as AdminInventarRouteImport } from './routes/admin.inventar'
@@ -92,6 +93,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsloviRoute = UsloviRouteImport.update({
+  id: '/uslovi',
+  path: '/uslovi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/uslovi': typeof UsloviRoute
   '/admin/cjenovnik': typeof AdminCjenovnikRoute
   '/admin/inventar': typeof AdminInventarRoute
   '/admin/narudzbe': typeof AdminNarudzbeRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/uslovi': typeof UsloviRoute
   '/admin/cjenovnik': typeof AdminCjenovnikRoute
   '/admin/inventar': typeof AdminInventarRoute
   '/admin/narudzbe': typeof AdminNarudzbeRoute
@@ -204,6 +212,7 @@ export interface FileRoutesById {
   '/pitanja': typeof PitanjaRoute
   '/prodaj': typeof ProdajRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/uslovi': typeof UsloviRoute
   '/admin/cjenovnik': typeof AdminCjenovnikRoute
   '/admin/inventar': typeof AdminInventarRoute
   '/admin/narudzbe': typeof AdminNarudzbeRoute
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
     | '/pitanja'
     | '/prodaj'
     | '/sitemap.xml'
+    | '/uslovi'
     | '/admin/cjenovnik'
     | '/admin/inventar'
     | '/admin/narudzbe'
@@ -253,6 +263,7 @@ export interface FileRouteTypes {
     | '/pitanja'
     | '/prodaj'
     | '/sitemap.xml'
+    | '/uslovi'
     | '/admin/cjenovnik'
     | '/admin/inventar'
     | '/admin/narudzbe'
@@ -277,6 +288,7 @@ export interface FileRouteTypes {
     | '/pitanja'
     | '/prodaj'
     | '/sitemap.xml'
+    | '/uslovi'
     | '/admin/cjenovnik'
     | '/admin/inventar'
     | '/admin/narudzbe'
@@ -302,6 +314,7 @@ export interface RootRouteChildren {
   PitanjaRoute: typeof PitanjaRoute
   ProdajRoute: typeof ProdajRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  UsloviRoute: typeof UsloviRoute
   KupiIphoneSlugRoute: typeof KupiIphoneSlugRoute
   NarudzbaRefRoute: typeof NarudzbaRefRoute
 }
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/uslovi': {
+      id: '/uslovi'
+      path: '/uslovi'
+      fullPath: '/uslovi'
+      preLoaderRoute: typeof UsloviRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -519,6 +539,7 @@ const rootRouteChildren: RootRouteChildren = {
   PitanjaRoute: PitanjaRoute,
   ProdajRoute: ProdajRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  UsloviRoute: UsloviRoute,
   KupiIphoneSlugRoute: KupiIphoneSlugRoute,
   NarudzbaRefRoute: NarudzbaRefRoute,
 }

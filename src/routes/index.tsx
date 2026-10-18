@@ -100,7 +100,7 @@ function Hero() {
             Obnovljeni iPhone. <span className="text-[color:var(--accent-brand)]">Bez rizika.</span>
           </h1>
           <p className="mt-5 max-w-xl text-lg text-slate-300">
-            6 mjeseci garancije. Baterija 85%+. 14 dana povrata. Uštedi do 50% u odnosu na novi.
+            3 mjeseca garancije. Baterija 85%+. 14 dana povrata. Uštedi do 50% u odnosu na novi.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to="/kupi" className="btn-primary group">
@@ -147,7 +147,7 @@ function HeroPhoneCluster() {
 /* ------------------------------ Trust bar (dense, dark) ------------------------------ */
 function TrustBar() {
   const items = [
-    { icon: Shield, label: "6 mjeseci garancije" },
+    { icon: Shield, label: "3 mjeseca garancije" },
     { icon: Battery, label: "Baterija 85%+" },
     { icon: RotateCcw, label: "14 dana povrata" },
     { icon: Truck, label: "Brza dostava po Crnoj Gori" },

@@ -172,7 +172,7 @@ function QuoteSidebar({
         <div className="mt-6 space-y-2 border-t border-border pt-4 text-[11px] text-muted-foreground">
           <div className="flex items-center gap-2"><Check className="h-3 w-3 text-[color:var(--accent-brand)]" /> Isplata odmah nakon pregleda</div>
           <div className="flex items-center gap-2"><Check className="h-3 w-3 text-[color:var(--accent-brand)]" /> Bez obaveze prihvatanja</div>
-          <div className="flex items-center gap-2"><Check className="h-3 w-3 text-[color:var(--accent-brand)]" /> 6 mjeseci naša garancija na kupca</div>
+          <div className="flex items-center gap-2"><Check className="h-3 w-3 text-[color:var(--accent-brand)]" /> 3 mjeseca naša garancija na kupca</div>
         </div>
       </div>
     </aside>
