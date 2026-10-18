@@ -77,6 +77,7 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><Link to="/kupi" className="hover:text-foreground">{me.nav.shop}</Link></li>
             <li><Link to="/pitanja" className="hover:text-foreground">{me.nav.faq}</Link></li>
+            <li><Link to="/uslovi" className="hover:text-foreground">Uslovi korišćenja</Link></li>
           </ul>
         </div>
         <div>
