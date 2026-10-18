@@ -29,6 +29,13 @@
       "when": 1792259289990,
       "tag": "0003_add_iphone_18_lineup",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792318179887,
+      "tag": "0004_refresh_base_values_oct_2026",
+      "breakpoints": true
     }
   ]
 }
