@@ -18,13 +18,13 @@ export const me = {
   },
 
   home: {
-    heroTitle: "Obnovljeni iPhone,\nsa 6 mjeseci garancije.",
+    heroTitle: "Obnovljeni iPhone,\nsa 3 mjeseca garancije.",
     heroSub:
-      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 14 dana povrata i 6 mjeseci garancije.",
+      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 14 dana povrata i 3 mjeseca garancije.",
     ctaSell: "Prodaj svoj iPhone",
     ctaShop: "Kupi obnovljeni iPhone",
     trust: {
-      warranty: "6 mjeseci garancije",
+      warranty: "3 mjeseca garancije",
       warrantySub: "Servisiramo ili mijenjamo, bez raspravljanja.",
       returns: "14 dana povrata",
       returnsSub: "Vratite uređaj bez razloga u prvih 14 dana.",
@@ -138,7 +138,7 @@ export const me = {
 
   shop: {
     title: "Obnovljeni iPhone uređaji",
-    sub: "Svaki uređaj je testiran, sa baterijom ≥ 85%, 6 mjeseci garancije i 14 dana povrata.",
+    sub: "Svaki uređaj je testiran, sa baterijom ≥ 85%, 3 mjeseca garancije i 14 dana povrata.",
     filterModel: "Model",
     filterStorage: "Memorija",
     filterGrade: "Stanje",
@@ -190,12 +190,12 @@ export const me = {
       s1: "Izabereš model i stanje.",
       s2: "Poručiš — plaćaš kuriru pri dostavi.",
       s3: "Ako nešto nije u redu, imaš 14 dana da vratiš uređaj.",
-      s4: "6 mjeseci garancije, servis kod nas.",
+      s4: "3 mjeseca garancije, servis kod nas.",
     },
     gradeTitle: "Kako klasifikujemo stanje",
     warrantyTitle: "Šta pokriva garancija",
     warrantyText:
-      "Garancija od 6 mjeseci pokriva sve hardverske kvarove koji nijesu posljedica pada, vode ili neovlašćene intervencije. Baterija je garantovano ≥ 85% kapaciteta prilikom prodaje.",
+      "Garancija od 3 mjeseca pokriva sve hardverske kvarove koji nijesu posljedica pada, vode ili neovlašćene intervencije. Baterija je garantovano ≥ 85% kapaciteta prilikom prodaje.",
   },
 
   faq: {
@@ -203,7 +203,7 @@ export const me = {
     items: [
       {
         q: "Kakva je garancija na obnovljene uređaje?",
-        a: "Svaki uređaj dolazi sa garancijom od 6 mjeseci koja pokriva hardverske kvarove. Baterija je garantovano ≥ 85% kapaciteta u trenutku prodaje.",
+        a: "Svaki uređaj dolazi sa garancijom od 3 mjeseca koja pokriva hardverske kvarove. Baterija je garantovano ≥ 85% kapaciteta u trenutku prodaje.",
       },
       {
         q: "Šta ako se uređaj pokvari u roku garancije?",

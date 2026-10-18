@@ -23,7 +23,7 @@ export const Route = createFileRoute("/kupi/$id")({
     const storage = item.storage_gb >= 1024 ? `${item.storage_gb / 1024} TB` : `${item.storage_gb} GB`;
     const price = Number(item.list_price);
     const title = `${model} ${storage} (${item.grade}) — ${price} € — Obnovi.me`;
-    const desc = `Obnovljeni ${model}, ${storage}, stanje ${item.grade}, baterija ${item.battery_health}%. 6 mjeseci garancije.`;
+    const desc = `Obnovljeni ${model}, ${storage}, stanje ${item.grade}, baterija ${item.battery_health}%. 3 mjeseca garancije.`;
     const url = `https://obnovi.app/kupi/${params.id}`;
     const image = Array.isArray(item.photos) && item.photos[0] ? item.photos[0] : undefined;
     return {
@@ -129,7 +129,7 @@ function Detail() {
 
             <div className="mt-6 grid grid-cols-2 gap-3">
               <Info icon={<Battery className="h-4 w-4" />} label="Baterija" value={`${item.battery_health}% (≥85% zagarantovano)`} />
-              <Info icon={<Shield className="h-4 w-4" />} label="Garancija" value="6 mjeseci" />
+              <Info icon={<Shield className="h-4 w-4" />} label="Garancija" value="3 mjeseca" />
               <Info icon={<RotateCcw className="h-4 w-4" />} label="Povrat" value="14 dana" />
               <Info label="Ocjena" value={item.grade} />
             </div>
