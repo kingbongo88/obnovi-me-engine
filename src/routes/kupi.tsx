@@ -14,7 +14,7 @@ export const Route = createFileRoute("/kupi")({
   head: () => ({
     meta: [
       { title: "Kupi obnovljeni iPhone — Obnovi.me" },
-      { name: "description", content: "Odaberi model. Obnovljeni iPhone uređaji sa 3 mjeseca garancije, ≥85% baterija, 14 dana povrata." },
+      { name: "description", content: "Odaberi model. Obnovljeni iPhone uređaji sa 3 mjeseca garancije i ≥85% baterijom." },
       { property: "og:title", content: "Kupi obnovljeni iPhone — Obnovi.me" },
       { property: "og:description", content: "Testirani obnovljeni iPhone modeli, garancija, plaćanje pouzećem." },
       { property: "og:url", content: "https://obnovi.app/kupi" },
@@ -101,7 +101,7 @@ function ShopPage() {
         <div className="mb-8">
           <h1 className="font-display text-4xl md:text-5xl">Kupi obnovljeni iPhone</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
-            Testirani uređaji sa 3 mjeseca garancije, ≥85% baterija i 14 dana povrata.
+            Testirani uređaji sa 3 mjeseca garancije i ≥85% baterijom.
           </p>
         </div>
 

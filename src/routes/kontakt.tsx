@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { me } from "@/i18n/me";
-import { Mail, Clock, MapPin } from "lucide-react";
+import { Mail, Clock, MapPin, Instagram, Facebook } from "lucide-react";
 
 export const Route = createFileRoute("/kontakt")({
   head: () => ({
@@ -27,6 +27,14 @@ function Contact() {
           <Row icon={<Mail className="h-4 w-4" />} label="Email" value={me.contact.email} />
           <Row icon={<Clock className="h-4 w-4" />} label="Radno vrijeme" value={me.contact.hours} />
           <Row icon={<MapPin className="h-4 w-4" />} label="Lokacije" value={me.contact.cities} />
+        </div>
+        <div className="mt-6 flex items-center gap-3">
+          <a href="https://www.instagram.com/obnovime/" target="_blank" rel="noopener noreferrer" aria-label="Obnovi.me na Instagramu" className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground">
+            <Instagram className="h-5 w-5" />
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61595591068944" target="_blank" rel="noopener noreferrer" aria-label="Obnovi.me na Facebooku" className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground">
+            <Facebook className="h-5 w-5" />
+          </a>
         </div>
       </main>
       <SiteFooter />

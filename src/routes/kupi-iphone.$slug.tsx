@@ -6,7 +6,7 @@ import { devicePhotoFor } from "@/components/device-photo";
 import { useCart } from "@/lib/cart";
 import { msrpFor } from "@/lib/msrp";
 import { useMemo, useState } from "react";
-import { Shield, Truck, RotateCcw, Check, ChevronRight } from "lucide-react";
+import { Shield, Truck, Check, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 
 const modelQuery = (slug: string) => ({
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/kupi-iphone/$slug")({
     }
     const min = Math.min(...m.units.map((u) => u.list_price));
     const title = `${m.model_name} obnovljeni — od ${min} € — Obnovi.me`;
-    const desc = `Konfiguriši memoriju i stanje za ${m.model_name}. 3 mjeseca garancije, ≥85% baterija, 14 dana povrata.`;
+    const desc = `Konfiguriši memoriju i stanje za ${m.model_name}. 3 mjeseca garancije, ≥85% baterija.`;
     const url = `https://obnovi.app/kupi-iphone/${params.slug}`;
     const image = m.units.find((u) => Array.isArray(u.photos) && u.photos[0])?.photos?.[0];
     return {
@@ -426,7 +426,6 @@ function ModelDetail() {
             </button>
 
             <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1"><RotateCcw className="h-3.5 w-3.5" /> 14 dana povrata</span>
               <span className="inline-flex items-center gap-1"><Truck className="h-3.5 w-3.5" /> Besplatna dostava</span>
               <span className="inline-flex items-center gap-1"><Shield className="h-3.5 w-3.5" /> 3 mjeseca garancije</span>
             </div>
