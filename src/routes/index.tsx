@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
-import { Shield, Battery, Truck, RotateCcw, ArrowRight, Star } from "lucide-react";
+import { Shield, Battery, Truck, ArrowRight, Star } from "lucide-react";
 import { DevicePhoto, devicePhotoFor } from "@/components/device-photo";
 import { getInventory } from "@/lib/pricing.functions";
 import { msrpFor, savingsPct } from "@/lib/msrp";
@@ -11,9 +11,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
-      { name: "description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
+      { name: "description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Znatno pristupačniji od novog." },
       { property: "og:title", content: "Obnovi.me — Obnovljeni iPhone sa garancijom u Crnoj Gori" },
-      { property: "og:description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Uštedi do 50%." },
+      { property: "og:description", content: "Obnovljeni iPhone uređaji sa garancijom. Testirani, čisti, spremni za slanje. Znatno pristupačniji od novog." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://obnovi.app/" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -100,7 +100,7 @@ function Hero() {
             Obnovljeni iPhone. <span className="text-[color:var(--accent-brand)]">Bez rizika.</span>
           </h1>
           <p className="mt-5 max-w-xl text-lg text-slate-300">
-            3 mjeseca garancije. Baterija 85%+. 14 dana povrata. Uštedi do 50% u odnosu na novi.
+            3 mjeseca garancije. Baterija 85%+. Pouzdano kao novi iPhone — samo znatno pristupačniji.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to="/kupi" className="btn-primary group">
@@ -149,12 +149,11 @@ function TrustBar() {
   const items = [
     { icon: Shield, label: "3 mjeseca garancije" },
     { icon: Battery, label: "Baterija 85%+" },
-    { icon: RotateCcw, label: "14 dana povrata" },
     { icon: Truck, label: "Brza dostava po Crnoj Gori" },
   ];
   return (
     <section className="border-y border-white/10 bg-[color:var(--surface-dark-2)] text-white">
-      <div className="container-wide grid grid-cols-2 gap-3 py-4 md:grid-cols-4">
+      <div className="container-wide grid grid-cols-2 gap-3 py-4 md:grid-cols-3">
         {items.map(({ icon: Icon, label }) => (
           <div key={label} className="flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--accent-brand)]/15 text-[color:var(--accent-brand)]">
