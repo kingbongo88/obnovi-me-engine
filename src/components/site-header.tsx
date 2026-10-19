@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Instagram, Facebook } from "lucide-react";
 import { me } from "@/i18n/me";
 import { useCart } from "@/lib/cart";
 
@@ -86,6 +86,14 @@ export function SiteFooter() {
             <li>{me.contact.email}</li>
             <li>{me.contact.cities}</li>
           </ul>
+          <div className="mt-4 flex items-center gap-2">
+            <a href="https://www.instagram.com/obnovime/" target="_blank" rel="noopener noreferrer" aria-label="Obnovi.me na Instagramu" className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground">
+              <Instagram className="h-4 w-4" />
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61595591068944" target="_blank" rel="noopener noreferrer" aria-label="Obnovi.me na Facebooku" className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground">
+              <Facebook className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </div>
       <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">

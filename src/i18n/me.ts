@@ -20,7 +20,7 @@ export const me = {
   home: {
     heroTitle: "Obnovljeni iPhone,\nsa 3 mjeseca garancije.",
     heroSub:
-      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 14 dana povrata i 3 mjeseca garancije.",
+      "Otkupljujemo i prodajemo obnovljene iPhone uređaje u Crnoj Gori. Svaki telefon je testiran, čist, i dolazi sa 3 mjeseca garancije.",
     ctaSell: "Prodaj svoj iPhone",
     ctaShop: "Kupi obnovljeni iPhone",
     trust: {
@@ -138,7 +138,7 @@ export const me = {
 
   shop: {
     title: "Obnovljeni iPhone uređaji",
-    sub: "Svaki uređaj je testiran, sa baterijom ≥ 85%, 3 mjeseca garancije i 14 dana povrata.",
+    sub: "Svaki uređaj je testiran, sa baterijom ≥ 85% i 3 mjeseca garancije.",
     filterModel: "Model",
     filterStorage: "Memorija",
     filterGrade: "Stanje",
@@ -265,7 +265,7 @@ export const me = {
     title: "Kontakt",
     email: "kontaktobnovime@gmail.com",
     hours: "Radno vrijeme: pon–pet 09–17h, sub 10–14h",
-    cities: "Predstavnik dostupan u Podgoricu",
+    cities: "Predstavnik dostupan u Podgorici",
   },
 
   admin: {
