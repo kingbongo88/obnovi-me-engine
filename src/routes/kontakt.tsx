@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { me } from "@/i18n/me";
-import { Mail, Phone, Clock, MapPin } from "lucide-react";
+import { Mail, Clock, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/kontakt")({
   head: () => ({
     meta: [
       { title: "Kontakt — Obnovi.me" },
-      { name: "description", content: "Kontaktirajte nas. Kontakt forma i telefon." },
+      { name: "description", content: "Kontaktirajte nas. Email i kontakt forma." },
       { property: "og:title", content: "Kontakt — Obnovi.me" },
       { property: "og:description", content: "Kontakt podaci i lokacije." },
       { property: "og:url", content: "https://obnovi.app/kontakt" },
@@ -25,7 +25,6 @@ function Contact() {
         <h1 className="font-display text-5xl">{me.contact.title}</h1>
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           <Row icon={<Mail className="h-4 w-4" />} label="Email" value={me.contact.email} />
-          <Row icon={<Phone className="h-4 w-4" />} label="Telefon" value={me.contact.phone} />
           <Row icon={<Clock className="h-4 w-4" />} label="Radno vrijeme" value={me.contact.hours} />
           <Row icon={<MapPin className="h-4 w-4" />} label="Lokacije" value={me.contact.cities} />
         </div>
