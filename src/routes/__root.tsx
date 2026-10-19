@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           url: "https://obnovi.app",
           logo: "https://obnovi.app/favicon.ico",
           areaServed: "ME",
-          email: "kontakt@obnovi.me",
+          email: "kontaktobnovime@gmail.com",
         }),
       },
       {
