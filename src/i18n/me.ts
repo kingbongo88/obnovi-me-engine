@@ -265,7 +265,7 @@ export const me = {
     title: "Kontakt",
     email: "kontaktobnovime@gmail.com",
     hours: "Radno vrijeme: pon–pet 09–17h, sub 10–14h",
-    cities: "Predstavnik dostupan u: Podgorica",
+    cities: "Predstavnik dostupan u Podgoricu",
   },
 
   admin: {
