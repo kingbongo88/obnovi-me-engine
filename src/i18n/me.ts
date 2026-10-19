@@ -259,7 +259,7 @@ export const me = {
 
   contact: {
     title: "Kontakt",
-    email: "info@obnovi.me",
+    email: "kontaktobnovime@gmail.com",
     phone: "+382 68 000 000",
     hours: "Radno vrijeme: pon–pet 09–17h, sub 10–14h",
     cities: "Predstavnik dostupan u: Podgorica · Budva · Kotor · Nikšić",
