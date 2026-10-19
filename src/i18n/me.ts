@@ -202,6 +202,10 @@ export const me = {
     title: "Česta pitanja",
     items: [
       {
+        q: "Šta je zapravo obnovljeni (refurbished) telefon?",
+        a: "Obnovljeni telefon je original iPhone koji je nekome prethodno korišćen, a zatim prošao kroz profesionalnu provjeru i obnovu: testiramo svaku funkciju (ekran, baterija, kamere, zvučnik, mikrofon, punjenje, Face ID), provjeravamo da uređaj nije kraden ili iCloud zaključan, te ga temeljno očistimo i dezinficujemo prije prodaje. Ako neki dio ne radi ispravno, mijenjamo ga. Rezultat je telefon koji radi kao novi, ali po znatno nižoj cijeni — i bolji je za okolinu, jer se produžava život uređaja umjesto da završi na otpadu. Od običnog polovnog telefona razlikuje se po tome što je testiran, garantiran (3 mjeseca) i sa pravom povrata u 14 dana.",
+      },
+      {
         q: "Koliko traje garancija?",
         a: "Svaki obnovljeni iPhone kupljen kod nas ima garanciju od 3 mjeseca od dana isporuke. Garancija važi samo za prvog kupca i uz broj narudžbe.",
       },
@@ -259,7 +263,7 @@ export const me = {
 
   contact: {
     title: "Kontakt",
-    email: "info@obnovi.me",
+    email: "kontaktobnovime@gmail.com",
     phone: "+382 68 000 000",
     hours: "Radno vrijeme: pon–pet 09–17h, sub 10–14h",
     cities: "Predstavnik dostupan u: Podgorica · Budva · Kotor · Nikšić",
