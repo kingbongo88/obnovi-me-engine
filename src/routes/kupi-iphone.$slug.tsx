@@ -32,6 +32,7 @@ export const Route = createFileRoute("/kupi-iphone/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "product" },
+        { name: "twitter:card", content: "summary_large_image" },
         { property: "og:url", content: url },
         ...(image ? [{ property: "og:image", content: image } as const, { name: "twitter:image", content: image } as const] : []),
       ],

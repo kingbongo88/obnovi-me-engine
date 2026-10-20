@@ -18,6 +18,8 @@ export const Route = createFileRoute("/kupi")({
       { property: "og:title", content: "Kupi obnovljeni iPhone — Obnovi.me" },
       { property: "og:description", content: "Testirani obnovljeni iPhone modeli, garancija, plaćanje pouzećem." },
       { property: "og:url", content: "https://obnovi.app/kupi" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://obnovi.app/kupi" }],
   }),

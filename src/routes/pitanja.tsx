@@ -10,6 +10,8 @@ export const Route = createFileRoute("/pitanja")({
       { property: "og:title", content: "Česta pitanja — Obnovi.me" },
       { property: "og:description", content: "Garancija, povrat, klasifikacija, otkup." },
       { property: "og:url", content: "https://obnovi.app/pitanja" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://obnovi.app/pitanja" }],
     scripts: [

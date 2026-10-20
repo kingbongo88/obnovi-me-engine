@@ -1,0 +1,2 @@
+- [ ] Finish the remaining savings-copy cleanup and verify social links and location.
+- [ ] Replace inaccurate iPhone 16e and 17 Pro imagery and verify real listings.

@@ -10,6 +10,8 @@ export const Route = createFileRoute("/o-nama")({
       { property: "og:title", content: "O nama — Obnovi.me" },
       { property: "og:description", content: "Transparentan otkup i prodaja obnovljenih iPhone uređaja." },
       { property: "og:url", content: "https://obnovi.app/o-nama" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://obnovi.app/o-nama" }],
   }),

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/kontakt")({
       { property: "og:title", content: "Kontakt — Obnovi.me" },
       { property: "og:description", content: "Kontakt podaci i lokacije." },
       { property: "og:url", content: "https://obnovi.app/kontakt" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://obnovi.app/kontakt" }],
   }),

@@ -3,7 +3,7 @@ import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { getInventoryItem } from "@/lib/pricing.functions";
 import { useCart } from "@/lib/cart";
 import { me } from "@/i18n/me";
-import { Shield, RotateCcw, Battery } from "lucide-react";
+import { Shield, Battery } from "lucide-react";
 import { DevicePhoto } from "@/components/device-photo";
 import { GradeMeter } from "@/components/grade-meter";
 import { toast } from "sonner";
@@ -33,6 +33,7 @@ export const Route = createFileRoute("/kupi/$id")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "product" },
+        { name: "twitter:card", content: "summary_large_image" },
         { property: "og:url", content: url },
         ...(image ? [{ property: "og:image", content: image } as const, { name: "twitter:image", content: image } as const] : []),
       ],
@@ -110,7 +111,7 @@ function Detail() {
             {item.photos?.[0] ? (
               <img src={item.photos[0]} alt={model} className="h-full w-full rounded-3xl object-cover" />
             ) : (
-              <DevicePhoto modelName={model} className="h-full w-full object-contain p-8" />
+              <DevicePhoto modelName={model} color={item.color} className="h-full w-full object-contain p-8" />
             )}
           </div>
           <div>
@@ -130,7 +131,6 @@ function Detail() {
             <div className="mt-6 grid grid-cols-2 gap-3">
               <Info icon={<Battery className="h-4 w-4" />} label="Baterija" value={`${item.battery_health}% (≥85% zagarantovano)`} />
               <Info icon={<Shield className="h-4 w-4" />} label="Garancija" value="3 mjeseca" />
-              <Info icon={<RotateCcw className="h-4 w-4" />} label="Povrat" value="14 dana" />
               <Info label="Ocjena" value={item.grade} />
             </div>
 
