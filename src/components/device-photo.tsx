@@ -37,6 +37,11 @@ import iphone16Black from "@/assets/models/iphone-16-black.jpg";
 import iphone16Pink from "@/assets/models/iphone-16-pink.jpg";
 import iphone16Teal from "@/assets/models/iphone-16-teal.jpg";
 import iphone16Ultramarine from "@/assets/models/iphone-16-ultramarine.jpg";
+import iphone16eBlack from "@/assets/models/iphone-16e-black.jpg.asset.json";
+import iphone16eWhite from "@/assets/models/iphone-16e-white.jpg.asset.json";
+import iphone17ProDeepBlue from "@/assets/models/iphone-17-pro-deep-blue.jpg";
+import iphone17ProSilver from "@/assets/models/iphone-17-pro-silver.jpg";
+import iphone17ProCosmicOrange from "@/assets/models/iphone-17-pro-cosmic-orange.jpg";
 
 type Key =
   | "A"
@@ -72,6 +77,16 @@ const FALLBACK_MAP: Record<Key, string> = {
 };
 
 const COLOR_MODEL_MAP: Record<string, string> = {
+  "iphone 16e::black": iphone16eBlack.url,
+  "iphone 16e::crna": iphone16eBlack.url,
+  "iphone 16e::white": iphone16eWhite.url,
+  "iphone 16e::bijela": iphone16eWhite.url,
+  "iphone 17 pro::deep blue": iphone17ProDeepBlue,
+  "iphone 17 pro::silver": iphone17ProSilver,
+  "iphone 17 pro::cosmic orange": iphone17ProCosmicOrange,
+  "iphone 17 pro max::deep blue": iphone17ProDeepBlue,
+  "iphone 17 pro max::silver": iphone17ProSilver,
+  "iphone 17 pro max::cosmic orange": iphone17ProCosmicOrange,
   "iphone 12::black": iphone12Black,
   "iphone 12::blue": iphone12Blue,
   "iphone 12::purple": iphone12Purple,
@@ -120,6 +135,9 @@ export function devicePhotoFor(modelName: string, color?: string | null): string
     const exact = COLOR_MODEL_MAP[`${modelKey}::${colorKey}`];
     if (exact) return exact;
   }
+  // These models have distinct camera designs, never reuse the 16/16 Pro photo.
+  if (modelKey === "iphone 16e") return iphone16eBlack.url;
+  if (modelKey === "iphone 17 pro" || modelKey === "iphone 17 pro max") return iphone17ProDeepBlue;
   return FALLBACK_MAP[classify(modelName)];
 }
 
