@@ -18,6 +18,8 @@ export const Route = createFileRoute("/prodaj")({
       { property: "og:title", content: "Prodaj svoj iPhone — Obnovi.me" },
       { property: "og:description", content: "Konkretna ponuda za 3 minuta. Šalji poštom ili dogovori sastanak sa predstavnikom." },
       { property: "og:url", content: "https://obnovi.app/prodaj" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://obnovi.app/prodaj" }],
   }),
